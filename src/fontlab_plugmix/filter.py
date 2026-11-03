@@ -38,7 +38,10 @@ class Param:
             return value
         if self.kind == "bool":
             return value
-        number = float(value)
+        try:
+            number = float(value)
+        except (ValueError, OverflowError) as error:
+            raise ValueError(f"{self.label}: invalid number") from error
         if (
             not isfinite(number)
             or (self.minimum is not None and number < self.minimum)

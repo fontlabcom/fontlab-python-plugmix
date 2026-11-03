@@ -28,6 +28,20 @@ def _removed(before: snapshot.GlyphSnapshot, edit: LayerEdit) -> tuple[int, ...]
     )
 
 
+def _targets_safe(layer: Any, removed: tuple[int, ...], outlines: Any) -> bool:
+    """Allow deletion only from owned, unshared and untransformed shapes."""
+    allowed = {int(shape.id) for shape in outlines.outline_shapes(layer)[0]}
+    owners = [
+        shape
+        for shape in layer.shapes
+        if not shape.isComponent
+        for _contour in shape.contours
+    ]
+    return all(
+        index < len(owners) and int(owners[index].id) in allowed for index in removed
+    )
+
+
 def plan_filter(
     plugin: Filter, values: dict[str, Any], selected: Any, outlines: Any, history: Any
 ) -> tuple[Any, Any]:
@@ -40,12 +54,22 @@ def plan_filter(
         {int(row.glyph.id): row.glyph for row in selected.occurrences}.values()
     )
     facts = history.scan_auto_facts(package)
+    unsafe: list[str] = []
 
     def planner(glyph: Any, master_name: str, layer: Any) -> list[Any]:
         before = snapshot.capture(snapshot.NativeSource(package, layer))
         removed = _removed(before, plugin.compute(before, values))
         if not removed:
             return []
+        if not _targets_safe(layer, removed, outlines):
+            unsafe.append(str(glyph.name))
+            return [
+                outlines.Change(
+                    "contours",
+                    str(len(before.contours)),
+                    "shared or transformed outline, skipped",
+                )
+            ]
         return [
             outlines.Change(
                 "contours",
@@ -56,7 +80,9 @@ def plan_filter(
             )
         ]
 
-    return outlines.collect(glyphs, [master], planner, facts), facts
+    plan = outlines.collect(glyphs, [master], planner, facts)
+    plan.refused.extend(unsafe)
+    return plan, facts
 
 
 class LayerEditEditor:

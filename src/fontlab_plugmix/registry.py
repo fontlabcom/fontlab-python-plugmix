@@ -144,18 +144,12 @@ class Registry:
 
     def _save(self) -> None:
         """Write one sorted preference document after a user toggle."""
+        data = {**self._extras, "enabled": sorted(self._wanted), "params": self._params}
+        if self._filter_wanted is not None:
+            data["enabled_filters"] = sorted(self._filter_wanted)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(
-            json.dumps(
-                {
-                    **self._extras,
-                    "enabled": sorted(self._wanted),
-                    "enabled_filters": list(self.enabled_filters()),
-                    "params": self._params,
-                },
-                indent=2,
-            )
-            + "\n",
+            json.dumps(data, indent=2) + "\n",
             encoding="utf-8",
         )
 
@@ -183,7 +177,7 @@ class Registry:
         cls = self.available("filter")[name]
         try:
             return cls.validate(self._params.get(name, {}))
-        except (TypeError, ValueError) as error:
+        except (TypeError, ValueError, OverflowError) as error:
             _report(error, name, self._error_sink)
             return cls.validate({})
 

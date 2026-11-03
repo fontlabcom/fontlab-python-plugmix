@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+- Measure Delete Small Paths over flattened curves; preserve newly discovered
+  filters when no filter choice was saved. Keep Apply working when saving its
+  parameters fails, and skip unsafe glyphs individually.
+- Restore polygon painter state with save/restore, and handle oversized stored
+  numeric parameters by falling back to defaults.
 - Added a shared `Plugin` identity and kind-filtered discovery. Reporter View
   actions remain reporter-only; the same entry-point group discovers Filters.
 - Added `enabled_filters` and validated last-used `params` preferences while

@@ -43,13 +43,13 @@ def _draw(mark: Mark, context: Any, qt: Any) -> None:
     if mark.kind == "polygon":
         if mark.fill is None:
             raise ValueError("Polygon mark needs an RGBA fill")
-        painter.setPen(qt.QtCore.Qt.NoPen)
-        painter.setBrush(qt.QtGui.QColor(*mark.fill))
+        painter.save()
         try:
+            painter.setPen(qt.QtCore.Qt.NoPen)
+            painter.setBrush(qt.QtGui.QColor(*mark.fill))
             painter.drawPolygon(qt.QtGui.QPolygonF(list(points)))
         finally:
-            painter.setBrush(qt.QtGui.QBrush())
-            painter.setPen(qt.QtGui.QPen())
+            painter.restore()
         return
     pen = qt.QtGui.QPen(qt.QtGui.QColor(*mark.color))
     pen.setWidthF(mark.stroke_px)

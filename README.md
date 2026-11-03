@@ -32,10 +32,11 @@ with only `enabled` still load. Filters are enabled by default, and the
 
 | Filter | Edit |
 | --- | --- |
-| Delete Small Paths | Delete closed contours with shoelace area or bounding area below the threshold (default 400 font units squared). Open contours and values exactly at the threshold stay. Apply targets selected glyphs in the current master and uses one geometry Undo step. |
+| Delete Small Paths | Delete closed contours whose flattened path area or flattened bounds area falls below the threshold (default 400 font units squared). Open contours and values exactly at the threshold stay. Apply targets selected glyphs in the current master and uses one geometry Undo step. |
 
-The current Filter writer supports contour deletion. It refuses shared or
-transformed outlines and skips automatic layers. Filter `compute(snapshot,
+The current Filter writer supports contour deletion. It skips shared or
+transformed outlines per glyph and skips automatic layers, while applying safe
+glyphs in the same selection. Filter `compute(snapshot,
 values)` receives frozen Python data and returns a `LayerEdit`; parameters are
 declared with `Param`. Native selection, writes, history and Qt dialog calls
 stay in plugmix's host modules. The Glyph menu command opens a non-modal

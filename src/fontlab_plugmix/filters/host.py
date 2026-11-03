@@ -35,7 +35,7 @@ class FilterHost:
             self.actions.append(token)
 
     def run(self, name: str) -> None:
-        """Open a dialog only when the active selection contains a layer."""
+        """Open on a selection; Apply re-reads the selection at click time."""
         selected = snapshot.selected_layers()
         if not selected.occurrences:
             return
@@ -54,7 +54,12 @@ class FilterHost:
             )
 
         def apply(values: dict[str, Any]) -> None:
-            self.registry.set_params(name, values)
+            """Save a preference opportunistically, then edit the live selection."""
+            guarded(
+                plugin,
+                self.services.sink,
+                lambda: self.registry.set_params(name, values),
+            )
             plan, result = apply_filter(plugin, values)
             if result is None and (plan.refused or plan.skipped):
                 dialog.status.setText(

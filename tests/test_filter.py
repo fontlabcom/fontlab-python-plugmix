@@ -30,6 +30,53 @@ def square(side: float, *, closed: bool = True) -> Contour:
     )
 
 
+def cubic_circle(radius: float) -> Contour:
+    """Four cubic quarter-arcs, with the usual circular control offset."""
+    k = 0.5522847498307936 * radius
+    points = (
+        (radius, 0, True),
+        (radius, k, False),
+        (k, radius, False),
+        (0, radius, True),
+        (-k, radius, False),
+        (-radius, k, False),
+        (-radius, 0, True),
+        (-radius, -k, False),
+        (-k, -radius, False),
+        (0, -radius, True),
+        (k, -radius, False),
+        (radius, -k, False),
+    )
+    return Contour(tuple(Node(x, y, on, False) for x, y, on in points))
+
+
+def test_delete_small_paths_uses_flattened_cubic_area(glyph):
+    dot, large = cubic_circle(11), cubic_circle(15)
+    data = replace(glyph, contours=(dot, large))
+    assert DeleteSmallPaths().compute(data, {"threshold": 400}).contours == (large,)
+    assert (
+        DeleteSmallPaths().compute(replace(data, contours=(large,)), {"threshold": 400})
+        == LayerEdit()
+    )
+
+
+def test_delete_small_paths_deletes_short_closed_contours_as_zero_area(glyph):
+    short = tuple(
+        Contour(tuple(Node(i, 0, True, False) for i in range(count)))
+        for count in range(3)
+    )
+    data = replace(glyph, contours=short)
+    assert DeleteSmallPaths().compute(data, {"threshold": 400}).contours == ()
+    assert DeleteSmallPaths().compute(data, {"threshold": 0}) == LayerEdit()
+    assert (
+        DeleteSmallPaths().compute(
+            replace(data, contours=(replace(short[1], closed=False),)),
+            {"threshold": 400},
+        )
+        == LayerEdit()
+    )
+
+
 def test_delete_small_paths_threshold_edges_open_empty_and_all_deleted(glyph):
     plugin = DeleteSmallPaths()
     below, equal, above = square(19), square(20), square(21)
@@ -79,13 +126,10 @@ def test_delete_small_paths_uses_bounds_for_cancelled_area(glyph):
     data = replace(glyph, contours=(crossing,))
     assert DeleteSmallPaths().compute(data, {"threshold": 400}).contours == ()
     assert DeleteSmallPaths().compute(data, {"threshold": 0}) == LayerEdit()
-    assert (
-        DeleteSmallPaths().compute(
-            replace(data, contours=(Contour((Node(0, 0, True, False),)),)),
-            {"threshold": 400},
-        )
-        == LayerEdit()
-    )
+    assert DeleteSmallPaths().compute(
+        replace(data, contours=(Contour((Node(0, 0, True, False),)),)),
+        {"threshold": 400},
+    ) == LayerEdit(contours=())
 
 
 def test_filter_params_reject_wrong_types_ranges_and_unknown_keys():
@@ -134,9 +178,7 @@ def test_registry_filters_old_prefs_params_and_reporter_menu(tmp_path):
     )
     state.set_params("delete_small_paths", {"threshold": 123})
     saved = json.loads(path.read_text())
-    assert saved["enabled"] == ["node_indexes"] and saved["enabled_filters"] == [
-        "delete_small_paths"
-    ]
+    assert saved["enabled"] == ["node_indexes"] and "enabled_filters" not in saved
     assert saved["params"]["delete_small_paths"] == {"threshold": 123.0}
     assert saved["future"] == {"keep": True}
     assert registry.Registry(tmp_path).values("delete_small_paths") == {
@@ -166,6 +208,35 @@ def test_registry_rejects_bad_filter_params_and_rolls_back_io(tmp_path):
     with pytest.raises(OSError):
         state.set_filter_enabled("delete_small_paths", False)
     assert state.enabled_filters() == ("delete_small_paths",)
+
+
+def test_registry_reporter_save_keeps_later_filters_enabled(tmp_path, monkeypatch):
+    state = registry.Registry(tmp_path)
+    state.enable("node_indexes")
+    saved = json.loads(state.path.read_text())
+    assert "enabled_filters" not in saved
+
+    class Later(Filter):
+        name, title = "later_filter", "Later Filter"
+
+    classes = registry.discover()
+    classes[Later.name] = Later
+    monkeypatch.setattr(registry, "discover", lambda sink: classes)
+    restored = registry.Registry(tmp_path)
+    assert restored.enabled_filters() == ("delete_small_paths", "later_filter")
+
+
+def test_registry_falls_back_after_stored_numeric_overflow(tmp_path):
+    path = tmp_path / "fontlab-plugmix.json"
+    path.write_text(
+        json.dumps(
+            {"enabled": [], "params": {"delete_small_paths": {"threshold": 10**400}}}
+        )
+    )
+    errors = []
+    state = registry.Registry(tmp_path, lambda error, source: errors.append(error))
+    assert state.values("delete_small_paths") == {"threshold": 400.0}
+    assert len(errors) == 1 and isinstance(errors[0], ValueError)
 
 
 def test_filter_entry_point_uses_the_existing_group_and_keeps_names_unique(monkeypatch):
@@ -477,6 +548,47 @@ def test_apply_filter_commits_multiple_glyphs_once_and_reads_back(glyph, monkeyp
         len(item.layer.shapes[0].contours) == 1 and item.layer.updates == 1
         for item in glyphs
     )
+    for index, item in enumerate(glyphs[:2]):
+        item.layer.shapes[0].contours.insert(0, NativeContour(100 + index, square(10)))
+    glyphs[1].layer.shapes[0].shapeData.referenceCount = 2
+    mixed = NS(occurrences=selected.occurrences[:2])
+    plan, result = apply_filter(
+        DeleteSmallPaths(),
+        {"threshold": 400},
+        selected=mixed,
+        outlines=outlines,
+        writer=writer,
+        history=history,
+    )
+    assert plan.refused == ["g1"] and len(plan.work) == 1
+    assert result["layers"] == 1 and commits[-1] == (
+        "Delete Small Paths",
+        1,
+        "geometry",
+        1,
+    )
+    assert len(glyphs[0].layer.shapes[0].contours) == 1
+    assert len(glyphs[1].layer.shapes[0].contours) == 2
+    glyphs[0].layer.shapes[0].contours.insert(0, NativeContour(103, square(10)))
+    glyphs[1].layer.shapes[0].shapeData.referenceCount = 1
+    glyphs[1].layer.shapes[0].transform.m11 = lambda: 2
+    plan, result = apply_filter(
+        DeleteSmallPaths(),
+        {"threshold": 400},
+        selected=mixed,
+        outlines=outlines,
+        writer=writer,
+        history=history,
+    )
+    assert plan.refused == ["g1"] and len(plan.work) == 1
+    assert result["layers"] == 1 and commits[-1] == (
+        "Delete Small Paths",
+        1,
+        "geometry",
+        1,
+    )
+    assert len(glyphs[0].layer.shapes[0].contours) == 1
+    assert len(glyphs[1].layer.shapes[0].contours) == 2
 
 
 def test_apply_filter_skips_empty_and_auto_layers_and_rejects_unsafe_shapes(
@@ -692,3 +804,45 @@ def test_filter_host_guards_selection_window_apply_and_remove_errors(
     owner.fail_remove = True
     host.close()
     assert errors[-1] == "remove failed" and host.windows == {} and host.actions == []
+
+
+def test_filter_host_applies_when_saving_params_fails(tmp_path, monkeypatch):
+    import fontlab_plugmix.filters.host as host_module
+
+    owner, errors, redraws, applied, deferred = MenuOwner(), [], [], [], []
+    state = registry.Registry(tmp_path)
+    services = Services(
+        NS(
+            QtCore=NS(
+                QTimer=NS(singleShot=lambda delay, callback: deferred.append(callback))
+            )
+        ),
+        NS(UpdateActiveCanvas=lambda: redraws.append(True)),
+        owner,
+        object(),
+        lambda error, source: errors.append(str(error)),
+    )
+    host = FilterHost(services, state)
+    monkeypatch.setattr(host_module, "FilterDialog", StubDialog)
+    monkeypatch.setattr(
+        snapshot, "selected_layers", lambda: NS(occurrences=(object(),))
+    )
+    monkeypatch.setattr(
+        state,
+        "set_params",
+        lambda name, values: (_ for _ in ()).throw(OSError("read-only prefs")),
+    )
+    monkeypatch.setattr(
+        host_module,
+        "apply_filter",
+        lambda plugin, values: (
+            applied.append(values) or NS(refused=[], skipped=[]),
+            {"layers": 1},
+        ),
+    )
+    host.run("delete_small_paths")
+    StubDialog.instances[-1].on_apply({"threshold": 30})
+    assert errors == ["read-only prefs"]
+    assert applied == [{"threshold": 30}] and redraws == [True]
+    deferred.pop(0)()
+    assert owner.windows == {}

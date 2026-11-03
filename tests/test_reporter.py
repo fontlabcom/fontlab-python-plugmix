@@ -42,11 +42,24 @@ class Font:
 class Painter:
     def __init__(self):
         self.calls = []
+        self.pen = "original pen"
+        self.brush = "original brush"
+        self.saved = []
+
+    def save(self):
+        self.saved.append((self.pen, self.brush))
+        self.calls.append(("save",))
+
+    def restore(self):
+        self.pen, self.brush = self.saved.pop()
+        self.calls.append(("restore",))
 
     def setPen(self, value):
+        self.pen = value
         self.calls.append(("pen", getattr(value, "width", value)))
 
     def setBrush(self, value):
+        self.brush = value
         self.calls.append(("brush", value))
 
     def setFont(self, value):
@@ -107,6 +120,7 @@ def test_render_marks_maps_geometry_but_keeps_pixel_styles():
 
 def test_render_marks_fills_translucent_polygon_in_view_coordinates():
     qt, context = scene()
+    before = (context.painter.pen, context.painter.brush)
     render_marks(
         [Mark("polygon", ((0, 0), (10, 0), (10, 20), (0, 20)), fill=(40, 40, 40, 70))],
         context,
@@ -115,12 +129,13 @@ def test_render_marks_fills_translucent_polygon_in_view_coordinates():
     assert ("pen", "no-pen") in context.painter.calls
     assert ("brush", (40, 40, 40, 70)) in context.painter.calls
     assert ("polygon", ((3, 3), (23, 3), (23, 43), (3, 43))) in context.painter.calls
-    assert type(context.painter.calls[-2][1]) is object
-    assert context.painter.calls[-1] == ("pen", 0)
+    assert (context.painter.pen, context.painter.brush) == before
+    assert context.painter.calls[-1] == ("restore",)
 
 
 def test_render_marks_ignores_short_polygons_and_resets_state_after_draw_error():
     qt, context = scene()
+    before = (context.painter.pen, context.painter.brush)
     render_marks([Mark("polygon", ((0, 0), (1, 1)), fill=(1, 2, 3, 4))], context, qt)
     assert context.painter.calls == []
     context.painter.drawPolygon = lambda points: (_ for _ in ()).throw(
@@ -130,8 +145,8 @@ def test_render_marks_ignores_short_polygons_and_resets_state_after_draw_error()
         render_marks(
             [Mark("polygon", ((0, 0), (1, 0), (1, 1)), fill=(1, 2, 3, 4))], context, qt
         )
-    assert type(context.painter.calls[-2][1]) is object
-    assert context.painter.calls[-1] == ("pen", 0)
+    assert (context.painter.pen, context.painter.brush) == before
+    assert context.painter.calls[-1] == ("restore",)
 
 
 class Example(Reporter):

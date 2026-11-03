@@ -1,20 +1,39 @@
 # this_file: src/fontlab_plugmix/filters/delete_small_paths.py
 # SPDX-License-Identifier: Apache-2.0
-"""Remove closed contours whose polygon area or bounding area is small."""
+"""Remove closed contours whose flattened area or bounds are small."""
 
 from collections.abc import Mapping
 from itertools import pairwise
 from typing import Any
 
 from fontlab_plugmix.filter import Filter, LayerEdit, Param
+from fontlab_plugmix.geometry import point_at, segments
 from fontlab_plugmix.snapshot import Contour, GlyphSnapshot
+
+FLATTEN_STEPS = 25
+
+
+def _path_points(contour: Contour) -> tuple[tuple[float, float], ...] | None:
+    """Flatten each supported segment; None means an unsupported control run."""
+    runs = segments(contour)
+    if len(runs) != sum(node.on_curve for node in contour.nodes):
+        return None
+    points = []
+    for run in runs:
+        count = 1 if len(run) == 2 else FLATTEN_STEPS
+        points.extend(point_at(run, index / count) for index in range(1, count + 1))
+    return tuple(points)
 
 
 def _small(contour: Contour, threshold: float) -> bool:
-    """Estimate closed-path size using node polygon and its bounds."""
-    if not contour.closed or len(contour.nodes) < 3:
+    """Measure flattened ink area and bounds, excluding Bézier controls."""
+    if not contour.closed:
         return False
-    points = tuple((node.x, node.y) for node in contour.nodes)
+    if len(contour.nodes) < 3:
+        return threshold > 0
+    points = _path_points(contour)
+    if not points:
+        return False
     area = (
         abs(sum(a[0] * b[1] - b[0] * a[1] for a, b in pairwise((*points, points[0]))))
         / 2
