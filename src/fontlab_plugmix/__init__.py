@@ -6,12 +6,15 @@ from typing import Any
 
 __all__ = [
     "Filter",
+    "General",
     "LayerEdit",
     "Mark",
     "Palette",
     "Param",
     "Plugin",
     "Reporter",
+    "Tool",
+    "ToolEvent",
     "install",
     "registry",
 ]
@@ -27,6 +30,10 @@ def __getattr__(name: str) -> Any:
         return import_module(".plugin", __name__).Plugin
     if name == "Palette":
         return import_module(".palette", __name__).Palette
+    if name in {"Tool", "ToolEvent"}:
+        return getattr(import_module(".tool", __name__), name)
+    if name == "General":
+        return import_module(".general", __name__).General
     if name == "registry":
         return import_module(".registry", __name__)
     if name == "install":

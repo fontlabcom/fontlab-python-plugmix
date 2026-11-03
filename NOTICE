@@ -42,3 +42,13 @@ inspired by `StepAndRepeat`, authored by Rainer Erich Scheichelbauer
 (@mekkablue), based on sample code by Georg Seifert and Jan Gerner,
 Apache-2.0: https://github.com/mekkablue/StepAndRepeat
 The upstream README and LICENSE were read; no source code was copied.
+
+Task 16 Tool: Smart Select is an original selection-only behavioural port
+inspired by `SmartSelectTool`, authored by But Ko (@buttaiwan), Apache-2.0:
+https://github.com/ButTaiwan/SmartSelectTool
+The upstream README and LICENSE were read; no source code was copied.
+
+Task 16 General: Zoom to Selection is an original behavioural port inspired by
+`zoom-to-selection`, authored by TzuYuan Yin (@yintzuyuan), MIT:
+https://github.com/yintzuyuan/zoom-to-selection
+The upstream README and LICENSE were read; no source code was copied.

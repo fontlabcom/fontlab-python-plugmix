@@ -52,6 +52,7 @@ class PaletteHost:
         self._has_context = False
         self._running = False
         self._close_filter_available = True
+        self.listeners: dict[str, Any] = {}
 
     def _close_filter_base(self) -> type:
         """Use FontLab's PythonQt.private QObject, then older QtCore builds."""
@@ -123,7 +124,7 @@ class PaletteHost:
         """Create the sole timer lazily, then start it for visible panels."""
         if self.timer is None:
             timer = self.services.qt.QtCore.QTimer()
-            self._tick = lambda: guarded(self, self.services.sink, self._poll)
+            self._tick = self._tick_once
             try:
                 timer.setInterval(250)
                 timer.timeout.connect(self._tick)
@@ -137,7 +138,9 @@ class PaletteHost:
         """Run polling exactly while at least one dock is visible."""
         if self.timer is None:
             return
-        visible = any(panel.visible for panel in self.panels.values())
+        visible = bool(self.listeners) or any(
+            panel.visible for panel in self.panels.values()
+        )
         if visible and not self._running:
             self._key = object()
             self._has_context = False
@@ -147,6 +150,23 @@ class PaletteHost:
             guarded(self, self.services.sink, self.timer.stop)
             self._running = False
             self._has_context = False
+
+    def _tick_once(self) -> None:
+        """Poll palettes and other subscribers on the same guarded QTimer."""
+        if any(panel.visible for panel in self.panels.values()):
+            guarded(self, self.services.sink, self._poll)
+        for callback in tuple(self.listeners.values()):
+            guarded(self, self.services.sink, callback)
+
+    def subscribe(self, name: str, callback: Any) -> None:
+        """Share the palette timer with a General plugin's font watcher."""
+        self.listeners[name] = callback
+        self._timer()
+
+    def unsubscribe(self, name: str) -> None:
+        """Stop polling when no visible palette or other subscriber remains."""
+        self.listeners.pop(name, None)
+        self._sync_timer()
 
     def _show(self, name: str) -> None:
         """Build a docked widget once and attach its guarded close signal."""
@@ -302,6 +322,7 @@ class PaletteHost:
         """Stop the shared timer and remove docks before their menu owner."""
         for name in tuple(self.panels):
             self._hide(name)
+        self.listeners.clear()
         if self.timer is not None:
             guarded(self, self.services.sink, self.timer.stop)
             self._running = False

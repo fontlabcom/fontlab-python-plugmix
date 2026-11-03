@@ -1,5 +1,5 @@
 # this_file: src/fontlab_plugmix/registry.py
-"""Discover plugin kinds and persist reporter, filter and palette preferences."""
+"""Discover plugin kinds and persist their explicit enable choices."""
 
 import json
 import pkgutil
@@ -9,9 +9,11 @@ from pathlib import Path
 from typing import Any
 
 from .filter import Filter
+from .general import General
 from .palette import Palette
 from .plugin import Plugin
 from .reporter import Reporter
+from .tool import Tool
 
 ENTRY_GROUP = "fontlab_plugmix.plugins"
 RENAMED = {"nodes_outside_paths": "offcurve_outside_bounds"}
@@ -40,10 +42,12 @@ def _accept(found: dict[str, type[Plugin]], cls: Any) -> None:
     if (
         not isinstance(cls, type)
         or not issubclass(cls, Plugin)
-        or cls.kind not in {"reporter", "filter", "palette"}
+        or cls.kind not in {"reporter", "filter", "palette", "tool", "general"}
         or (cls.kind == "reporter" and not issubclass(cls, Reporter))
         or (cls.kind == "filter" and not issubclass(cls, Filter))
         or (cls.kind == "palette" and not issubclass(cls, Palette))
+        or (cls.kind == "tool" and not issubclass(cls, Tool))
+        or (cls.kind == "general" and not issubclass(cls, General))
         or not cls.name
         or not cls.title
     ):
@@ -64,6 +68,7 @@ def _scan(
             for cls in vars(module).values():
                 if (
                     isinstance(cls, type)
+                    and not cls.__name__.startswith("_")
                     and cls.__module__ == module.__name__
                     and issubclass(cls, Plugin)
                 ):
@@ -75,7 +80,7 @@ def _scan(
 def discover(error_sink: ErrorSink | None = None) -> dict[str, type[Plugin]]:
     """Find built-in classes and third-party entry points on demand."""
     found: dict[str, type[Plugin]] = {}
-    for package_name in ("plugins", "filters", "palettes"):
+    for package_name in ("plugins", "filters", "palettes", "tools", "general_plugins"):
         _scan(package_name, found, error_sink)
     try:
         points = metadata.entry_points().select(group=ENTRY_GROUP)
@@ -103,6 +108,8 @@ class Registry:
         self._wanted: set[str] = set()
         self._filter_wanted: set[str] | None = None
         self._palette_wanted: set[str] | None = None
+        self._tool_wanted: set[str] | None = None
+        self._general_wanted: set[str] | None = None
         self._params: dict[str, dict[str, Any]] = {}
         self._extras: dict[str, Any] = {}
         self._tokens: dict[str, int] = {}
@@ -122,6 +129,8 @@ class Registry:
                 raise ValueError(f"Invalid plugmix enabled names: {self.path}")
             filters = data.get("enabled_filters")
             palettes = data.get("enabled_palettes")
+            tools = data.get("enabled_tools")
+            generals = data.get("enabled_general")
             params = data.get("params", {})
             if filters is not None and (
                 not isinstance(filters, list)
@@ -133,6 +142,12 @@ class Registry:
                 or any(not isinstance(n, str) for n in palettes)
             ):
                 raise ValueError(f"Invalid plugmix enabled palettes: {self.path}")
+            for key, names in (("enabled_tools", tools), ("enabled_general", generals)):
+                if names is not None and (
+                    not isinstance(names, list)
+                    or any(not isinstance(n, str) for n in names)
+                ):
+                    raise ValueError(f"Invalid plugmix {key}: {self.path}")
             if not isinstance(params, dict) or any(
                 not isinstance(v, dict) for v in params.values()
             ):
@@ -145,11 +160,21 @@ class Registry:
         self._wanted = {RENAMED.get(name, name) for name in data["enabled"]}
         self._filter_wanted = None if filters is None else set(filters)
         self._palette_wanted = None if palettes is None else set(palettes)
+        self._tool_wanted = None if tools is None else set(tools)
+        self._general_wanted = None if generals is None else set(generals)
         self._params = params
         self._extras = {
             k: v
             for k, v in data.items()
-            if k not in {"enabled", "enabled_filters", "enabled_palettes", "params"}
+            if k
+            not in {
+                "enabled",
+                "enabled_filters",
+                "enabled_palettes",
+                "enabled_tools",
+                "enabled_general",
+                "params",
+            }
         }
 
     def _save(self) -> None:
@@ -159,6 +184,10 @@ class Registry:
             data["enabled_filters"] = sorted(self._filter_wanted)
         if self._palette_wanted is not None:
             data["enabled_palettes"] = sorted(self._palette_wanted)
+        if self._tool_wanted is not None:
+            data["enabled_tools"] = sorted(self._tool_wanted)
+        if self._general_wanted is not None:
+            data["enabled_general"] = sorted(self._general_wanted)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(
             json.dumps(data, indent=2) + "\n",
@@ -187,6 +216,49 @@ class Registry:
     def enabled_palettes(self) -> tuple[str, ...]:
         """Return shown palettes; old preference files default to hidden."""
         return tuple(sorted(self._palette_wanted or ()))
+
+    def enabled_tools(self) -> tuple[str, ...]:
+        """Default new native tools on until the user chooses otherwise."""
+        return tuple(
+            sorted(
+                self.available("tool")
+                if self._tool_wanted is None
+                else self._tool_wanted
+            )
+        )
+
+    def enabled_general(self) -> tuple[str, ...]:
+        """Default new General commands on until the user chooses otherwise."""
+        return tuple(
+            sorted(
+                self.available("general")
+                if self._general_wanted is None
+                else self._general_wanted
+            )
+        )
+
+    def _set_kind_enabled(self, name: str, enabled: bool, kind: str) -> None:
+        """Persist one explicit kind choice, restoring memory on I/O failure."""
+        if name not in self.available(kind):
+            raise KeyError(name)
+        field = "_tool_wanted" if kind == "tool" else "_general_wanted"
+        previous = getattr(self, field)
+        wanted = set(self.enabled_tools() if kind == "tool" else self.enabled_general())
+        wanted.add(name) if enabled else wanted.discard(name)
+        setattr(self, field, wanted)
+        try:
+            self._save()
+        except Exception:
+            setattr(self, field, previous)
+            raise
+
+    def set_tool_enabled(self, name: str, enabled: bool) -> None:
+        """Persist whether a native tool is registered."""
+        self._set_kind_enabled(name, enabled, "tool")
+
+    def set_general_enabled(self, name: str, enabled: bool) -> None:
+        """Persist whether a General plugin is started."""
+        self._set_kind_enabled(name, enabled, "general")
 
     def set_palette_enabled(self, name: str, enabled: bool) -> None:
         """Persist an explicit panel visibility choice, rolling back on failure."""

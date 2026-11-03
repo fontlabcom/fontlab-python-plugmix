@@ -9,8 +9,10 @@ from typing import Any
 from . import menu, registry
 from .backend import select_backend
 from .filters.host import FilterHost
+from .general_plugins.host import GeneralHost
 from .kinds import Services
 from .palettes.host import PaletteHost
+from .tools.host import ToolHost
 
 
 @dataclass
@@ -23,6 +25,8 @@ class _State:
     menus: Any
     filters: FilterHost
     palettes: PaletteHost
+    tools: ToolHost
+    generals: GeneralHost
 
 
 _state: _State | None = None
@@ -45,7 +49,7 @@ def _runtime() -> tuple[Any, Any, Any]:
 
 
 def install(config_dir: str | Path | None = None) -> None:
-    """Idempotently restore reporters, filters and visible palettes."""
+    """Idempotently restore every plugin kind and its owned native hooks."""
     global _state
     path = None if config_dir is None else Path(config_dir)
     if _state is not None:
@@ -60,6 +64,8 @@ def install(config_dir: str | Path | None = None) -> None:
     menus = None
     filters = None
     palettes = None
+    tools = None
+    generals = None
     try:
         menus = menus_cls(qt, fontlab, error_sink=_error, owned_title="Plugmix")
         reporters.attach(painters, qt, _error)
@@ -70,6 +76,12 @@ def install(config_dir: str | Path | None = None) -> None:
             Services(qt, fontlab, menus, painters, _error), reporters
         )
         palettes.install()
+        tools = ToolHost(Services(qt, fontlab, menus, painters, _error), reporters)
+        tools.install()
+        generals = GeneralHost(
+            Services(qt, fontlab, menus, painters, _error), reporters, palettes
+        )
+        generals.install()
     except Exception:
         try:
             reporters.detach()
@@ -77,18 +89,28 @@ def install(config_dir: str | Path | None = None) -> None:
             try:
                 try:
                     try:
-                        if palettes is not None:
-                            palettes.close()
+                        if generals is not None:
+                            generals.close()
                     finally:
-                        if filters is not None:
-                            filters.close()
+                        try:
+                            if tools is not None:
+                                tools.close()
+                        finally:
+                            try:
+                                if palettes is not None:
+                                    palettes.close()
+                            finally:
+                                if filters is not None:
+                                    filters.close()
                 finally:
                     if menus is not None:
                         menus.close()
             finally:
                 painters.close()
         raise
-    _state = _State(path, reporters, painters, menus, filters, palettes)
+    _state = _State(
+        path, reporters, painters, menus, filters, palettes, tools, generals
+    )
 
 
 def uninstall() -> None:
@@ -100,7 +122,13 @@ def uninstall() -> None:
     try:
         try:
             try:
-                state.palettes.close()
+                try:
+                    state.generals.close()
+                finally:
+                    try:
+                        state.tools.close()
+                    finally:
+                        state.palettes.close()
             finally:
                 state.filters.close()
         finally:

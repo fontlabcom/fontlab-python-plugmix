@@ -63,6 +63,18 @@ class _PaintContext:
     canvas_to_view: _CanvasMap
 
 
+def active_glyph_map(canvas: Any, items: Any = None) -> _GlyphMap | None:
+    """Find the active glyph occurrence, including later text-line positions."""
+    if canvas is None or canvas.isNull:
+        return None
+    items = items or import_module("fontlabapp.qtsafe").qt_list
+    for block in items(canvas.textBlocks):
+        for info in items(lambda block=block: block.getAllGlyphs() or ()):
+            if info.isActive:
+                return _GlyphMap(info.transform, block.transform)
+    return None
+
+
 class NativeCanvasBackend:
     """Attach every enabled reporter to every active canvas encountered."""
 

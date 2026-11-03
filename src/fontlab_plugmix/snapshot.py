@@ -158,6 +158,34 @@ def selected_layers() -> Any:
     return import_module("fontlabapp.layer_selection").capture(monotonic() + 2)
 
 
+def select_contours(
+    layer: Any,
+    indices: tuple[int, ...],
+    *,
+    toggle: bool = False,
+    items: Callable[[Callable[[], Any]], list[Any]] | None = None,
+) -> None:
+    """Select whole editable contours by index; never change outline geometry."""
+    items = items or import_module("fontlabapp.qtsafe").qt_list
+    contours = [
+        contour
+        for shape in items(lambda: layer.shapes)
+        if not shape.isComponent
+        for contour in items(lambda shape=shape: shape.contours)
+    ]
+    targets = set(indices)
+    for index, contour in enumerate(contours):
+        nodes = items(contour.nodes)
+        if toggle:
+            if index in targets:
+                selected = not all(bool(node.selected) for node in nodes)
+                for node in nodes:
+                    node.selected = selected
+        else:
+            for node in nodes:
+                node.selected = index in targets
+
+
 def resolve_source(info: Any) -> NativeSource | None:
     """Use the same glyph → current-master layer path as anchor rings."""
     glyph = info.glyph

@@ -1,8 +1,8 @@
 <!-- this_file: README.md -->
 # fontlab-python-plugmix
 
-Native FontLab 9 plugins: toggleable Reporter overlays, an undoable Filter and
-a dockable Palette.
+Native FontLab 9 plugins: Reporter overlays, an undoable Filter, a dockable
+Palette, a native Tool and a General menu command.
 Plugmix uses MeVisLab PythonQt and native per-canvas painters when available,
 with `fontlabapp.editor_painters.EditorPainters` for older builds.
 It does not use PySide2 or Glyphs/Cocoa emulation. The repository also contains
@@ -20,18 +20,35 @@ Neither file here edits a FontLab installation.
 The View menu gains 19 checkable `Plugmix: Show …` reporter actions. The Glyph
 menu gains `Plugmix: Delete Small Paths…` with a numeric threshold dialog.
 The Window menu gains a checkable `Plugmix: Step and Repeat Panel` action.
+It also gains `Plugmix: Tool Smart Select`, which registers a native tool when
+enabled. The View menu gains `Plugmix: Zoom to Selection`.
 The selection is
 remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json`.
 `install(config_dir=...)` selects another directory, which is useful in tests.
 `boot.uninstall()` removes the actions, overlays and panels while retaining the selection.
 Selections saved under the former `nodes_outside_paths` name restore as
 `offcurve_outside_bounds`.
-The same JSON file keeps `enabled_filters`, `enabled_palettes` and last-used
+The same JSON file keeps `enabled_filters`, `enabled_palettes`, `enabled_tools`,
+`enabled_general` and last-used
 `params`; old files
-with only `enabled` still load. Filters are enabled by default, and the
+with only `enabled` still load. Filters, tools and General plugins are enabled
+by default until the user chooses otherwise. The
 `Registry.set_filter_enabled()` API can change that before the next install.
 Palettes start hidden until shown, and `enabled_palettes` is written only after
 the user chooses a visibility state.
+
+## Built-in Tool and General plugin
+
+| Kind | Plugin | Behaviour |
+| --- | --- | --- |
+| Tool | Smart Select | Drag a rectangle to select whole contours touched by any node. Shift toggles those contours. This selection-only port omits the source plugin's double-click containment and native move handling; it never changes outline geometry. The rectangle overlay appears only while the tool is active. |
+| General | Zoom to Selection | View-menu command fits the active glyph's selected nodes in the canvas with a margin. It omits the source plugin's delayed viewport adjustment and shortcut. |
+
+The native tool bridge maps viewport events through FontLab's pan/zoom and the
+active glyph's text-block transforms. General font-opened and font-closed hooks
+share the palette host's 250 ms timer; plugmix owns extra actions and timers a
+General plugin creates. Tool and General actions are removed by
+`boot.uninstall()`. The first in-app checks for these kinds are still pending.
 
 ## Built-in Palette
 
@@ -43,7 +60,7 @@ Palettes build their controls once through `PaletteUI`, refresh only when the
 active glyph, master, revision or node selection changes, and release them on
 close. Tabbed or temporarily hidden docks remain open with their saved state;
 refresh pauses until they become visible again. One 250 ms timer serves all
-visible palettes and stops when none remain.
+visible palettes and General font watchers, stopping when neither needs it.
 Dock close detection uses `PythonQt.private.QObject` where available. If that
 event filter cannot be installed, the panel still opens; a hide only pauses
 refresh, and the Window toggle closes it and saves the visibility choice.

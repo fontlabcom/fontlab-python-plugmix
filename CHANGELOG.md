@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+- Add native Tool registration with guarded event mapping, active-only mark
+  painting and a selection-only Smart Select port. Add General menu commands,
+  font-opened/closed polling on the palette timer, owned timers and actions,
+  and Zoom to Selection. Save explicit Tool and General enable choices without
+  changing old preference files.
 - Resolve dock close filters through FontLab's `PythonQt.private.QObject` and
   keep palette Show working if close detection is unavailable. The Window
   toggle remains the explicit close control in that case.
