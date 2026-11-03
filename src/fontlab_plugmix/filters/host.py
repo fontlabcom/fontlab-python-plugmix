@@ -1,6 +1,7 @@
 # this_file: src/fontlab_plugmix/filters/host.py
 """Own Glyph-menu Filter actions and their parameter dialogs."""
 
+from importlib import import_module
 from typing import Any
 
 from fontlab_plugmix import snapshot
@@ -90,7 +91,8 @@ class FilterHost:
                 self.windows.pop(token_box[0], None)
 
         try:
-            size = dialog.widget.sizeHint()
+            # PythonQt exposes the sizeHint Q_PROPERTY as a QSize value, not a method.
+            size = import_module("fontlabapp.qt_properties").value(dialog.widget, "sizeHint")
             dialog.widget.resize(size)
             token, window = self.services.menus.tool_window(
                 dialog.widget, plugin.title, on_close=finished

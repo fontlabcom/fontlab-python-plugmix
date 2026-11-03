@@ -685,7 +685,7 @@ class StubDialog:
 
     def __init__(self, qt, plugin, values, on_apply, on_cancel, sink):
         self.widget = NS(
-            sizeHint=lambda: (240, 120),
+            sizeHint=(240, 120),  # native PythonQt: a property, not a method
             resize=lambda size: setattr(self, "widget_size", size),
         )
         self.plugin, self.values, self.on_apply, self.on_cancel = (
