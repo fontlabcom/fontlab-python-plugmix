@@ -28,5 +28,5 @@ def glyph() -> GlyphSnapshot:
             Anchor("far", 100, 110),
         ),
         500,
-        Metrics(800, -200, 500, 700, 10),
+        Metrics(800, -200, 500, 700, 10, 1000),
     )

@@ -1,0 +1,44 @@
+# this_file: src/fontlab_plugmix/plugins/imprecise_italic_angle.py
+# SPDX-License-Identifier: Apache-2.0
+"""Mark straight segments almost, but not exactly, at the master slant."""
+
+from math import atan2, degrees
+
+from fontlab_plugmix.geometry import segments
+from fontlab_plugmix.reporter import Mark, Reporter
+from fontlab_plugmix.snapshot import GlyphSnapshot
+
+
+class ImpreciseItalicAngle(Reporter):
+    """Check each straight segment against the master's vertical slant."""
+
+    name = "imprecise_italic_angle"
+    title = "Imprecise Italic Angle"
+    tolerance_deg = 2.0
+    exact_deg = 0.001
+
+    def compute(self, snapshot: GlyphSnapshot) -> list[Mark]:
+        """Highlight near-angle lines, ignoring horizontal and exact matches."""
+        marks = []
+        for contour in snapshot.contours:
+            for segment in segments(contour):
+                if len(segment) != 2:
+                    continue
+                start, end = segment
+                dx, dy = end.x - start.x, end.y - start.y
+                if dy == 0:
+                    continue
+                if dy < 0:
+                    dx, dy = -dx, -dy
+                angle = degrees(atan2(dx, dy))
+                delta = abs(angle - snapshot.metrics.italic_slant)
+                if self.exact_deg < delta <= self.tolerance_deg:
+                    marks.append(
+                        Mark(
+                            "line",
+                            ((start.x, start.y), (end.x, end.y)),
+                            (235, 75, 60),
+                            2.5,
+                        )
+                    )
+        return marks

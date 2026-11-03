@@ -25,6 +25,7 @@ POLL_MS = 250
 class _CanvasEntry:
     """Keep a live canvas and its native tokens together."""
 
+    identifier: int
     canvas: Any
     tokens: dict[int, int] = field(default_factory=dict)
 
@@ -76,6 +77,7 @@ class NativeCanvasBackend:
         self.qt, self.fl, self.sink = qt, fontlab, sink
         self.items = items or import_module("fontlabapp.qtsafe").qt_list
         self.canvases: dict[int, _CanvasEntry] = {}
+        self._failed_canvas_ids: dict[int, str] = {}
         self._reporters: dict[int, Reporter] = {}
         self._ids = count(1)
         self._timer: Any = None
@@ -124,6 +126,7 @@ class NativeCanvasBackend:
             if self._timer is not None:
                 self._stop_timer()
             self.canvases.clear()
+            self._failed_canvas_ids.clear()
 
     def _start_timer(self) -> None:
         """Poll new active canvases while any reporter is enabled."""
@@ -170,7 +173,9 @@ class NativeCanvasBackend:
             if canvas is None or canvas.isNull:
                 return
             identifier = int(canvas.id)
-            entry = self.canvases.setdefault(identifier, _CanvasEntry(canvas))
+            entry = self.canvases.setdefault(
+                identifier, _CanvasEntry(identifier, canvas)
+            )
             for token in tuple(self._reporters):
                 self._attach(entry, token)
         except Exception as error:  # noqa: BLE001 - Qt timer boundary
@@ -178,18 +183,19 @@ class NativeCanvasBackend:
 
     def _attach(self, entry: _CanvasEntry, token: int) -> None:
         """Register one callback at the reporter's requested native order."""
-        if token in entry.tokens:
+        if token in entry.tokens or entry.identifier in self._failed_canvas_ids:
             return
         reporter = self._reporters[token]
-        order = (
-            entry.canvas.UnderOwner
-            if reporter.layer == "background"
-            else entry.canvas.OverOwner
-        )
         callback = lambda painter, canvas: self._paint(token, reporter, painter, canvas)
         try:
+            order = (
+                entry.canvas.UnderOwner
+                if reporter.layer == "background"
+                else entry.canvas.OverOwner
+            )
             entry.tokens[token] = entry.canvas.appendPythonPainter(callback, order)
         except Exception as error:  # noqa: BLE001 - native registration boundary
+            self._failed_canvas_ids[entry.identifier] = str(error)
             self._report(error, reporter)
 
     def _paint(self, token: int, reporter: Reporter, painter: Any, canvas: Any) -> None:

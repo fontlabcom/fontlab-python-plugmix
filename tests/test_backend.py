@@ -69,8 +69,13 @@ class Canvas:
         self.blocks = []
         self.remove_result = True
         self.remove_error = None
+        self.append_error = None
+        self.append_attempts = 0
 
     def appendPythonPainter(self, callback, order):
+        self.append_attempts += 1
+        if self.append_error is not None:
+            raise self.append_error
         token = 100 + len(self.appended)
         self.appended.append((token, callback, order))
         return token
@@ -167,6 +172,40 @@ def test_native_backend_reattaches_on_new_canvas_and_removes_all_tokens():
     assert active[0].removed == [101, 100]
     assert not backend.canvases
     backend.remove(first)
+
+
+def test_native_attach_failure_is_reported_once_until_canvas_id_changes():
+    active = [Canvas(1)]
+    active[0].append_error = TypeError("painter unavailable")
+    qt, fontlab = runtime(active)
+    errors = []
+    backend = NativeCanvasBackend(
+        qt,
+        fontlab,
+        lambda error, source: errors.append(str(error)),
+        items=lambda get: list(get()),
+    )
+    first = backend.register(Example(), qt, lambda error, source: None)
+    backend._poll()
+    backend.register(Background(), qt, lambda error, source: None)
+    assert active[0].append_attempts == 1
+    assert errors == ["painter unavailable"]
+    active[0].isNull = True
+    active[0] = Canvas(1)
+    backend._poll()
+    assert active[0].append_attempts == 0, "same canvas id remains blocked"
+    active[0] = Canvas(2)
+    active[0].append_error = ValueError("new canvas failure")
+    backend._poll()
+    backend._poll()
+    assert active[0].append_attempts == 1
+    assert errors == ["painter unavailable", "new canvas failure"]
+    active[0].isNull = True
+    active[0] = Canvas(3)
+    backend._poll()
+    assert active[0].append_attempts == 2, "new id receives both reporters"
+    backend.remove(first)
+    backend.close()
 
 
 def test_native_remove_continues_after_type_error_and_leaked_callback_is_inert():

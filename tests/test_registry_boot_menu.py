@@ -59,7 +59,7 @@ def test_discovery_includes_builtins_and_entry_points(monkeypatch):
     points = NS(select=lambda group: [NS(load=lambda: External)])
     monkeypatch.setattr(registry.metadata, "entry_points", lambda: points)
     found = registry.discover()
-    assert len(found) == 8
+    assert len(found) == 20
     assert found["external"] is External
 
     class Bad(Reporter):
@@ -67,18 +67,18 @@ def test_discovery_includes_builtins_and_entry_points(monkeypatch):
 
     points.select = lambda group: [NS(load=lambda: Bad)]
     errors = []
-    assert len(registry.discover(lambda error, source: errors.append(error))) == 7
+    assert len(registry.discover(lambda error, source: errors.append(error))) == 19
     points.select = lambda group: [
         NS(load=lambda: object),
         NS(load=lambda: (_ for _ in ()).throw(ImportError("broken"))),
     ]
-    assert len(registry.discover(lambda error, source: errors.append(error))) == 7
+    assert len(registry.discover(lambda error, source: errors.append(error))) == 19
     assert [type(error) for error in errors] == [ValueError, TypeError, ImportError]
 
 
 def test_registry_enable_disable_persists_and_restores(tmp_path):
     state = registry.Registry(tmp_path)
-    assert len(state.available()) == 7
+    assert len(state.available()) == 19
     assert state.enabled() == ()
     assert not state.path.exists(), "initialization must not write preferences"
     painters = Painters()
@@ -139,6 +139,34 @@ def test_registry_migrates_renamed_reporter_and_rolls_back_failed_save(tmp_path)
     assert path.read_text() == '{"enabled": ["nodes_outside_paths"]}'
 
 
+def test_registry_detach_continues_and_save_error_survives_rollback_error(tmp_path):
+    errors = []
+    state = registry.Registry(tmp_path, lambda error, source: errors.append(str(error)))
+
+    class BrokenPainters(Painters):
+        def remove(self, token):
+            super().remove(token)
+            if token == 1 or getattr(self, "fail_all", False):
+                raise TypeError("remove failed")
+
+    painters = BrokenPainters()
+    state.attach(painters, object(), lambda error, source: None)
+    state.enable("center_lines")
+    state.enable("duplicate_anchors")
+    state.detach()
+    assert ("remove", 2) in painters.calls
+    assert state._tokens == {} and state._painters is None
+    assert errors == ["remove failed"]
+
+    state.attach(painters, object(), lambda error, source: None)
+    painters.fail_all = True
+    state._save = lambda: (_ for _ in ()).throw(OSError("save failed"))
+    with pytest.raises(OSError, match="save failed"):
+        state.enable("node_indexes")
+    assert state.enabled() == ("center_lines", "duplicate_anchors")
+    assert errors[-1] == "remove failed"
+
+
 def test_registry_restores_other_reporters_when_one_constructor_fails(
     tmp_path, monkeypatch
 ):
@@ -185,7 +213,7 @@ def test_boot_install_is_idempotent_and_uninstall_preserves_preferences(
     monkeypatch.setattr(boot, "_state", None)
     boot.install(tmp_path)
     state = boot._state
-    assert state is not None and len(state.menus.actions) == 7
+    assert state is not None and len(state.menus.actions) == 19
     boot.install(tmp_path)
     assert boot._state is state
     with pytest.raises(ValueError):

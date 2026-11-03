@@ -15,6 +15,7 @@ class Node:
     y: float
     on_curve: bool
     selected: bool
+    smooth: bool = False
 
 
 @dataclass(frozen=True)
@@ -22,6 +23,7 @@ class Contour:
     """Nodes in native contour order."""
 
     nodes: tuple[Node, ...]
+    closed: bool = True
 
 
 @dataclass(frozen=True)
@@ -34,14 +36,25 @@ class Anchor:
 
 
 @dataclass(frozen=True)
+class Zone:
+    """One selected-master alignment zone with its outer edge."""
+
+    name: str
+    position: float
+    edge: float
+
+
+@dataclass(frozen=True)
 class Metrics:
-    """Current master metrics in font units and italic degrees."""
+    """Master metrics; italic_slant is positive when the top leans right."""
 
     ascender: float
     descender: float
     x_height: float
     cap_height: float
-    italic_angle: float
+    italic_slant: float
+    upm: float
+    zones: tuple[Zone, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -52,6 +65,7 @@ class GlyphSnapshot:
     anchors: tuple[Anchor, ...]
     advance: float
     metrics: Metrics
+    bounds: tuple[float, float, float, float] | None = None
 
 
 @dataclass(frozen=True)
@@ -92,10 +106,34 @@ def _contours(
                         float(point.y()),
                         bool(node.isOn()),
                         bool(node.selected),
+                        bool(getattr(node, "smooth", False)),
                     )
                 )
-            rows.append(Contour(tuple(nodes)))
+            rows.append(Contour(tuple(nodes), bool(getattr(contour, "closed", True))))
     return tuple(rows)
+
+
+def _zones(
+    package: Any, items: Callable[[Callable[[], Any]], list[Any]]
+) -> tuple[Zone, ...]:
+    """Read the selected master's native PostScript top and bottom zones."""
+    zones = []
+    for field, direction in (("ps_zonesT", 1), ("ps_zonesB", -1)):
+        for item in items(lambda field=field: getattr(package, field, ())):
+            position = float(item.position)
+            zones.append(
+                Zone(str(item.name), position, position + direction * float(item.width))
+            )
+    return tuple(zones)
+
+
+def _bounds(layer: Any) -> tuple[float, float, float, float] | None:
+    """Copy the native ink box, including curve extrema and components."""
+    box = getattr(layer, "boundingBox", None)
+    if box is None or (box.width() <= 0 and box.height() <= 0):
+        return None
+    x, y = float(box.x()), float(box.y())
+    return x, y, x + float(box.width()), y + float(box.height())
 
 
 def capture(
@@ -103,6 +141,8 @@ def capture(
     *,
     fontlab: Any = None,
     items: Callable[[Callable[[], Any]], list[Any]] | None = None,
+    include_zones: bool = False,
+    include_bounds: bool = False,
 ) -> GlyphSnapshot:
     """Read one current native layer; inject native adapters in offline tests."""
     if fontlab is None:
@@ -121,8 +161,15 @@ def capture(
         float(metrics.descender),
         float(metrics.xHeight),
         float(metrics.capsHeight),
-        float(package.italicAngle_value),
+        # OpenType post uses counter-clockwise degrees from vertical.
+        -float(package.italicAngle_value),
+        float(package.upm),
+        _zones(package, items) if include_zones else (),
     )
     return GlyphSnapshot(
-        _contours(layer, items), anchors, float(layer.advanceWidth), values
+        _contours(layer, items),
+        anchors,
+        float(layer.advanceWidth),
+        values,
+        _bounds(layer) if include_bounds else None,
     )

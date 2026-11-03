@@ -140,11 +140,16 @@ class Registry:
 
     def detach(self) -> None:
         """Remove active painters while retaining saved enabled names."""
-        if self._painters is not None:
-            for token in tuple(self._tokens.values()):
-                self._painters.remove(token)
-        self._tokens.clear()
-        self._painters = self._qt = self._sink = None
+        try:
+            if self._painters is not None:
+                for token in tuple(self._tokens.values()):
+                    try:
+                        self._painters.remove(token)
+                    except Exception as error:  # noqa: BLE001 - teardown boundary
+                        _report(error, token, self._error_sink)
+        finally:
+            self._tokens.clear()
+            self._painters = self._qt = self._sink = None
 
     def _activate(self, name: str) -> None:
         """Install a single reporter if a painter owner exists."""
@@ -167,7 +172,10 @@ class Registry:
             self._wanted.remove(name)
             token = self._tokens.pop(name, None)
             if token is not None and self._painters is not None:
-                self._painters.remove(token)
+                try:
+                    self._painters.remove(token)
+                except Exception as error:  # noqa: BLE001 - retain save error
+                    _report(error, token, self._error_sink)
             raise
         return True
 

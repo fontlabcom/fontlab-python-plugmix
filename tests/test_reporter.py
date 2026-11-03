@@ -3,6 +3,7 @@
 
 from types import SimpleNamespace as NS
 
+from fontlab_plugmix import snapshot
 from fontlab_plugmix.reporter import Mark, Reporter, render_marks
 
 
@@ -41,7 +42,7 @@ class Painter:
         self.calls = []
 
     def setPen(self, value):
-        self.calls.append(("pen", value.width))
+        self.calls.append(("pen", getattr(value, "width", value)))
 
     def setBrush(self, value):
         self.calls.append(("brush", value))
@@ -58,12 +59,23 @@ class Painter:
     def drawText(self, point, value):
         self.calls.append(("text", (point.x(), point.y()), value))
 
+    def drawPolygon(self, points):
+        self.calls.append(
+            ("polygon", tuple((point.x(), point.y()) for point in points))
+        )
+
 
 def scene():
     """Two sequential transforms: glyph*2, then view+3."""
     qt = NS(
-        QtCore=NS(QPointF=Point, QRectF=Rect),
-        QtGui=NS(QPen=Pen, QColor=lambda *rgb: rgb, QBrush=object, QFont=Font),
+        QtCore=NS(QPointF=Point, QRectF=Rect, Qt=NS(NoPen="no-pen")),
+        QtGui=NS(
+            QPen=Pen,
+            QColor=lambda *rgba: rgba,
+            QBrush=object,
+            QFont=Font,
+            QPolygonF=tuple,
+        ),
     )
     context = NS(
         painter=Painter(),
@@ -89,6 +101,18 @@ def test_render_marks_maps_geometry_but_keeps_pixel_styles():
     assert ("font", 14) in calls
     assert ("pen", 4) in calls
     assert sum(call[0] == "line" for call in calls) == 3
+
+
+def test_render_marks_fills_translucent_polygon_in_view_coordinates():
+    qt, context = scene()
+    render_marks(
+        [Mark("polygon", ((0, 0), (10, 0), (10, 20), (0, 20)), fill=(40, 40, 40, 70))],
+        context,
+        qt,
+    )
+    assert ("pen", "no-pen") in context.painter.calls
+    assert ("brush", (40, 40, 40, 70)) in context.painter.calls
+    assert ("polygon", ((3, 3), (23, 3), (23, 43), (3, 43))) in context.painter.calls
 
 
 class Example(Reporter):
@@ -123,3 +147,20 @@ def test_reporter_bind_passes_itself_to_selected_backend():
     reporter = Example()
     assert reporter.bind(painters, object(), lambda e, p: None) == 7
     assert observed[0][0][0] is reporter
+
+
+def test_reporter_requests_zones_only_when_declared(monkeypatch):
+    qt, context = scene()
+    calls = []
+    monkeypatch.setattr(
+        snapshot,
+        "capture",
+        lambda source, include_zones, include_bounds: (
+            calls.append((include_zones, include_bounds)) or "data"
+        ),
+    )
+    Example().paint(context, qt, lambda error, source: None)
+    plugin = Example()
+    plugin.needs_zones, plugin.needs_bounds = True, True
+    plugin.paint(context, qt, lambda error, source: None)
+    assert calls == [(False, False), (True, True)]

@@ -16,7 +16,7 @@ The hook calls `fontlab_plugmix.install()` once per FontLab session. Alternative
 run `Scripts/Plugmix/Install Plugmix Menu.py` from FontLab's Script menu.
 Neither file here edits a FontLab installation.
 
-The View menu gains seven checkable `Plugmix: Show …` actions. The selection is
+The View menu gains 19 checkable `Plugmix: Show …` actions. The selection is
 remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json`.
 `install(config_dir=...)` selects another directory, which is useful in tests.
 `boot.uninstall()` removes the actions and overlays while retaining the selection.
@@ -34,17 +34,34 @@ Selections saved under the former `nodes_outside_paths` name restore as
 | Off-curve Handles Outside Bounds | Off-curve handles beyond the on-curve bounding rectangle. This uses bounds, unlike mekkablue's ShowNodesOutsidePaths path-containment test. |
 | Center Lines | Advance/2, x-height/2 and cap-height/2 lines. |
 | Vertical Metrics | Labelled ascender, descender, x-height, cap-height and baseline lines. |
+| Angled Handles | Rings on off-curve handles outside horizontal, vertical and italic axes. |
+| Crosshair | Thin, far-reaching guides through selected nodes; no mouse tracking. |
+| Tops and Bottoms | Rings and y labels at tied highest and lowest on-curve positions. |
+| Segment Length | Straight and flattened curve lengths where both on-curve ends are selected, or all when nothing is selected; runs of more than two off-curves are skipped. |
+| Glyph Focus | Translucent shade outside the advance box between descender and ascender. |
+| Emphasise Selected Handles | Accent lines and rings for handles next to selected nodes; native handles remain visible. |
+| Anchor Cloud | Names and positions of the current glyph's anchors. |
+| RSB Line | Advance boundary plus RSB and LSB labels from the native ink box. |
+| Unitizer | Vertical grid behind the glyph at UPM / 18 increments; units per em is a class attribute. |
+| Nodes Close to Zones | Rings on on-curves near selected-master zone edges or metric heights. |
+| Imprecise Italic Angle | Straight segments within 2° of the master slant but not exactly on it. |
+| Smooth Node Angles | Handle-angle mismatch and handle-length ratio at smooth nodes. |
+
+Anchor Cloud currently shows local anchors only; a font-wide cloud needs a reliable font revision key
+for bounded cache invalidation.
 
 Duplicate rings use a 16-view-pixel diameter by default. The moved launcher
 has a `HANDLE_SIZE` constant with the previous 5/8/12 choices. Stroke and label
-sizes stay constant while zooming. Center Lines and Vertical Metrics draw under
-the native glyph layer when native canvas painters are available. The other
-reporters draw over it. On older builds, all reporters draw over the canvas;
-plugmix logs that background substitution once.
+sizes stay constant while zooming. Center Lines, Vertical Metrics, Crosshair,
+Tops and Bottoms, RSB Line and Unitizer draw under the native glyph layer when
+native canvas painters are available. The other reporters draw over it. On
+older builds, all reporters draw over the canvas; plugmix logs that background
+substitution once.
 
 The native backend attaches to a Glyph window when it becomes active. Each
 reporter reads the glyph separately on repaint; this is acceptable for the
-small built-in set, but remains a cost with many reporters enabled.
+reporter set, and remains a cost with many reporters enabled. Alignment zones
+and the native ink box are read only for reporters that request them.
 
 The native renderer maps a layer point through `info.transform` (glyph
 position in its text block), then `block.transform` (text block placement),
@@ -71,8 +88,8 @@ class Origin(Reporter):
 
 Publish the class through the `fontlab_plugmix.plugins` entry-point group. A
 plugin class needs a unique `name` and a human-readable `title`. Mark kinds are
-`ring`, `line`, `polyline` and `text`; coordinates are glyph units, while
-`stroke_px`, `text_px` and `diameter_px` are view pixels. Runtime calls and
+`ring`, `line`, `polyline`, `polygon` and `text`; polygons use an RGBA `fill`.
+Coordinates are glyph units, while `stroke_px`, `text_px` and `diameter_px` are view pixels. Runtime calls and
 exceptions are handled by the base class and selected backend. Set
 `layer = "background"` to request painting under FontLab's glyph layer on
 builds with native canvas painters.
@@ -85,5 +102,7 @@ to override that path. Run the full suite without selectors for the per-module
 coverage gate; with pytest arguments, the gate is skipped because partial
 coverage is expected.
 The test suite uses fake Qt and FontLab objects and checks every production
-module for at least 80% line coverage. The orchestrator checked all seven
-reporters and native canvas drawing in FontLab 9 before this fix round.
+module for at least 80% line coverage. The orchestrator checked the original
+seven reporters and native canvas drawing in FontLab 9 before Task 7. The
+orchestrator also checked all 18 pre-revision reporters natively; Glyph Focus
+and the revised slant and unit grid have offline coverage only.

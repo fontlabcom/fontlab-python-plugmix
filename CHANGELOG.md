@@ -3,6 +3,16 @@
 
 ## Unreleased
 
+- Added twelve reporters for handle geometry, crosshairs, extrema, segment
+  lengths, selected handles, anchors, sidebearings, unit grids, zone proximity,
+  italic alignment, smooth-node angles and Glyph Focus.
+- Use the native UPM for Unitizer spacing and normalize italic angle to a
+  positive rightward slant in snapshots. Add filled polygon marks and tighten
+  selected-segment and zero-length handle checks.
+- Added immutable contour closure and smooth flags, selected-master zones and
+  opt-in native ink bounds to reporter snapshots.
+- Stop retrying a native canvas id after painter attachment fails; isolate
+  registry teardown errors and preserve the original preference-save error.
 - Harden native painter teardown against stale canvases and failed removal;
   suppress any callback left registered after a reporter is disabled.
 - Keep startup working when preferences or a third-party plugin are broken,
