@@ -3,6 +3,8 @@
 
 from types import SimpleNamespace as NS
 
+import pytest
+
 from fontlab_plugmix import snapshot
 from fontlab_plugmix.reporter import Mark, Reporter, render_marks
 
@@ -24,7 +26,7 @@ class Rect:
 
 
 class Pen:
-    def __init__(self, color):
+    def __init__(self, color=None):
         self.color = color
         self.width = 0
 
@@ -113,6 +115,23 @@ def test_render_marks_fills_translucent_polygon_in_view_coordinates():
     assert ("pen", "no-pen") in context.painter.calls
     assert ("brush", (40, 40, 40, 70)) in context.painter.calls
     assert ("polygon", ((3, 3), (23, 3), (23, 43), (3, 43))) in context.painter.calls
+    assert type(context.painter.calls[-2][1]) is object
+    assert context.painter.calls[-1] == ("pen", 0)
+
+
+def test_render_marks_ignores_short_polygons_and_resets_state_after_draw_error():
+    qt, context = scene()
+    render_marks([Mark("polygon", ((0, 0), (1, 1)), fill=(1, 2, 3, 4))], context, qt)
+    assert context.painter.calls == []
+    context.painter.drawPolygon = lambda points: (_ for _ in ()).throw(
+        ValueError("paint")
+    )
+    with pytest.raises(ValueError, match="paint"):
+        render_marks(
+            [Mark("polygon", ((0, 0), (1, 0), (1, 1)), fill=(1, 2, 3, 4))], context, qt
+        )
+    assert type(context.painter.calls[-2][1]) is object
+    assert context.painter.calls[-1] == ("pen", 0)
 
 
 class Example(Reporter):

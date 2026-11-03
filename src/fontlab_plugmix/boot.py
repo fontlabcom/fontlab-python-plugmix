@@ -8,6 +8,8 @@ from typing import Any
 
 from . import menu, registry
 from .backend import select_backend
+from .filters.host import FilterHost
+from .kinds import Services
 
 
 @dataclass
@@ -18,6 +20,7 @@ class _State:
     reporters: registry.Registry
     painters: Any
     menus: Any
+    filters: FilterHost
 
 
 _state: _State | None = None
@@ -53,21 +56,28 @@ def install(config_dir: str | Path | None = None) -> None:
     reporters = registry.configure(path, error_sink=_error)
     painters = select_backend(qt, fontlab, _error)
     menus = None
+    filters = None
     try:
         menus = menus_cls(qt, fontlab, error_sink=_error, owned_title="Plugmix")
         reporters.attach(painters, qt, _error)
         menu.install(menus, reporters)
+        filters = FilterHost(Services(qt, fontlab, menus, painters, _error), reporters)
+        filters.install()
     except Exception:
         try:
             reporters.detach()
         finally:
             try:
-                if menus is not None:
-                    menus.close()
+                try:
+                    if filters is not None:
+                        filters.close()
+                finally:
+                    if menus is not None:
+                        menus.close()
             finally:
                 painters.close()
         raise
-    _state = _State(path, reporters, painters, menus)
+    _state = _State(path, reporters, painters, menus, filters)
 
 
 def uninstall() -> None:
@@ -77,7 +87,10 @@ def uninstall() -> None:
         return
     state, _state = _state, None
     try:
-        state.menus.close()
+        try:
+            state.filters.close()
+        finally:
+            state.menus.close()
     finally:
         try:
             state.reporters.detach()

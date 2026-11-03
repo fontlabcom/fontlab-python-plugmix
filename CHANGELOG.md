@@ -3,6 +3,14 @@
 
 ## Unreleased
 
+- Added a shared `Plugin` identity and kind-filtered discovery. Reporter View
+  actions remain reporter-only; the same entry-point group discovers Filters.
+- Added `enabled_filters` and validated last-used `params` preferences while
+  retaining old `enabled` files and unknown keys.
+- Added a pure Filter contract, owned parameter dialog, deletion-only native
+  writer through `outline_writer` and `layer_writer`, and Delete Small Paths.
+- Reset polygon pen and brush after fill, ignore degenerate polygons, and
+  cover empty contours and missing zones in existing reporters.
 - Added twelve reporters for handle geometry, crosshairs, extrema, segment
   lengths, selected handles, anchors, sidebearings, unit grids, zone proximity,
   italic alignment, smooth-node angles and Glyph Focus.

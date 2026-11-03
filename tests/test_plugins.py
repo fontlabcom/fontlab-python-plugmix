@@ -15,6 +15,19 @@ from fontlab_plugmix.plugins.vertical_metrics import VerticalMetrics
 from fontlab_plugmix.snapshot import Anchor, Contour, Node
 
 
+def test_existing_reporters_handle_empty_contours(glyph):
+    empty = replace(glyph, contours=())
+    for plugin in (
+        NodeIndexes(),
+        SelectedCoordinates(),
+        TwoPointDistance(),
+        OffcurveOutsideBounds(),
+    ):
+        assert plugin.compute(empty) == []
+    assert len(CenterLines().compute(empty)) == 3
+    assert len(VerticalMetrics().compute(empty)) == 10
+
+
 def test_duplicate_anchors_counts_all_unordered_pairs(glyph):
     marks = DuplicateAnchors().compute(glyph)
     assert len(marks) == 6, "three close pairs need two rings each"

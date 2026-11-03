@@ -1,5 +1,5 @@
 # this_file: src/fontlab_plugmix/registry.py
-"""Discover reporters and persist their enabled names without host imports."""
+"""Discover plugin kinds and persist reporter/filter preferences without host imports."""
 
 import json
 import pkgutil
@@ -8,6 +8,8 @@ from importlib import import_module, metadata
 from pathlib import Path
 from typing import Any
 
+from .filter import Filter
+from .plugin import Plugin
 from .reporter import Reporter
 
 ENTRY_GROUP = "fontlab_plugmix.plugins"
@@ -32,24 +34,28 @@ def _report(error: Exception, source: object, sink: ErrorSink | None) -> None:
         pass
 
 
-def _accept(found: dict[str, type[Reporter]], cls: Any) -> None:
-    """Add one valid reporter class, preserving the first name owner."""
+def _accept(found: dict[str, type[Plugin]], cls: Any) -> None:
+    """Add one valid plugin class, preserving the first name owner."""
     if (
         not isinstance(cls, type)
-        or not issubclass(cls, Reporter)
+        or not issubclass(cls, Plugin)
+        or cls.kind not in {"reporter", "filter"}
+        or (cls.kind == "reporter" and not issubclass(cls, Reporter))
+        or (cls.kind == "filter" and not issubclass(cls, Filter))
         or not cls.name
         or not cls.title
     ):
-        raise TypeError(f"Invalid plugmix reporter: {cls!r}")
+        raise TypeError(f"Invalid plugmix plugin: {cls!r}")
     if cls.name in found:
-        raise ValueError(f"Duplicate plugmix reporter name: {cls.name}")
+        raise ValueError(f"Duplicate plugmix plugin name: {cls.name}")
     found[cls.name] = cls
 
 
-def discover(error_sink: ErrorSink | None = None) -> dict[str, type[Reporter]]:
-    """Find built-in and entry-point Reporter classes on demand."""
-    package = import_module(".plugins", "fontlab_plugmix")
-    found: dict[str, type[Reporter]] = {}
+def _scan(
+    package_name: str, found: dict[str, type[Plugin]], sink: ErrorSink | None
+) -> None:
+    """Discover one built-in package, isolating broken modules."""
+    package = import_module(f".{package_name}", "fontlab_plugmix")
     for entry in pkgutil.iter_modules(package.__path__):
         try:
             module = import_module(f"{package.__name__}.{entry.name}")
@@ -57,11 +63,18 @@ def discover(error_sink: ErrorSink | None = None) -> dict[str, type[Reporter]]:
                 if (
                     isinstance(cls, type)
                     and cls.__module__ == module.__name__
-                    and issubclass(cls, Reporter)
+                    and issubclass(cls, Plugin)
                 ):
                     _accept(found, cls)
         except Exception as error:  # noqa: BLE001 - one plugin cannot block startup
-            _report(error, entry.name, error_sink)
+            _report(error, entry.name, sink)
+
+
+def discover(error_sink: ErrorSink | None = None) -> dict[str, type[Plugin]]:
+    """Find built-in reporters, filters and third-party classes on demand."""
+    found: dict[str, type[Plugin]] = {}
+    for package_name in ("plugins", "filters"):
+        _scan(package_name, found, error_sink)
     try:
         points = metadata.entry_points().select(group=ENTRY_GROUP)
     except Exception as error:  # noqa: BLE001 - broken entry-point metadata
@@ -84,8 +97,11 @@ class Registry:
         self.path = (
             DEFAULT_FILE if config_dir is None else Path(config_dir) / DEFAULT_FILE.name
         )
-        self._classes: dict[str, type[Reporter]] | None = None
+        self._classes: dict[str, type[Plugin]] | None = None
         self._wanted: set[str] = set()
+        self._filter_wanted: set[str] | None = None
+        self._params: dict[str, dict[str, Any]] = {}
+        self._extras: dict[str, Any] = {}
         self._tokens: dict[str, int] = {}
         self._painters: Any = None
         self._qt: Any = None
@@ -101,26 +117,103 @@ class Registry:
                 raise TypeError(f"Invalid plugmix preferences: {self.path}")
             if any(not isinstance(name, str) for name in data["enabled"]):
                 raise ValueError(f"Invalid plugmix enabled names: {self.path}")
+            filters = data.get("enabled_filters")
+            params = data.get("params", {})
+            if filters is not None and (
+                not isinstance(filters, list)
+                or any(not isinstance(n, str) for n in filters)
+            ):
+                raise ValueError(f"Invalid plugmix enabled filters: {self.path}")
+            if not isinstance(params, dict) or any(
+                not isinstance(v, dict) for v in params.values()
+            ):
+                raise ValueError(f"Invalid plugmix params: {self.path}")
         except FileNotFoundError:
             return
         except (OSError, ValueError, TypeError) as error:
             _report(error, self.path, self._error_sink)
             return
         self._wanted = {RENAMED.get(name, name) for name in data["enabled"]}
+        self._filter_wanted = None if filters is None else set(filters)
+        self._params = params
+        self._extras = {
+            k: v
+            for k, v in data.items()
+            if k not in {"enabled", "enabled_filters", "params"}
+        }
 
     def _save(self) -> None:
         """Write one sorted preference document after a user toggle."""
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(
-            json.dumps({"enabled": sorted(self._wanted)}, indent=2) + "\n",
+            json.dumps(
+                {
+                    **self._extras,
+                    "enabled": sorted(self._wanted),
+                    "enabled_filters": list(self.enabled_filters()),
+                    "params": self._params,
+                },
+                indent=2,
+            )
+            + "\n",
             encoding="utf-8",
         )
 
-    def available(self) -> dict[str, type[Reporter]]:
-        """Return known reporters keyed by stable name."""
+    def available(self, kind: str | None = None) -> dict[str, type[Plugin]]:
+        """Return all known classes or only one kind, keyed by stable name."""
         if self._classes is None:
             self._classes = discover(self._error_sink)
-        return dict(self._classes)
+        return {
+            name: cls
+            for name, cls in self._classes.items()
+            if kind is None or cls.kind == kind
+        }
+
+    def enabled_filters(self) -> tuple[str, ...]:
+        """Default new filters on; an explicit saved list controls their menu."""
+        names = (
+            self.available("filter").keys()
+            if self._filter_wanted is None
+            else self._filter_wanted
+        )
+        return tuple(sorted(names))
+
+    def values(self, name: str) -> dict[str, Any]:
+        """Return validated saved filter values, falling back to defaults."""
+        cls = self.available("filter")[name]
+        try:
+            return cls.validate(self._params.get(name, {}))
+        except (TypeError, ValueError) as error:
+            _report(error, name, self._error_sink)
+            return cls.validate({})
+
+    def set_params(self, name: str, values: dict[str, Any]) -> None:
+        """Validate and persist last-used filter values, rolling back on I/O failure."""
+        cls = self.available("filter")[name]
+        previous = self._params.get(name)
+        self._params[name] = cls.validate(values)
+        try:
+            self._save()
+        except Exception:
+            if previous is None:
+                del self._params[name]
+            else:
+                self._params[name] = previous
+            raise
+
+    def set_filter_enabled(self, name: str, enabled: bool) -> None:
+        """Persist whether a filter contributes its Glyph-menu command."""
+        if name not in self.available("filter"):
+            raise KeyError(name)
+        previous = self._filter_wanted
+        wanted = set(self.enabled_filters())
+        wanted.add(name) if enabled else wanted.discard(name)
+        self._filter_wanted = wanted
+        try:
+            self._save()
+        except Exception:
+            self._filter_wanted = previous
+            raise
 
     def enabled(self) -> tuple[str, ...]:
         """Return names requested as enabled, including pending restoration."""
@@ -132,7 +225,7 @@ class Registry:
             return
         self.detach()
         self._painters, self._qt, self._sink = painters, qt, sink
-        for name in sorted(self._wanted & self.available().keys()):
+        for name in sorted(self._wanted & self.available("reporter").keys()):
             try:
                 self._activate(name)
             except Exception as error:  # noqa: BLE001 - one plugin cannot block restore
@@ -159,7 +252,7 @@ class Registry:
 
     def enable(self, name: str) -> bool:
         """Enable a reporter, rolling its overlay back if persistence fails."""
-        if name not in self.available():
+        if name not in self.available("reporter"):
             raise KeyError(name)
         if name in self._wanted:
             self._activate(name)
@@ -181,7 +274,7 @@ class Registry:
 
     def disable(self, name: str) -> bool:
         """Disable a known reporter and remove its painter token."""
-        if name not in self.available():
+        if name not in self.available("reporter"):
             raise KeyError(name)
         token = self._tokens.pop(name, None)
         if token is not None and self._painters is not None:
@@ -216,9 +309,9 @@ def current() -> Registry:
     return _current
 
 
-def available() -> dict[str, type[Reporter]]:
-    """Discover all built-in and entry-point reporters."""
-    return current().available()
+def available(kind: str | None = None) -> dict[str, type[Plugin]]:
+    """Discover all plugins or only those of one kind."""
+    return current().available(kind)
 
 
 def enabled() -> tuple[str, ...]:

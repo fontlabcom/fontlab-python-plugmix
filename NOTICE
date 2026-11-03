@@ -25,9 +25,14 @@ was checked; only NodesCloseToZones uses MIT, while the others use Apache-2.0.
 - Segment Length — mekkablue (Rainer Erich Scheichelbauer), SegmentLength, Apache-2.0: https://github.com/mekkablue/SegmentLength
 - Glyph Focus — mekkablue (Rainer Erich Scheichelbauer), ShowGlyphFocus, Apache-2.0: https://github.com/mekkablue/ShowGlyphFocus
 - Emphasise Selected Handles — mekkablue (Rainer Erich Scheichelbauer), ShowOnlySelectedHandles, Apache-2.0: https://github.com/mekkablue/ShowOnlySelectedHandles
-- Anchor Cloud — Simon Cozens, ShowAnchorCloud, Apache-2.0: https://github.com/simoncozens/ShowAnchorCloud
+- Anchor Cloud — Simon Cozens (Corvel Software), ShowAnchorCloud, Apache-2.0: https://github.com/simoncozens/ShowAnchorCloud
 - RSB Line — Fadhl Haqq (akufadhl), RSBline, Apache-2.0: https://github.com/akufadhl/RSBline
 - Unitizer — Pablo Impallari, with contributions by Simon Cozens and based on sample code by Rainer Erich Scheichelbauer (mekkablue), Unitizer, Apache-2.0: https://github.com/schriftgestalt/Unitizer
 - Nodes Close to Zones — Olli Meier, NodesCloseToZones-Glyphs, MIT: https://github.com/ollimeier/NodesCloseToZones-Glyphs
 - Imprecise Italic Angle — michaelrafailyk, HighlightImpreciseItalicAngle, Apache-2.0: https://github.com/michaelrafailyk/HighlightImpreciseItalicAngle
 - Smooth Node Angles — Henrique Beier (harbortype), ShowSmoothNodeAngleAndProportion, Apache-2.0: https://github.com/harbortype/ShowSmoothNodeAngleAndProportion
+
+Task 16 Filter: Delete Small Paths is an original behavioural reimplementation
+inspired by `DeleteSmallPaths`, authored by Rainer Erich Scheichelbauer
+(@mekkablue), Apache-2.0: https://github.com/mekkablue/DeleteSmallPaths
+The upstream README and LICENSE were read; no source code was copied.

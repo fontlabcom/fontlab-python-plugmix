@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "fontlab-python-plugmix"
 dynamic = ["version"]
-description = "Native FontLab 9 reporter plugins"
+description = "Native FontLab 9 reporter and filter plugins"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}

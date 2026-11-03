@@ -4,13 +4,26 @@
 from importlib import import_module
 from typing import Any
 
-__all__ = ["Mark", "Reporter", "install", "registry"]
+__all__ = [
+    "Filter",
+    "LayerEdit",
+    "Mark",
+    "Param",
+    "Plugin",
+    "Reporter",
+    "install",
+    "registry",
+]
 
 
 def __getattr__(name: str) -> Any:
     """Load FontLab-free definitions only when requested."""
     if name in {"Reporter", "Mark"}:
         return getattr(import_module(".reporter", __name__), name)
+    if name in {"Filter", "LayerEdit", "Param"}:
+        return getattr(import_module(".filter", __name__), name)
+    if name == "Plugin":
+        return import_module(".plugin", __name__).Plugin
     if name == "registry":
         return import_module(".registry", __name__)
     if name == "install":

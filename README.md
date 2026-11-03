@@ -1,7 +1,7 @@
 <!-- this_file: README.md -->
 # fontlab-python-plugmix
 
-Native FontLab 9 reporter plugins: toggleable, read-only overlays in Glyph windows.
+Native FontLab 9 plugins: toggleable Reporter overlays and an undoable Filter.
 Plugmix uses MeVisLab PythonQt and native per-canvas painters when available,
 with `fontlabapp.editor_painters.EditorPainters` for older builds.
 It does not use PySide2 or Glyphs/Cocoa emulation. The repository also contains
@@ -16,12 +16,30 @@ The hook calls `fontlab_plugmix.install()` once per FontLab session. Alternative
 run `Scripts/Plugmix/Install Plugmix Menu.py` from FontLab's Script menu.
 Neither file here edits a FontLab installation.
 
-The View menu gains 19 checkable `Plugmix: Show …` actions. The selection is
+The View menu gains 19 checkable `Plugmix: Show …` reporter actions. The Glyph
+menu gains `Plugmix: Delete Small Paths…` with a numeric threshold dialog.
+The selection is
 remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json`.
 `install(config_dir=...)` selects another directory, which is useful in tests.
 `boot.uninstall()` removes the actions and overlays while retaining the selection.
 Selections saved under the former `nodes_outside_paths` name restore as
 `offcurve_outside_bounds`.
+The same JSON file keeps `enabled_filters` and last-used `params`; old files
+with only `enabled` still load. Filters are enabled by default, and the
+`Registry.set_filter_enabled()` API can change that before the next install.
+
+## Built-in Filter
+
+| Filter | Edit |
+| --- | --- |
+| Delete Small Paths | Delete closed contours with shoelace area or bounding area below the threshold (default 400 font units squared). Open contours and values exactly at the threshold stay. Apply targets selected glyphs in the current master and uses one geometry Undo step. |
+
+The current Filter writer supports contour deletion. It refuses shared or
+transformed outlines and skips automatic layers. Filter `compute(snapshot,
+values)` receives frozen Python data and returns a `LayerEdit`; parameters are
+declared with `Param`. Native selection, writes, history and Qt dialog calls
+stay in plugmix's host modules. The Glyph menu command opens a non-modal
+dialog owned by `fontlabapp.OwnedMenus`.
 
 ## Built-in reporters
 
@@ -71,7 +89,7 @@ the text block is positioned away from the canvas origin.
 
 ## Write a reporter
 
-`compute()` receives immutable, plain Python data and returns marks in font
+Reporter `compute()` receives immutable, plain Python data and returns marks in font
 units. Importing this module does not need FontLab:
 
 ```python

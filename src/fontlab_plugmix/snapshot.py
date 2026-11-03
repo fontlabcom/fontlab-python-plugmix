@@ -4,6 +4,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 from importlib import import_module
+from time import monotonic
 from typing import Any
 
 
@@ -74,6 +75,11 @@ class NativeSource:
 
     package: Any
     layer: Any
+
+
+def selected_layers() -> Any:
+    """Read the active Font/Glyph window selection through App's checked adapter."""
+    return import_module("fontlabapp.layer_selection").capture(monotonic() + 2)
 
 
 def resolve_source(info: Any) -> NativeSource | None:

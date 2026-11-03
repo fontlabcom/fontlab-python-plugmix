@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from itertools import pairwise
 from typing import Any, Literal
 
+from .plugin import Plugin
 from .snapshot import GlyphSnapshot
 
 Point = tuple[float, float]
@@ -36,13 +37,19 @@ def _view_point(context: Any, qt: Any, point: Point) -> Any:
 def _draw(mark: Mark, context: Any, qt: Any) -> None:
     """Draw one mark without changing the context's world transform."""
     painter = context.painter
+    if mark.kind == "polygon" and len(mark.points) < 3:
+        return
     points = tuple(_view_point(context, qt, p) for p in mark.points)
     if mark.kind == "polygon":
         if mark.fill is None:
             raise ValueError("Polygon mark needs an RGBA fill")
         painter.setPen(qt.QtCore.Qt.NoPen)
         painter.setBrush(qt.QtGui.QColor(*mark.fill))
-        painter.drawPolygon(qt.QtGui.QPolygonF(list(points)))
+        try:
+            painter.drawPolygon(qt.QtGui.QPolygonF(list(points)))
+        finally:
+            painter.setBrush(qt.QtGui.QBrush())
+            painter.setPen(qt.QtGui.QPen())
         return
     pen = qt.QtGui.QPen(qt.QtGui.QColor(*mark.color))
     pen.setWidthF(mark.stroke_px)
@@ -71,11 +78,12 @@ def render_marks(marks: list[Mark], context: Any, qt: Any) -> None:
         _draw(mark, context, qt)
 
 
-class Reporter:
+class Reporter(Plugin):
     """Subclass with a name, title and pure ``compute(snapshot)`` method."""
 
     name = ""
     title = ""
+    kind = "reporter"
     layer: Literal["foreground", "background"] = "foreground"
     needs_zones = False
     needs_bounds = False

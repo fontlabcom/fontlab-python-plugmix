@@ -231,6 +231,13 @@ def test_nodes_close_to_zones_checks_edges_and_excludes_exact_hits(glyph):
     assert [mark.points[0] for mark in marks] == [(20, 710)]
 
 
+def test_nodes_close_to_zones_without_zones_uses_metrics(glyph):
+    contour = Contour((Node(30, 697, True, False), Node(40, 501, True, False)), False)
+    marks = NodesCloseToZones().compute(replace(glyph, contours=(contour,)))
+    assert [mark.points[0] for mark in marks] == [(30, 697), (40, 501)]
+    assert NodesCloseToZones().compute(replace(glyph, contours=())) == []
+
+
 def test_imprecise_italic_angle_marks_near_vertical_lines(glyph):
     contour = Contour(
         (Node(0, 0, True, False), Node(1, 100, True, False), Node(1, 200, True, False)),

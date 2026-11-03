@@ -7,7 +7,7 @@ from typing import Any
 def install(owner: Any, registry: Any) -> dict[str, int]:
     """Add one owned QAction per reporter and return action tokens."""
     tokens = {}
-    for name, cls in sorted(registry.available().items()):
+    for name, cls in sorted(registry.available("reporter").items()):
         action_token = owner.add_action(
             "View",
             f"Plugmix: Show {cls.title}",
