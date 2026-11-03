@@ -37,11 +37,13 @@ the user chooses a visibility state.
 
 | Palette | Action |
 | --- | --- |
-| Step and Repeat | Docked count, X offset and Y offset controls duplicate selected contours of the active glyph. Count is the number of added copies; each is shifted by another (dx, dy). Apply uses one geometry Undo step, retains unselected contours and refuses shared or transformed outlines. Count 0 and no contour selection report a no-op. |
+| Step and Repeat | Docked count, X offset and Y offset controls duplicate selected contours of the active glyph. Count means additional copies, excluding the original; each is shifted by another (dx, dy). Apply uses one geometry Undo step, retains unselected contours and refuses shared or transformed outlines. New copies are not selected. Count 0 and no contour selection report a no-op; two zero offsets are refused. |
 
 Palettes build their controls once through `PaletteUI`, refresh only when the
 active glyph, master, revision or node selection changes, and release them on
-close. One 250 ms timer serves all visible palettes and stops when none remain.
+close. Tabbed or temporarily hidden docks remain open with their saved state;
+refresh pauses until they become visible again. One 250 ms timer serves all
+visible palettes and stops when none remain.
 The current refresh key reads the glyph modification timestamp and node
 selection; FontLab users should confirm that edits outside Plugmix advance
 that timestamp in their build.

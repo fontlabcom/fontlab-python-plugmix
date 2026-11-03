@@ -120,15 +120,26 @@ def test_palette_active_glyph_and_selection_key_follow_current_master():
     glyph = NS(
         id=7,
         isNull=False,
+        package=NS(id=2),
         lastModified=NS(toMSecsSinceEpoch=lambda: 42),
         findLayer=lambda master: layer,
     )
-    package = NS(id=2, master="Regular", isNull=False, findName=lambda name: glyph)
-    workspace = NS(currentPackage=package)
-    fontlab = NS(
-        flWorkspace=NS(instance=lambda: workspace), CurrentGlyph=lambda: NS(name="a")
+    package = NS(id=2, master="Regular", isNull=False)
+    info = NS(isActive=True, glyph=glyph, symbol=NS(layerName=""))
+    block = NS(glyphsCount=lambda: 1, getGlyphAt=lambda index: info)
+    canvas = NS(isNull=False, textBlocks=lambda: [block])
+    workspace = NS(
+        currentPackage=package,
+        activeFontPanel=None,
+        getActiveCanvas=lambda: canvas,
     )
-    active = active_glyph(fontlab)
+    fontlab = NS(
+        flWorkspace=NS(instance=lambda: workspace),
+        CurrentGlyph=lambda: (_ for _ in ()).throw(
+            AssertionError("legacy glyph API used")
+        ),
+    )
+    active = active_glyph(fontlab, items=lambda get: list(get()))
     assert active == ActiveGlyph(package, glyph, layer)
     first = palette_key(active, items=lambda get: list(get()))
     assert first[3] == 42
@@ -137,11 +148,23 @@ def test_palette_active_glyph_and_selection_key_follow_current_master():
     package.master = "Bold"
     assert palette_key(active, items=lambda get: list(get()))[2] == "Bold"
     assert palette_key(None) is None
-    fontlab.CurrentGlyph = lambda: None
+    info.symbol.layerName = "Alt"
+    named = active_glyph(fontlab, items=lambda get: list(get()))
+    assert named is not None
+    package.isNull = True
     assert active_glyph(fontlab) is None
-    fontlab.CurrentGlyph = lambda: NS(name="a")
-    package.findName = lambda name: NS(isNull=True)
+    package.isNull = False
+    workspace.activeFontPanel = object()
     assert active_glyph(fontlab) is None
-    package.findName = lambda name: glyph
+    workspace.activeFontPanel = None
+    workspace.getActiveCanvas = lambda: None
+    assert active_glyph(fontlab) is None
+    workspace.getActiveCanvas = lambda: canvas
+    info.isActive = False
+    assert active_glyph(fontlab, items=lambda get: list(get())) is None
+    info.isActive = True
+    glyph.package.id = 3
+    assert active_glyph(fontlab, items=lambda get: list(get())) is None
+    glyph.package.id = 2
     glyph.findLayer = lambda master: NS(isNull=True)
-    assert active_glyph(fontlab) is None
+    assert active_glyph(fontlab, items=lambda get: list(get())) is None

@@ -19,6 +19,23 @@ class _Panel:
     ui: PaletteUI
     owned: Any
     visibility: Any = None
+    close_filter: Any = None
+    visible: bool = True
+
+
+def _close_filter(
+    base: type, close_type: Any, callback: Any, plugin: Any, sink: Any
+) -> Any:
+    """Create a guarded event filter that only observes explicit dock closes."""
+
+    class CloseFilter(base):
+        def eventFilter(self, watched: Any, event: Any) -> bool:
+            guarded(
+                plugin, sink, lambda: callback() if event.type() == close_type else None
+            )
+            return False
+
+    return CloseFilter()
 
 
 class PaletteHost:
@@ -33,6 +50,7 @@ class PaletteHost:
         self._key: Any = object()
         self._context: Any = None
         self._has_context = False
+        self._running = False
 
     def install(self) -> None:
         """Create one checkable Window action and restore chosen panels."""
@@ -66,10 +84,22 @@ class PaletteHost:
                 guarded(self, self.services.sink, timer.deleteLater)
                 raise
             self.timer = timer
-        if len(self.panels) == 1:
+        self._sync_timer()
+
+    def _sync_timer(self) -> None:
+        """Run polling exactly while at least one dock is visible."""
+        if self.timer is None:
+            return
+        visible = any(panel.visible for panel in self.panels.values())
+        if visible and not self._running:
             self._key = object()
             self._has_context = False
             self.timer.start()
+            self._running = True
+        elif not visible and self._running:
+            guarded(self, self.services.sink, self.timer.stop)
+            self._running = False
+            self._has_context = False
 
     def _show(self, name: str) -> None:
         """Build a docked widget once and attach its guarded close signal."""
@@ -99,7 +129,7 @@ class PaletteHost:
                 ui_box[0].close()
             guarded(plugin, self.services.sink, plugin.close)
             raise
-        panel = _Panel(plugin, ui_box[0], owned)
+        panel = _Panel(plugin, ui_box[0], owned, visible=bool(owned.widget.isVisible()))
         self.panels[name] = panel
         try:
             signal = owned.widget.visibilityChanged
@@ -107,8 +137,16 @@ class PaletteHost:
                 plugin, self.services.sink, lambda: self._visibility(name, shown)
             )
             signal.connect(panel.visibility)
+            panel.close_filter = _close_filter(
+                self.services.qt.QtCore.QObject,
+                self.services.qt.QtCore.QEvent.Close,
+                lambda: self._schedule_close(name),
+                plugin,
+                self.services.sink,
+            )
+            owned.widget.installEventFilter(panel.close_filter)
             self._timer()
-            if self._has_context:
+            if self._has_context and panel.visible:
                 guarded(
                     plugin, self.services.sink, lambda: plugin.refresh(self._context)
                 )
@@ -117,17 +155,29 @@ class PaletteHost:
             raise
 
     def _visibility(self, name: str, shown: bool) -> None:
-        """Treat title-bar hide as a user choice after Qt dispatch completes."""
-        if not shown and name in self.panels:
-            self.services.qt.QtCore.QTimer.singleShot(
-                0,
-                lambda: guarded(
-                    self, self.services.sink, lambda: self._hide_by_user(name)
-                ),
+        """Pause hidden docks without changing their saved preference."""
+        panel = self.panels.get(name)
+        if panel is None:
+            return
+        was_visible = panel.visible
+        panel.visible = bool(shown)
+        self._sync_timer()
+        if shown and not was_visible and self._has_context:
+            guarded(
+                panel.plugin,
+                self.services.sink,
+                lambda: panel.plugin.refresh(self._context),
             )
 
+    def _schedule_close(self, name: str) -> None:
+        """Wait until Qt finishes dispatching Close before deleting the dock."""
+        self.services.qt.QtCore.QTimer.singleShot(
+            0,
+            lambda: guarded(self, self.services.sink, lambda: self._hide_by_user(name)),
+        )
+
     def _hide_by_user(self, name: str) -> None:
-        """Persist a title-bar close before releasing the dock."""
+        """Persist an actual dock close before releasing its owner."""
         if name in self.panels and not self.panels[name].owned.widget.isVisible():
             try:
                 self.registry.set_palette_enabled(name, False)
@@ -148,12 +198,16 @@ class PaletteHost:
                     panel.visibility
                 ),
             )
+        if panel.close_filter is not None:
+            guarded(
+                panel.plugin,
+                self.services.sink,
+                lambda: panel.owned.widget.removeEventFilter(panel.close_filter),
+            )
         guarded(panel.plugin, self.services.sink, panel.ui.close)
         guarded(panel.plugin, self.services.sink, panel.plugin.close)
         guarded(panel.plugin, self.services.sink, panel.owned.close)
-        if not self.panels and self.timer is not None:
-            guarded(self, self.services.sink, self.timer.stop)
-            self._has_context = False
+        self._sync_timer()
 
     def _checked(self, name: str) -> None:
         """Keep the owned QAction aligned with actual dock visibility."""
@@ -184,6 +238,7 @@ class PaletteHost:
         key = snapshot.palette_key(active)
         if key == self._key:
             return
+        self._key = key
         context = (
             snapshot.capture(
                 snapshot.NativeSource(active.package, active.layer),
@@ -192,10 +247,11 @@ class PaletteHost:
             if active
             else None
         )
-        self._key = key
         self._context = context
         self._has_context = True
         for panel in tuple(self.panels.values()):
+            if not panel.visible:
+                continue
             guarded(
                 panel.plugin,
                 self.services.sink,
@@ -208,6 +264,7 @@ class PaletteHost:
             self._hide(name)
         if self.timer is not None:
             guarded(self, self.services.sink, self.timer.stop)
+            self._running = False
             guarded(
                 self,
                 self.services.sink,

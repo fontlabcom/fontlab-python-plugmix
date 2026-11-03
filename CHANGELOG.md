@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+- Keep tabbed and temporarily hidden palettes alive; only dock Close or the
+  Window toggle changes their saved visibility. Resolve active glyphs through
+  the workspace canvas, report failing captures once per key, and show palette
+  Apply errors in its status label. Refuse zero-offset repeats.
 - Add the dockable Palette kind, persistent Window toggles, a shared refresh
   timer, and Step and Repeat contour duplication through one geometry Undo step.
 - Reuse outline safety checks and the layer writer for palette edits. Keep

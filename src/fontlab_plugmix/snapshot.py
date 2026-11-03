@@ -86,20 +86,41 @@ class ActiveGlyph:
     layer: Any
 
 
-def active_glyph(fontlab: Any) -> ActiveGlyph | None:
-    """Resolve the active window glyph through the workspace's current package."""
+def active_glyph(
+    fontlab: Any,
+    *,
+    items: Callable[[Callable[[], Any]], list[Any]] | None = None,
+) -> ActiveGlyph | None:
+    """Resolve the active canvas slot against the workspace's current package."""
     workspace = fontlab.flWorkspace.instance()
     package = workspace.currentPackage
-    shown = fontlab.CurrentGlyph()
-    if package is None or shown is None or getattr(package, "isNull", False):
+    if package is None or package.isNull or workspace.activeFontPanel is not None:
         return None
-    glyph = package.findName(shown.name)
-    if glyph is None or glyph.isNull:
+    canvas = workspace.getActiveCanvas()
+    if canvas is None or canvas.isNull:
         return None
-    layer = glyph.findLayer(package.master)
-    if layer is None or layer.isNull:
-        return None
-    return ActiveGlyph(package, glyph, layer)
+    if items is None:
+        items = import_module("fontlabapp.qtsafe").qt_list
+    for block in items(canvas.textBlocks):
+        for index in range(int(block.glyphsCount())):
+            info = block.getGlyphAt(index)
+            if info is None or not info.isActive:
+                continue
+            glyph = info.glyph
+            if (
+                glyph is None
+                or glyph.isNull
+                or int(glyph.package.id) != int(package.id)
+            ):
+                return None
+            name = str(info.symbol.layerName)
+            layer = glyph.findLayer(name or package.master)
+            return (
+                None
+                if layer is None or layer.isNull
+                else ActiveGlyph(package, glyph, layer)
+            )
+    return None
 
 
 def palette_key(
@@ -116,6 +137,7 @@ def palette_key(
     revision = (
         stamp.toMSecsSinceEpoch() if hasattr(stamp, "toMSecsSinceEpoch") else stamp
     )
+    # This checks every native node each tick; keep capture itself behind the key.
     selected = []
     for shape in items(lambda: active.layer.shapes):
         if shape.isComponent:

@@ -120,8 +120,20 @@ class Menus:
 class Owned:
     def __init__(self):
         self.visible = True
-        self.widget = NS(visibilityChanged=Signal(), isVisible=lambda: self.visible)
+        self.filters = []
+        self.widget = NS(
+            visibilityChanged=Signal(),
+            isVisible=lambda: self.visible,
+            installEventFilter=lambda item: self.filters.append(item),
+            removeEventFilter=lambda item: self.filters.remove(item),
+        )
         self.closed = False
+
+    def user_close(self):
+        for item in tuple(self.filters):
+            item.eventFilter(self.widget, NS(type=lambda: 19))
+        self.visible = False
+        self.widget.visibilityChanged.emit(False)
 
     def close(self):
         self.closed = True
@@ -137,7 +149,7 @@ def fake_qt():
         QCheckBox=Control,
         QPushButton=Control,
     )
-    return NS(QtGui=gui, QtCore=NS(QTimer=Timer))
+    return NS(QtGui=gui, QtCore=NS(QTimer=Timer, QObject=object, QEvent=NS(Close=19)))
 
 
 def palette_host(tmp_path, monkeypatch):
@@ -238,6 +250,13 @@ def test_palette_host_toggle_timer_refresh_key_and_title_close(
     assert len(Timer.instances) == 1, "one timer is shared across repeated toggles"
     created[1].visible = False
     created[1].widget.visibilityChanged.emit(False)
+    assert not created[1].closed and state.enabled_palettes() == ("step_and_repeat",)
+    assert not host.timer.running and Timer.pending == []
+    created[1].visible = True
+    created[1].widget.visibilityChanged.emit(True)
+    assert host.timer.running and state.enabled_palettes() == ("step_and_repeat",)
+    created[1].user_close()
+    assert not created[1].closed and len(Timer.pending) == 1
     Timer.pending.pop(0)()
     assert created[1].closed and state.enabled_palettes() == ()
     host.close()
@@ -267,6 +286,42 @@ def test_palette_host_restores_only_chosen_panel_and_guards_refresh(
     assert errors == ["refresh failed"], "same key must not refresh again"
     host.close()
     assert state.enabled_palettes() == ("step_and_repeat",)
+
+
+def test_palette_capture_failure_is_reported_once_per_key(tmp_path, monkeypatch):
+    import fontlab_plugmix.palettes.host as module
+
+    host, _state, _created, errors = palette_host(tmp_path, monkeypatch)
+    key = [1]
+    monkeypatch.setattr(
+        module.snapshot,
+        "active_glyph",
+        lambda fontlab: NS(package=object(), layer=object()),
+    )
+    monkeypatch.setattr(module.snapshot, "palette_key", lambda active: key[0])
+    monkeypatch.setattr(
+        module.snapshot,
+        "capture",
+        lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("capture failed")),
+    )
+    host.toggle("step_and_repeat")
+    host.timer.timeout.emit()
+    host.timer.timeout.emit()
+    assert errors == ["capture failed"] and host.timer.running
+    key[0] = 2
+    host.timer.timeout.emit()
+    assert errors == ["capture failed", "capture failed"]
+    host.close()
+
+
+def test_palette_close_event_filter_never_raises_into_qt(tmp_path, monkeypatch):
+    host, state, created, errors = palette_host(tmp_path, monkeypatch)
+    host.toggle("step_and_repeat")
+    event = NS(type=lambda: (_ for _ in ()).throw(TypeError("bad Qt event")))
+    assert created[0].filters[0].eventFilter(created[0].widget, event) is False
+    assert errors == ["bad Qt event"]
+    assert not created[0].closed and state.enabled_palettes() == ("step_and_repeat",)
+    host.close()
 
 
 def test_palette_menu_callback_reports_failed_preference_save(tmp_path, monkeypatch):
@@ -334,8 +389,12 @@ def test_two_palettes_share_one_timer_and_refresh_new_panel_once(
     host.timer.timeout.emit()
     assert seen == [glyph]
     current[0] = 2
+    created[0].visible = False
+    created[0].widget.visibilityChanged.emit(False)
     host.timer.timeout.emit()
     assert seen == [glyph, glyph]
+    assert host.panels["step_and_repeat"].plugin.status.text == "1 selected contours."
+    assert state.enabled_palettes() == ("second", "step_and_repeat")
     host.toggle("step_and_repeat")
     assert host.timer.running
     host.toggle("second")
@@ -360,6 +419,14 @@ def test_palette_ui_guards_button_and_disconnects(tmp_path, monkeypatch):
     )
     button.clicked.emit()
     assert errors == ["apply failed"]
+    assert panel.plugin.status.text == "apply failed"
+    panel.plugin.dy.setValue(0)
+    monkeypatch.setattr(
+        panel.plugin, "command", lambda values, services: _values(values)
+    )
+    button.clicked.emit()
+    assert errors[-1] == "X and Y offsets cannot both be zero"
+    assert panel.plugin.status.text == errors[-1]
     host.close()
     assert button.clicked.slots == [] and created[0].closed
     assert ui.connections == []
@@ -378,6 +445,7 @@ def test_step_and_repeat_pure_selection_and_validation(glyph):
         {"count": -1, "dx": 0, "dy": 0},
         {"count": 101, "dx": 0, "dy": 0},
         {"count": 1, "dx": float("inf"), "dy": 0},
+        {"count": 1, "dx": 0, "dy": 0},
     ):
         with pytest.raises(ValueError):
             _values(values)
@@ -548,6 +616,7 @@ def test_repeat_native_writer_counts_offsets_undo_and_unsafe(monkeypatch, glyph)
     assert len(plan.work) == 1 and result["layers"] == 1
     assert commits == [("Step and Repeat", 1, "geometry")]
     assert [c.offset for c in shape.contours[2:]] == [(-5, 2)]
+    assert all(not node.selected for node in shape.contours[2].record.nodes)
     assert len(repaired) == 1 and len(redraws) == 1
     plan, result, message = repeat_selected(
         {"count": 3, "dx": -2, "dy": -3},

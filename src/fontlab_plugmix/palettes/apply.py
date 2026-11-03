@@ -19,6 +19,8 @@ def _values(values: dict[str, Any]) -> tuple[int, float, float]:
         type(value) not in (int, float) or not isfinite(value) for value in (dx, dy)
     ):
         raise ValueError("Offsets must be finite numbers")
+    if count and dx == 0 and dy == 0:
+        raise ValueError("X and Y offsets cannot both be zero")
     return count, float(dx), float(dy)
 
 

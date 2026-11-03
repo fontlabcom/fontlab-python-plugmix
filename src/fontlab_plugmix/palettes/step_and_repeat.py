@@ -27,10 +27,17 @@ class StepAndRepeat(Palette):
 
     def _clicked(self) -> None:
         """Read live control values and show the resulting status message."""
-        values = {
-            key: self.ui.value(getattr(self, key)) for key in ("count", "dx", "dy")
-        }
-        self.ui.set_text(self.status, self.ui.apply(values))
+        try:
+            values = {
+                key: self.ui.value(getattr(self, key)) for key in ("count", "dx", "dy")
+            }
+            self.ui.set_text(self.status, self.ui.apply(values))
+        except Exception as error:
+            try:
+                self.ui.set_text(self.status, str(error))
+            except Exception:  # noqa: BLE001, S110 - retain original Apply error
+                pass
+            raise
 
     def command(self, values: dict[str, Any], services: Any) -> str:
         """Apply to the current glyph through the shared outline writer."""
