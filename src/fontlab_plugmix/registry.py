@@ -372,12 +372,16 @@ class Registry:
         """Disable a known reporter and remove its painter token."""
         if name not in self.available("reporter"):
             raise KeyError(name)
+        if name in self._wanted:
+            self._wanted.remove(name)
+            try:
+                self._save()
+            except Exception:
+                self._wanted.add(name)
+                raise
         token = self._tokens.pop(name, None)
         if token is not None and self._painters is not None:
             self._painters.remove(token)
-        if name in self._wanted:
-            self._wanted.remove(name)
-            self._save()
         return False
 
     def toggle(self, name: str) -> bool:

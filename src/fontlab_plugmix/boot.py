@@ -118,17 +118,17 @@ def uninstall() -> None:
     global _state
     if _state is None:
         return
-    state, _state = _state, None
+    state = _state
+    if state.palettes.close() is False:
+        return
+    _state = None
     try:
         try:
             try:
                 try:
                     state.generals.close()
                 finally:
-                    try:
-                        state.tools.close()
-                    finally:
-                        state.palettes.close()
+                    state.tools.close()
             finally:
                 state.filters.close()
         finally:

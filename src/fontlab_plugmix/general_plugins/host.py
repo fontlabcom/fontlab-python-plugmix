@@ -24,7 +24,7 @@ class GeneralHost:
     def __init__(self, services: Services, registry: Any, palettes: Any) -> None:
         self.services, self.registry, self.palettes = services, registry, palettes
         self.running: dict[str, _Running] = {}
-        self._fonts: set[int] = set()
+        self._fonts: set[int] | None = None
 
     def _font_ids(self) -> set[int]:
         """Read stable font fgIds from the workspace, not wrapper object ids."""
@@ -84,7 +84,7 @@ class GeneralHost:
 
     def install(self) -> None:
         """Start saved General plugins and attach their shared font watcher."""
-        self._fonts = guarded(self, self.services.sink, self._font_ids) or set()
+        self._fonts = guarded(self, self.services.sink, self._font_ids)
         for name in self.registry.enabled_general():
             if name not in self.registry.available("general"):
                 continue
@@ -95,6 +95,9 @@ class GeneralHost:
     def _poll(self) -> None:
         """Deliver set-difference font events once per open or close."""
         current = self._font_ids()
+        if self._fonts is None:
+            self._fonts = current
+            return
         opened, closed = current - self._fonts, self._fonts - current
         self._fonts = current
         for running in tuple(self.running.values()):

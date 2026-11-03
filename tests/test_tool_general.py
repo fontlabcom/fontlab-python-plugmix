@@ -590,6 +590,36 @@ def test_general_start_failure_unwinds_action_and_owned_timer(tmp_path, monkeypa
     palettes.close()
 
 
+def test_general_failed_initial_font_read_uses_first_success_as_baseline(
+    tmp_path, monkeypatch
+):
+    services, state, _workspace, errors = environment(tmp_path)
+    palettes = PaletteHost(services, state)
+    palettes.install()
+    host = GeneralHost(services, state, palettes)
+    reads = iter([RuntimeError("font read failed"), {42}, {42, 43}])
+
+    def font_ids():
+        value = next(reads)
+        if isinstance(value, Exception):
+            raise value
+        return value
+
+    monkeypatch.setattr(host, "_font_ids", font_ids)
+    host.install()
+    assert errors == ["font read failed"]
+    assert host.running
+    seen = []
+    for row in host.running.values():
+        row.plugin.on_font_opened = lambda ident: seen.append(ident)
+    host._poll()
+    assert seen == []
+    host._poll()
+    assert seen == [43]
+    host.close()
+    palettes.close()
+
+
 def test_general_context_zoom_notify_and_timer_errors(tmp_path, monkeypatch, glyph):
     services, _state, workspace, errors = environment(tmp_path)
     plugin = ZoomToSelection()

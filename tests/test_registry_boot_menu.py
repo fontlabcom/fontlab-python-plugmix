@@ -154,6 +154,19 @@ def test_registry_migrates_renamed_reporter_and_rolls_back_failed_save(tmp_path)
     assert path.read_text() == '{"enabled": ["nodes_outside_paths"]}'
 
 
+def test_registry_disable_save_failure_keeps_reporter_active(tmp_path):
+    state = registry.Registry(tmp_path)
+    painters = Painters()
+    state.attach(painters, object(), lambda e, p: None)
+    state.enable("node_indexes")
+    state._save = lambda: (_ for _ in ()).throw(OSError("read-only"))
+    with pytest.raises(OSError, match="read-only"):
+        state.disable("node_indexes")
+    assert state.enabled() == ("node_indexes",)
+    assert "node_indexes" in state._tokens
+    assert not any(call[0] == "remove" for call in painters.calls)
+
+
 def test_registry_detach_continues_and_save_error_survives_rollback_error(tmp_path):
     errors = []
     state = registry.Registry(tmp_path, lambda error, source: errors.append(str(error)))
@@ -264,6 +277,37 @@ def test_boot_runtime_imports_are_lazy(monkeypatch):
     }
     monkeypatch.setattr(boot, "import_module", modules.__getitem__)
     assert boot._runtime() == (modules["PythonQt"], modules["fontlab"], Menus)
+
+
+def test_boot_uninstall_keeps_owner_when_palette_refuses_close(monkeypatch):
+    calls = []
+    accepted = [False]
+
+    def palette_close():
+        calls.append("palette")
+        return accepted[0]
+
+    def owner(label):
+        return NS(close=lambda: calls.append(label))
+
+    state = NS(
+        palettes=NS(close=palette_close),
+        generals=owner("general"),
+        tools=owner("tool"),
+        filters=owner("filter"),
+        menus=owner("menu"),
+        reporters=NS(detach=lambda: calls.append("reporter")),
+        painters=owner("painter"),
+    )
+    monkeypatch.setattr(boot, "_state", state)
+    boot.uninstall()
+    assert boot._state is state and calls == ["palette"]
+    accepted[0] = True
+    boot.uninstall()
+    assert boot._state is None
+    assert calls == [
+        "palette", "palette", "general", "tool", "filter", "menu", "reporter", "painter"
+    ]
 
 
 def test_boot_cleans_up_failed_install_and_error_sink_never_raises(

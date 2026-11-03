@@ -52,6 +52,7 @@ class PaletteHost:
         self._has_context = False
         self._running = False
         self._close_filter_available = True
+        self._close_failures: set[tuple[str, str]] = set()
         self.listeners: dict[str, Any] = {}
 
     def _close_filter_base(self) -> type:
@@ -237,37 +238,58 @@ class PaletteHost:
         )
 
     def _hide_by_user(self, name: str) -> None:
-        """Persist an actual dock close before releasing its owner."""
-        if name in self.panels and not self.panels[name].owned.widget.isVisible():
-            try:
-                self.registry.set_palette_enabled(name, False)
-            finally:
-                self._hide(name)
-                self._checked(name)
-
-    def _hide(self, name: str) -> None:
-        """Release one panel even if a close callback fails."""
-        panel = self.panels.pop(name, None)
+        """Persist only after the owner accepts an actual dock close."""
+        panel = self.panels.get(name)
         if panel is None:
             return
-        if panel.visibility is not None:
+        widget = panel.owned.widget
+        if widget is None or not widget.isVisible():
+            if self._hide(name):
+                self.registry.set_palette_enabled(name, False)
+            self._checked(name)
+
+    def _close_failed(self, name: str, error: Exception) -> None:
+        """Report one diagnostic for a repeated close failure."""
+        key = (name, str(error))
+        if key not in self._close_failures:
+            self._close_failures.add(key)
+            try:
+                self.services.sink(error, self)
+            except Exception:  # noqa: BLE001, S110 - diagnostic sink is untrusted
+                pass
+
+    def _hide(self, name: str) -> bool:
+        """Release a panel only after its owner confirms successful close."""
+        panel = self.panels.get(name)
+        if panel is None:
+            return True
+        try:
+            accepted = panel.owned.close()
+        except Exception as error:  # noqa: BLE001 - App may raise ExceptionGroup
+            self._close_failed(name, error)
+            return False
+        if accepted is False:
+            self._close_failed(name, RuntimeError(f"Palette {name} close refused"))
+            return False
+        self.panels.pop(name, None)
+        self._close_failures = {item for item in self._close_failures if item[0] != name}
+        widget = panel.owned.widget
+        if widget is not None and panel.visibility is not None:
             guarded(
                 panel.plugin,
                 self.services.sink,
-                lambda: panel.owned.widget.visibilityChanged.disconnect(
-                    panel.visibility
-                ),
+                lambda: widget.visibilityChanged.disconnect(panel.visibility),
             )
-        if panel.close_filter is not None:
+        if widget is not None and panel.close_filter is not None:
             guarded(
                 panel.plugin,
                 self.services.sink,
-                lambda: panel.owned.widget.removeEventFilter(panel.close_filter),
+                lambda: widget.removeEventFilter(panel.close_filter),
             )
         guarded(panel.plugin, self.services.sink, panel.ui.close)
         guarded(panel.plugin, self.services.sink, panel.plugin.close)
-        guarded(panel.plugin, self.services.sink, panel.owned.close)
         self._sync_timer()
+        return True
 
     def _checked(self, name: str) -> None:
         """Keep the owned QAction aligned with actual dock visibility."""
@@ -279,8 +301,8 @@ class PaletteHost:
             raise KeyError(name)
         try:
             if name in self.panels:
-                self.registry.set_palette_enabled(name, False)
-                self._hide(name)
+                if self._hide(name):
+                    self.registry.set_palette_enabled(name, False)
             else:
                 self._show(name)
                 try:
@@ -318,10 +340,14 @@ class PaletteHost:
                 lambda panel=panel: panel.plugin.refresh(context),
             )
 
-    def close(self) -> None:
-        """Stop the shared timer and remove docks before their menu owner."""
+    def close(self) -> bool:
+        """Stop ownership only after all docks accept close; allow retry."""
         for name in tuple(self.panels):
             self._hide(name)
+        if self.panels:
+            for name in self.panels:
+                self._checked(name)
+            return False
         self.listeners.clear()
         if self.timer is not None:
             guarded(self, self.services.sink, self.timer.stop)
@@ -340,3 +366,4 @@ class PaletteHost:
                 lambda token=token: self.services.menus.remove(token),
             )
         self.actions.clear()
+        return True

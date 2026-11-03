@@ -137,6 +137,7 @@ class Owned:
 
     def close(self):
         self.closed = True
+        return True
 
 
 def fake_qt():
@@ -289,6 +290,88 @@ def test_palette_shows_when_close_filter_base_is_missing(tmp_path, monkeypatch):
     assert len(errors) == 1, "the degraded close capability is reported once"
     host.close()
     assert all(item.closed for item in created)
+
+
+@pytest.mark.parametrize("failure", [False, ExceptionGroup("close failed", [TypeError("dock")])])
+def test_palette_keeps_refused_or_failed_dock_for_retry(tmp_path, monkeypatch, failure):
+    host, state, created, errors = palette_host(tmp_path, monkeypatch)
+    assert host.toggle("step_and_repeat") is True
+    original = created[0].close
+    calls = []
+
+    def failing_close():
+        calls.append(True)
+        if failure is False:
+            return False
+        raise failure
+
+    created[0].close = failing_close
+    assert host.toggle("step_and_repeat") is True
+    assert host.close() is False
+    assert len(calls) == 2 and len(errors) == 1
+    assert len(host.panels) == 1 and len(host.actions) == 1
+    assert host.services.menus.action(host.actions["step_and_repeat"]).checked
+    assert state.enabled_palettes() == ("step_and_repeat",)
+    created[0].close = original
+    assert host.toggle("step_and_repeat") is False
+    assert len(created) == 1 and state.enabled_palettes() == ()
+    assert host.close() is True
+
+
+def test_palette_real_app_owner_close_contract(tmp_path, monkeypatch):
+    from fontlabapp.widgets import OwnedWidget
+
+    host, state, created, errors = palette_host(tmp_path, monkeypatch)
+    assert host.toggle("step_and_repeat") is True
+    panel = host.panels["step_and_repeat"]
+
+    class Dock:
+        def __init__(self):
+            self.destroyed = Signal()
+            self.visibilityChanged = Signal()
+            self.accept = False
+            self.fail_delete = False
+            self.deleted = False
+
+        def isVisible(self):
+            return True
+
+        def close(self):
+            return self.accept
+
+        def deleteLater(self):
+            if self.fail_delete:
+                raise TypeError("delete failed")
+            self.deleted = True
+
+        def removeEventFilter(self, item):
+            return None
+
+    dock = Dock()
+    panel.owned = OwnedWidget(dock, object())
+    dock.visibilityChanged.connect(panel.visibility)
+    assert host.toggle("step_and_repeat") is True
+    assert len(host.panels) == 1 and not dock.deleted
+    dock.accept = True
+    dock.fail_delete = True
+    assert host.toggle("step_and_repeat") is True
+    assert len(host.panels) == 1 and not dock.deleted
+    dock.fail_delete = False
+    assert host.toggle("step_and_repeat") is False
+    assert dock.deleted and len(created) == 1 and state.enabled_palettes() == ()
+    assert any("delete failed" in error for error in errors)
+    host.close()
+
+
+def test_palette_user_close_handles_already_destroyed_owner(tmp_path, monkeypatch):
+    host, state, _created, errors = palette_host(tmp_path, monkeypatch)
+    host.toggle("step_and_repeat")
+    panel = host.panels["step_and_repeat"]
+    panel.owned.widget = None
+    host._hide_by_user("step_and_repeat")
+    assert host.panels == {} and state.enabled_palettes() == ()
+    assert errors == []
+    host.close()
 
 
 def test_palette_shows_when_event_filter_install_fails(tmp_path, monkeypatch):
@@ -552,7 +635,10 @@ def test_repeat_no_selection_and_zero_count(monkeypatch, glyph):
         repeat_selected({"count": 1, "dx": 1, "dy": 1}, services)[2]
         == "No active glyph."
     )
-    active = ActiveGlyph(NS(master="Regular"), NS(name="a"), NS())
+    layer = NS(isNull=False)
+    active = ActiveGlyph(
+        NS(master="Regular"), NS(name="a", findLayer=lambda name: layer), layer
+    )
     monkeypatch.setattr(module.snapshot, "active_glyph", lambda fontlab: active)
     empty = replace(glyph, contours=(Contour((Node(0, 0, True, False),)),))
     monkeypatch.setattr(module.snapshot, "capture", lambda *args, **kwargs: empty)
@@ -560,6 +646,28 @@ def test_repeat_no_selection_and_zero_count(monkeypatch, glyph):
         repeat_selected({"count": 1, "dx": 1, "dy": 1}, services)[2]
         == "Select a contour first."
     )
+
+
+def test_repeat_refuses_displayed_nonmaster_layer(monkeypatch, glyph):
+    from fontlab_plugmix.palettes import apply as module
+
+    master, displayed = Layer([]), Layer([])
+    active = ActiveGlyph(
+        NS(master="Regular"),
+        NS(name="a", findLayer=lambda name: master),
+        displayed,
+    )
+    monkeypatch.setattr(module.snapshot, "active_glyph", lambda fontlab: active)
+    monkeypatch.setattr(
+        module.snapshot,
+        "capture",
+        lambda *args, **kwargs: pytest.fail("must refuse before reading selection"),
+    )
+    services = Services(fake_qt(), NS(), Menus(), None, lambda e, p: None)
+    plan, result, status = repeat_selected(
+        {"count": 1, "dx": 2, "dy": 3}, services
+    )
+    assert plan is result is None and "master layer" in status
 
 
 class Matrix:
@@ -714,3 +822,16 @@ def test_repeat_editor_rechecks_safety_and_readback():
     assert editor.check([(layer, steps)]) == ["repeated contour missing after write"]
     editor.write(layer, steps)
     assert editor.check([(layer, steps)]) == [] and editor.retain(steps) == []
+
+
+def test_repeat_editor_refuses_changed_contour_count_before_undo():
+    source = NativeContour(1, Contour((Node(0, 0, True, True),)))
+    layer = Layer([Shape(1, [source, source])])
+    editor = RepeatEditor(
+        NS(outline_shapes=lambda layer: (layer.shapes, [])),
+        NS(QtGui=NS(QTransform=Matrix)),
+        lambda a, b: None,
+        expected_count=1,
+    )
+    with pytest.raises(ValueError, match="contour count changed"):
+        editor.prepare(layer, [((0,), ((2, 3),))])

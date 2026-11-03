@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+- Refuse Step and Repeat on a displayed non-master layer and when the contour
+  count changes before Undo. Honor owned panel close refusal and retry without
+  losing the dock or its checked Window action. Test against the sibling
+  fontlabapp worktree, preserve reporter state on failed disable saves, and
+  suppress General font-open events after a failed initial read.
 - Read General shortcuts through PythonQt's QAction property and compare
   normalized QKeySequences before assignment. Use `fgId` for font identity
   in General events, active-glyph checks and palette keys. Map a tool's first

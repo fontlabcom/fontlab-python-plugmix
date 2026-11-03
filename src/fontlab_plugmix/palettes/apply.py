@@ -36,8 +36,11 @@ def selected_indices(glyph: snapshot.GlyphSnapshot) -> tuple[int, ...]:
 class RepeatEditor:
     """Clone each selected native contour before history, then add its copies."""
 
-    def __init__(self, outlines: Any, qt: Any, repair: Any) -> None:
+    def __init__(
+        self, outlines: Any, qt: Any, repair: Any, expected_count: int | None = None
+    ) -> None:
         self.outlines, self.qt, self.repair = outlines, qt, repair
+        self.expected_count = expected_count
 
     def prepare(self, layer: Any, edits: list[Any]) -> list[tuple[Any, Any]]:
         """Refuse a changed unsafe layer before opening the Undo transaction."""
@@ -47,6 +50,8 @@ class RepeatEditor:
             if not shape.isComponent
             for contour in shape.contours
         ]
+        if self.expected_count is not None and len(rows) != self.expected_count:
+            raise ValueError("Step and Repeat contour count changed; select again")
         staged = []
         for indices, offsets in edits:
             if not _targets_safe(layer, indices, self.outlines):
@@ -98,13 +103,21 @@ def repeat_selected(
     active = snapshot.active_glyph(services.fontlab)
     if active is None:
         return None, None, "No active glyph."
+    outlines = outlines or import_module("fontlabapp.outline_writer")
+    master_layer = outlines.layer_of(active.glyph, str(active.package.master))
+    same_id = (
+        master_layer is not None
+        and getattr(active.layer, "id", None) is not None
+        and int(active.layer.id) == int(master_layer.id)
+    )
+    if active.layer is not master_layer and not same_id:
+        return None, None, "Step and Repeat requires the current master layer."
     before = snapshot.capture(
         snapshot.NativeSource(active.package, active.layer), fontlab=services.fontlab
     )
     indices = selected_indices(before)
     if not indices:
         return None, None, "Select a contour first."
-    outlines = outlines or import_module("fontlabapp.outline_writer")
     writer = writer or import_module("fontlabapp.layer_writer")
     history = history or import_module("fontlabapp.history")
     repair = repair or import_module("fontlabapp.contour_copy").repair_nodes
@@ -137,7 +150,10 @@ def repeat_selected(
     if not plan.work:
         return plan, None, "Skipped: " + ", ".join((*plan.refused, *plan.skipped))
     result = writer.apply_work(
-        plan.work, "Step and Repeat", facts, RepeatEditor(outlines, services.qt, repair)
+        plan.work,
+        "Step and Repeat",
+        facts,
+        RepeatEditor(outlines, services.qt, repair, len(before.contours)),
     )
     services.fontlab.UpdateActiveCanvas()
     return plan, result, f"Added {len(indices) * count} contour copies."
