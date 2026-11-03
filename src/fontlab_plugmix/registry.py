@@ -3,6 +3,7 @@
 
 import json
 import pkgutil
+from collections.abc import Callable
 from importlib import import_module, metadata
 from pathlib import Path
 from typing import Any
@@ -10,48 +11,76 @@ from typing import Any
 from .reporter import Reporter
 
 ENTRY_GROUP = "fontlab_plugmix.plugins"
+RENAMED = {"nodes_outside_paths": "offcurve_outside_bounds"}
 DEFAULT_FILE = (
     Path.home()
     / "Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json"
 )
 
 
-def discover() -> dict[str, type[Reporter]]:
+ErrorSink = Callable[[Exception, object], object]
+
+
+def _report(error: Exception, source: object, sink: ErrorSink | None) -> None:
+    """Report a broken plugin or preference without interrupting discovery."""
+    try:
+        if sink is None:
+            print(f"Plugmix {source}: {error}")
+        else:
+            sink(error, source)
+    except Exception:  # noqa: BLE001, S110 - diagnostics must not block startup
+        pass
+
+
+def _accept(found: dict[str, type[Reporter]], cls: Any) -> None:
+    """Add one valid reporter class, preserving the first name owner."""
+    if (
+        not isinstance(cls, type)
+        or not issubclass(cls, Reporter)
+        or not cls.name
+        or not cls.title
+    ):
+        raise TypeError(f"Invalid plugmix reporter: {cls!r}")
+    if cls.name in found:
+        raise ValueError(f"Duplicate plugmix reporter name: {cls.name}")
+    found[cls.name] = cls
+
+
+def discover(error_sink: ErrorSink | None = None) -> dict[str, type[Reporter]]:
     """Find built-in and entry-point Reporter classes on demand."""
     package = import_module(".plugins", "fontlab_plugmix")
     found: dict[str, type[Reporter]] = {}
-    modules = pkgutil.iter_modules(package.__path__)
-    classes = []
-    for entry in modules:
-        module = import_module(f"{package.__name__}.{entry.name}")
-        classes.extend(
-            value
-            for value in vars(module).values()
-            if isinstance(value, type)
-            and value.__module__ == module.__name__
-            and issubclass(value, Reporter)
-        )
-    classes.extend(
-        ep.load() for ep in metadata.entry_points().select(group=ENTRY_GROUP)
-    )
-    for cls in classes:
-        if (
-            not isinstance(cls, type)
-            or not issubclass(cls, Reporter)
-            or not cls.name
-            or not cls.title
-        ):
-            raise TypeError(f"Invalid plugmix reporter: {cls!r}")
-        if cls.name in found:
-            raise ValueError(f"Duplicate plugmix reporter name: {cls.name}")
-        found[cls.name] = cls
+    for entry in pkgutil.iter_modules(package.__path__):
+        try:
+            module = import_module(f"{package.__name__}.{entry.name}")
+            for cls in vars(module).values():
+                if (
+                    isinstance(cls, type)
+                    and cls.__module__ == module.__name__
+                    and issubclass(cls, Reporter)
+                ):
+                    _accept(found, cls)
+        except Exception as error:  # noqa: BLE001 - one plugin cannot block startup
+            _report(error, entry.name, error_sink)
+    try:
+        points = metadata.entry_points().select(group=ENTRY_GROUP)
+    except Exception as error:  # noqa: BLE001 - broken entry-point metadata
+        _report(error, ENTRY_GROUP, error_sink)
+        points = ()
+    for point in points:
+        try:
+            _accept(found, point.load())
+        except Exception as error:  # noqa: BLE001 - third-party plugin boundary
+            _report(error, point, error_sink)
     return found
 
 
 class Registry:
     """Own active painter tokens and the one JSON preference file."""
 
-    def __init__(self, config_dir: str | Path | None = None) -> None:
+    def __init__(
+        self, config_dir: str | Path | None = None, error_sink: ErrorSink | None = None
+    ) -> None:
         self.path = (
             DEFAULT_FILE if config_dir is None else Path(config_dir) / DEFAULT_FILE.name
         )
@@ -61,19 +90,23 @@ class Registry:
         self._painters: Any = None
         self._qt: Any = None
         self._sink: Any = None
+        self._error_sink = error_sink
         self._load()
 
     def _load(self) -> None:
         """Read persisted names, leaving missing plugin names restorable later."""
         try:
             data = json.loads(self.path.read_text(encoding="utf-8"))
+            if not isinstance(data, dict) or not isinstance(data.get("enabled"), list):
+                raise TypeError(f"Invalid plugmix preferences: {self.path}")
+            if any(not isinstance(name, str) for name in data["enabled"]):
+                raise ValueError(f"Invalid plugmix enabled names: {self.path}")
         except FileNotFoundError:
             return
-        if not isinstance(data, dict) or not isinstance(data.get("enabled"), list):
-            raise ValueError(f"Invalid plugmix preferences: {self.path}")  # noqa: TRY004
-        if any(not isinstance(name, str) for name in data["enabled"]):
-            raise ValueError(f"Invalid plugmix enabled names: {self.path}")
-        self._wanted = set(data["enabled"])
+        except (OSError, ValueError, TypeError) as error:
+            _report(error, self.path, self._error_sink)
+            return
+        self._wanted = {RENAMED.get(name, name) for name in data["enabled"]}
 
     def _save(self) -> None:
         """Write one sorted preference document after a user toggle."""
@@ -86,7 +119,7 @@ class Registry:
     def available(self) -> dict[str, type[Reporter]]:
         """Return known reporters keyed by stable name."""
         if self._classes is None:
-            self._classes = discover()
+            self._classes = discover(self._error_sink)
         return dict(self._classes)
 
     def enabled(self) -> tuple[str, ...]:
@@ -100,7 +133,10 @@ class Registry:
         self.detach()
         self._painters, self._qt, self._sink = painters, qt, sink
         for name in sorted(self._wanted & self.available().keys()):
-            self._activate(name)
+            try:
+                self._activate(name)
+            except Exception as error:  # noqa: BLE001 - one plugin cannot block restore
+                _report(error, name, self._error_sink)
 
     def detach(self) -> None:
         """Remove active painters while retaining saved enabled names."""
@@ -117,15 +153,22 @@ class Registry:
             self._tokens[name] = plugin.bind(self._painters, self._qt, self._sink)
 
     def enable(self, name: str) -> bool:
-        """Enable a known reporter and persist once activation succeeds."""
+        """Enable a reporter, rolling its overlay back if persistence fails."""
         if name not in self.available():
             raise KeyError(name)
         if name in self._wanted:
             self._activate(name)
             return True
-        self._activate(name)
         self._wanted.add(name)
-        self._save()
+        try:
+            self._activate(name)
+            self._save()
+        except Exception:
+            self._wanted.remove(name)
+            token = self._tokens.pop(name, None)
+            if token is not None and self._painters is not None:
+                self._painters.remove(token)
+            raise
         return True
 
     def disable(self, name: str) -> bool:
@@ -148,10 +191,12 @@ class Registry:
 _current: Registry | None = None
 
 
-def configure(config_dir: str | Path | None = None) -> Registry:
+def configure(
+    config_dir: str | Path | None = None, error_sink: ErrorSink | None = None
+) -> Registry:
     """Select the process registry; boot calls this once per installation."""
     global _current
-    _current = Registry(config_dir)
+    _current = Registry(config_dir, error_sink)
     return _current
 
 

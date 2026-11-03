@@ -50,16 +50,22 @@ def install(config_dir: str | Path | None = None) -> None:
             )
         return
     qt, fontlab, menus_cls = _runtime()
-    reporters = registry.configure(path)
+    reporters = registry.configure(path, error_sink=_error)
     painters = select_backend(qt, fontlab, _error)
-    menus = menus_cls(qt, fontlab, error_sink=_error, owned_title="Plugmix")
+    menus = None
     try:
+        menus = menus_cls(qt, fontlab, error_sink=_error, owned_title="Plugmix")
         reporters.attach(painters, qt, _error)
         menu.install(menus, reporters)
     except Exception:
-        reporters.detach()
-        menus.close()
-        painters.close()
+        try:
+            reporters.detach()
+        finally:
+            try:
+                if menus is not None:
+                    menus.close()
+            finally:
+                painters.close()
         raise
     _state = _State(path, reporters, painters, menus)
 

@@ -1,16 +1,19 @@
-# this_file: src/fontlab_plugmix/plugins/nodes_outside_paths.py
+# this_file: src/fontlab_plugmix/plugins/offcurve_outside_bounds.py
 # SPDX-License-Identifier: Apache-2.0
-"""Highlight off-curve handles beyond the on-curve bounding rectangle."""
+"""Highlight off-curve handles beyond the on-curve bounding rectangle.
+
+Unlike mekkablue's ShowNodesOutsidePaths, this does not test path containment.
+"""
 
 from fontlab_plugmix.reporter import Mark, Reporter
 from fontlab_plugmix.snapshot import GlyphSnapshot
 
 
-class NodesOutsidePaths(Reporter):
+class OffcurveOutsideBounds(Reporter):
     """Use on-curve extrema as the comparison bounds."""
 
-    name = "nodes_outside_paths"
-    title = "Nodes Outside Paths"
+    name = "offcurve_outside_bounds"
+    title = "Off-curve Handles Outside Bounds"
 
     def compute(self, snapshot: GlyphSnapshot) -> list[Mark]:
         """Mark only handles outside the on-curve rectangle."""

@@ -8,7 +8,7 @@ import pytest
 from fontlab_plugmix.plugins.center_lines import CenterLines
 from fontlab_plugmix.plugins.duplicate_anchors import DuplicateAnchors
 from fontlab_plugmix.plugins.node_indexes import NodeIndexes
-from fontlab_plugmix.plugins.nodes_outside_paths import NodesOutsidePaths
+from fontlab_plugmix.plugins.offcurve_outside_bounds import OffcurveOutsideBounds
 from fontlab_plugmix.plugins.selected_coordinates import SelectedCoordinates
 from fontlab_plugmix.plugins.two_point_distance import TwoPointDistance
 from fontlab_plugmix.plugins.vertical_metrics import VerticalMetrics
@@ -52,11 +52,11 @@ def test_two_point_distance_requires_exactly_two_nodes(glyph):
     assert TwoPointDistance().compute(three) == []
 
 
-def test_nodes_outside_paths_marks_only_external_handles(glyph):
-    marks = NodesOutsidePaths().compute(glyph)
+def test_offcurve_outside_bounds_marks_only_external_handles(glyph):
+    marks = OffcurveOutsideBounds().compute(glyph)
     assert [m.points[0] for m in marks] == [(30, 120)]
     no_extrema = replace(glyph, contours=(Contour((Node(2, 2, False, False),)),))
-    assert NodesOutsidePaths().compute(no_extrema) == []
+    assert OffcurveOutsideBounds().compute(no_extrema) == []
 
 
 def test_center_lines_use_advance_and_half_heights(glyph):

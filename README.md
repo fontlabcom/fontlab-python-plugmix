@@ -20,6 +20,8 @@ The View menu gains seven checkable `Plugmix: Show …` actions. The selection i
 remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json`.
 `install(config_dir=...)` selects another directory, which is useful in tests.
 `boot.uninstall()` removes the actions and overlays while retaining the selection.
+Selections saved under the former `nodes_outside_paths` name restore as
+`offcurve_outside_bounds`.
 
 ## Built-in reporters
 
@@ -29,7 +31,7 @@ remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plug
 | Node Indexes | Full contour index beside every on- and off-curve node. |
 | Selected Node Coordinates | Coordinates beside selected nodes. |
 | Two Point Distance | A segment, length and angle for exactly two selected nodes. |
-| Nodes Outside Paths | Off-curve handles beyond the on-curve bounding rectangle. |
+| Off-curve Handles Outside Bounds | Off-curve handles beyond the on-curve bounding rectangle. This uses bounds, unlike mekkablue's ShowNodesOutsidePaths path-containment test. |
 | Center Lines | Advance/2, x-height/2 and cap-height/2 lines. |
 | Vertical Metrics | Labelled ascender, descender, x-height, cap-height and baseline lines. |
 
@@ -39,6 +41,10 @@ sizes stay constant while zooming. Center Lines and Vertical Metrics draw under
 the native glyph layer when native canvas painters are available. The other
 reporters draw over it. On older builds, all reporters draw over the canvas;
 plugmix logs that background substitution once.
+
+The native backend attaches to a Glyph window when it becomes active. Each
+reporter reads the glyph separately on repaint; this is acceptable for the
+small built-in set, but remains a cost with many reporters enabled.
 
 The native renderer maps a layer point through `info.transform` (glyph
 position in its text block), then `block.transform` (text block placement),
@@ -75,7 +81,9 @@ builds with native canvas painters.
 
 Run `./test.sh`. It finds the canonical sibling `fontlab-fontlabapp` checkout
 through this worktree's git common directory. Set `PLUGMIX_FONTLABAPP_SOURCE`
-to override that path.
+to override that path. Run the full suite without selectors for the per-module
+coverage gate; with pytest arguments, the gate is skipped because partial
+coverage is expected.
 The test suite uses fake Qt and FontLab objects and checks every production
-module for at least 80% line coverage. The initial seven reporters were checked
-in FontLab 9; the native canvas backend added in Revision 1 needs an in-app check.
+module for at least 80% line coverage. The orchestrator checked all seven
+reporters and native canvas drawing in FontLab 9 before this fix round.

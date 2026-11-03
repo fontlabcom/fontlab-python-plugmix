@@ -60,7 +60,6 @@ class _PaintContext:
     layer: NativeSource
     glyph_to_canvas: _GlyphMap
     canvas_to_view: _CanvasMap
-    scale: float
 
 
 class NativeCanvasBackend:
@@ -92,9 +91,9 @@ class NativeCanvasBackend:
         except Exception:
             self._reporters.pop(token)
             raise
+        self._poll()
         for entry in tuple(self.canvases.values()):
             self._attach(entry, token)
-        self._poll()
         return token
 
     def remove(self, token: int) -> None:
@@ -106,20 +105,25 @@ class NativeCanvasBackend:
             if native is None:
                 continue
             try:
+                if bool(entry.canvas.isNull):
+                    continue  # FontLab already dropped the painter with its canvas
                 entry.canvas.removePythonPainter(native)
-            except (RuntimeError, ValueError):
-                pass  # a destroyed canvas has already dropped its painters
+            except Exception as error:  # noqa: BLE001 - stale native wrapper
+                self._report(error, self)
         if not self._reporters:
             self._stop_timer()
             self.canvases.clear()
 
     def close(self) -> None:
         """Drop every painter and stop polling; safe to call twice."""
-        for token in tuple(self._reporters):
-            self.remove(token)
-        if self._timer is not None:
-            self._stop_timer()
-        self.canvases.clear()
+        try:
+            for token in tuple(self._reporters):
+                self.remove(token)
+        finally:
+            self._reporters.clear()
+            if self._timer is not None:
+                self._stop_timer()
+            self.canvases.clear()
 
     def _start_timer(self) -> None:
         """Poll new active canvases while any reporter is enabled."""
@@ -157,7 +161,8 @@ class NativeCanvasBackend:
             for identifier, entry in tuple(self.canvases.items()):
                 try:
                     gone = bool(entry.canvas.isNull)
-                except (RuntimeError, ValueError):
+                except Exception as error:  # noqa: BLE001 - stale native wrapper
+                    self._report(error, self)
                     gone = True
                 if gone:
                     del self.canvases[identifier]
@@ -181,14 +186,16 @@ class NativeCanvasBackend:
             if reporter.layer == "background"
             else entry.canvas.OverOwner
         )
-        callback = lambda painter, canvas: self._paint(reporter, painter, canvas)
+        callback = lambda painter, canvas: self._paint(token, reporter, painter, canvas)
         try:
             entry.tokens[token] = entry.canvas.appendPythonPainter(callback, order)
         except Exception as error:  # noqa: BLE001 - native registration boundary
             self._report(error, reporter)
 
-    def _paint(self, reporter: Reporter, painter: Any, canvas: Any) -> None:
+    def _paint(self, token: int, reporter: Reporter, painter: Any, canvas: Any) -> None:
         """Draw every active glyph occurrence in viewport coordinates; never raise."""
+        if token not in self._reporters:
+            return
         try:
             for block in self.items(canvas.textBlocks):
                 for info in self.items(lambda block=block: block.getAllGlyphs() or ()):
@@ -202,7 +209,6 @@ class NativeCanvasBackend:
                         source,
                         _GlyphMap(info.transform, block.transform),
                         _CanvasMap(canvas),
-                        float(canvas.scale()),
                     )
                     reporter.paint(context, self.qt, self.sink)
         except Exception as error:  # noqa: BLE001 - native paint boundary

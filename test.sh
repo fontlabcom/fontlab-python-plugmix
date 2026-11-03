@@ -6,8 +6,12 @@ export UV_CACHE_DIR
 if [ -n "${PLUGMIX_FONTLABAPP_SOURCE:-}" ]; then
     source_dir="$PLUGMIX_FONTLABAPP_SOURCE"
 else
-    common_git_dir=$(git rev-parse --path-format=absolute --git-common-dir)
-    source_dir=$(dirname "$(dirname "$common_git_dir")")/fontlab-fontlabapp
+    common_git_dir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)
+    if [ -n "$common_git_dir" ]; then
+        source_dir=$(dirname "$(dirname "$common_git_dir")")/fontlab-fontlabapp
+    else
+        source_dir="<checkout unavailable outside git>"
+    fi
 fi
 if [ ! -f "$source_dir/pyproject.toml" ]; then
     printf 'fontlab-fontlabapp checkout not found: %s\nSet PLUGMIX_FONTLABAPP_SOURCE to its directory.\n' "$source_dir" >&2
@@ -15,5 +19,7 @@ if [ ! -f "$source_dir/pyproject.toml" ]; then
 fi
 uv run --no-project --python 3.11 --with pytest --with pytest-cov --with-editable . \
     --with "fontlab-fontlabapp @ file://${source_dir}" python -m pytest "$@"
-python3 tests/check_coverage.py coverage.json
+if [ "$#" -eq 0 ]; then
+    python3 tests/check_coverage.py coverage.json
+fi
 

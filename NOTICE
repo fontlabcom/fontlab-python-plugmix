@@ -1,14 +1,15 @@
 # this_file: NOTICE
-The seven built-in reporters are original behavioural re-implementations
-inspired by mekkablue's Glyphs reporter plugins. The specific source plugins
-below are authored by mekkablue (Rainer Erich Scheichelbauer) and distributed
-under Apache-2.0. No source code from them is copied.
+Six built-in reporters are original behavioural re-implementations inspired
+by mekkablue's Glyphs reporter plugins. Off-curve Handles Outside Bounds is
+inspired by ShowNodesOutsidePaths but uses a different bounds test. The source
+plugins below are authored by mekkablue (Rainer Erich Scheichelbauer) and
+distributed under Apache-2.0. No source code from them is copied.
 
 - ShowAnchorsWithDuplicateCoordinates — https://github.com/mekkablue/ShowAnchorsWithDuplicateCoordinates
 - ShowNodeIndexes — https://github.com/mekkablue/ShowNodeIndexes
 - ShowCoordinatesOfSelectedNodes — https://github.com/mekkablue/ShowCoordinatesOfSelectedNodes
 - ShowDistanceBetweenTwoPoints — https://github.com/mekkablue/ShowDistanceBetweenTwoPoints
-- ShowNodesOutsidePaths — https://github.com/mekkablue/ShowNodesOutsidePaths
+- ShowNodesOutsidePaths — https://github.com/mekkablue/ShowNodesOutsidePaths (inspiration only; Plugmix's Off-curve Handles Outside Bounds uses a different bounds test)
 - ShowCenterLines — https://github.com/mekkablue/ShowCenterLines
 - ShowVerticalMetrics — https://github.com/mekkablue/ShowVerticalMetrics
 

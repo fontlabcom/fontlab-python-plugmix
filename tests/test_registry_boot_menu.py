@@ -66,11 +66,14 @@ def test_discovery_includes_builtins_and_entry_points(monkeypatch):
         name, title = "node_indexes", "Collision"
 
     points.select = lambda group: [NS(load=lambda: Bad)]
-    with pytest.raises(ValueError, match="Duplicate"):
-        registry.discover()
-    points.select = lambda group: [NS(load=lambda: object)]
-    with pytest.raises(TypeError, match="Invalid"):
-        registry.discover()
+    errors = []
+    assert len(registry.discover(lambda error, source: errors.append(error))) == 7
+    points.select = lambda group: [
+        NS(load=lambda: object),
+        NS(load=lambda: (_ for _ in ()).throw(ImportError("broken"))),
+    ]
+    assert len(registry.discover(lambda error, source: errors.append(error))) == 7
+    assert [type(error) for error in errors] == [ValueError, TypeError, ImportError]
 
 
 def test_registry_enable_disable_persists_and_restores(tmp_path):
@@ -99,14 +102,15 @@ def test_registry_enable_disable_persists_and_restores(tmp_path):
         restored.disable("missing")
 
 
-def test_registry_rejects_bad_json_and_proxy_functions(tmp_path, monkeypatch):
+def test_registry_skips_bad_json_and_proxy_functions(tmp_path, monkeypatch):
     path = tmp_path / "fontlab-plugmix.json"
-    path.write_text('{"enabled": "bad"}')
-    with pytest.raises(ValueError, match="Invalid"):
-        registry.Registry(tmp_path)
-    path.write_text('{"enabled": [2]}')
-    with pytest.raises(ValueError, match="Invalid"):
-        registry.Registry(tmp_path)
+    errors = []
+    for raw in ('{"enabled": "bad"}', '{"enabled": [2]}', "{bad json"):
+        path.write_text(raw)
+        state = registry.Registry(tmp_path, lambda error, source: errors.append(error))
+        assert state.enabled() == ()
+        assert path.read_text() == raw, "install must preserve the bad document"
+    assert len(errors) == 3
     path.unlink()
     monkeypatch.setattr(registry, "_current", None)
     current = registry.configure(tmp_path)
@@ -116,6 +120,46 @@ def test_registry_rejects_bad_json_and_proxy_functions(tmp_path, monkeypatch):
     assert registry.enabled() == ("node_indexes",)
     assert registry.toggle("node_indexes") is False
     assert registry.disable("node_indexes") is False
+
+
+def test_registry_migrates_renamed_reporter_and_rolls_back_failed_save(tmp_path):
+    path = tmp_path / "fontlab-plugmix.json"
+    path.write_text('{"enabled": ["nodes_outside_paths"]}')
+    state = registry.Registry(tmp_path)
+    assert state.enabled() == ("offcurve_outside_bounds",)
+    painters = Painters()
+    state.attach(painters, object(), lambda error, source: None)
+    assert len(painters.calls) == 1, "the renamed reporter should restore"
+    state._save = lambda: (_ for _ in ()).throw(OSError("read-only"))
+    with pytest.raises(OSError, match="read-only"):
+        state.enable("duplicate_anchors")
+    assert state.enabled() == ("offcurve_outside_bounds",)
+    assert "duplicate_anchors" not in state._tokens
+    assert painters.calls[-1] == ("remove", 2)
+    assert path.read_text() == '{"enabled": ["nodes_outside_paths"]}'
+
+
+def test_registry_restores_other_reporters_when_one_constructor_fails(
+    tmp_path, monkeypatch
+):
+    class Broken(Reporter):
+        name, title = "broken", "Broken"
+
+        def __init__(self):
+            raise RuntimeError("plugin failed")
+
+    path = tmp_path / "fontlab-plugmix.json"
+    path.write_text('{"enabled": ["broken", "node_indexes"]}')
+    classes = registry.discover()
+    classes["broken"] = Broken
+    monkeypatch.setattr(registry, "discover", lambda sink: classes)
+    errors = []
+    state = registry.Registry(tmp_path, lambda error, source: errors.append(error))
+    painters = Painters()
+    state.attach(painters, object(), lambda error, source: None)
+    assert len(painters.calls) == 1
+    assert painters.calls[0][0].name == "node_indexes"
+    assert isinstance(errors[0], RuntimeError)
 
 
 def test_menu_check_state_tracks_registry_even_after_failure(tmp_path):
@@ -180,3 +224,17 @@ def test_boot_cleans_up_failed_install_and_error_sink_never_raises(
         boot.install(tmp_path)
     assert boot._state is None
     boot._error(ValueError("bad"), object())
+
+
+def test_boot_closes_backend_if_menu_constructor_fails(tmp_path, monkeypatch):
+    class FailingMenus:
+        def __init__(self, *args, **kwargs):
+            raise RuntimeError("menu owner unavailable")
+
+    painters = Painters()
+    monkeypatch.setattr(boot, "_runtime", lambda: (object(), object(), FailingMenus))
+    monkeypatch.setattr(boot, "select_backend", lambda *args: painters)
+    monkeypatch.setattr(boot, "_state", None)
+    with pytest.raises(RuntimeError, match="menu owner unavailable"):
+        boot.install(tmp_path)
+    assert painters.closed and boot._state is None

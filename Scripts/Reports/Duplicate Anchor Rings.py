@@ -1,6 +1,6 @@
 # this_file: Scripts/Reports/Duplicate Anchor Rings.py
 # SPDX-License-Identifier: Apache-2.0
-"""Enable duplicate-anchor rings in every Glyph window across all tools.
+"""Enable duplicate-anchor rings in each Glyph window after it becomes active.
 
 Each unordered anchor pair less than one font unit apart gets an unfilled
 red/yellow ring at the first anchor. Three coincident anchors produce three

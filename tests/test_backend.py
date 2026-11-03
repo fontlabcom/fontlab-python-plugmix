@@ -3,6 +3,8 @@
 
 from types import SimpleNamespace as NS
 
+import pytest
+
 from fontlab_plugmix.backend import EditorBackend, NativeCanvasBackend, select_backend
 from fontlab_plugmix.reporter import Reporter
 
@@ -66,6 +68,7 @@ class Canvas:
         self.removed = []
         self.blocks = []
         self.remove_result = True
+        self.remove_error = None
 
     def appendPythonPainter(self, callback, order):
         token = 100 + len(self.appended)
@@ -74,6 +77,8 @@ class Canvas:
 
     def removePythonPainter(self, token):
         self.removed.append(token)
+        if self.remove_error is not None:
+            raise self.remove_error
         return self.remove_result
 
     def mapToViewportF(self, point):
@@ -123,11 +128,11 @@ def test_native_backend_attaches_both_orders_and_maps_block_position():
     second = backend.register(background, qt, lambda e, source: None)
     assert [row[2] for row in active[0].appended] == [1, 0]
     assert backend._timer.running and backend._timer.interval == 250
+    active[0].scale = lambda: (_ for _ in ()).throw(AssertionError("unused zoom"))
     active[0].appended[0][1](object(), active[0])
     point = observed[0].canvas_to_view.map(observed[0].glyph_to_canvas.map(Point(1, 2)))
     assert (point.x(), point.y()) == (114, 26)
     assert observed[0].layer.package is package
-    assert observed[0].scale == 2
     timer = backend._timer
     active[0].remove_result = False
     backend.remove(first)
@@ -162,6 +167,73 @@ def test_native_backend_reattaches_on_new_canvas_and_removes_all_tokens():
     assert active[0].removed == [101, 100]
     assert not backend.canvases
     backend.remove(first)
+
+
+def test_native_remove_continues_after_type_error_and_leaked_callback_is_inert():
+    active = [Canvas(1)]
+    qt, fontlab = runtime(active)
+    errors, painted = [], []
+    backend = NativeCanvasBackend(
+        qt,
+        fontlab,
+        lambda error, source: errors.append(error),
+        items=lambda get: list(get()),
+    )
+    reporter = Example()
+    reporter.paint = lambda context, q, sink: painted.append(context)
+    token = backend.register(reporter, qt, lambda error, source: None)
+    first = active[0]
+    first.blocks = [
+        NS(
+            transform=Transform(0, 0),
+            getAllGlyphs=lambda: [
+                NS(
+                    isActive=True,
+                    glyph=NS(
+                        isNull=False,
+                        package=NS(master="Regular"),
+                        findLayer=lambda m: NS(isNull=False),
+                    ),
+                    transform=Transform(0, 0),
+                )
+            ],
+        )
+    ]
+    callback = first.appended[0][1]
+    callback(object(), first)
+    assert len(painted) == 1
+    first.remove_error = TypeError("stale wrapper")
+    active[0] = Canvas(2)
+    backend._poll()
+    timer = backend._timer
+    backend.remove(token)
+    assert first.removed == [100] and active[0].removed == [100]
+    assert len(errors) == 1 and isinstance(errors[0], TypeError)
+    assert timer.deleted and not timer.running
+    callback(object(), first)
+    assert len(painted) == 1, "a leaked native callback must stop drawing"
+
+
+def test_native_remove_skips_destroyed_canvas_and_close_stops_timer_on_error():
+    active = [Canvas(1)]
+    qt, fontlab = runtime(active)
+    backend = NativeCanvasBackend(
+        qt, fontlab, lambda error, source: None, items=lambda get: list(get())
+    )
+    token = backend.register(Example(), qt, lambda error, source: None)
+    old = active[0]
+    old.isNull = True
+    backend.remove(token)
+    assert old.removed == [], "a destroyed canvas wrapper must not call native removal"
+
+    old.isNull = False
+    backend.register(Example(), qt, lambda error, source: None)
+    timer = backend._timer
+    backend.remove = lambda token: (_ for _ in ()).throw(TypeError("teardown"))
+    with pytest.raises(TypeError, match="teardown"):
+        backend.close()
+    assert timer.deleted and not timer.running
+    assert not backend._reporters
 
 
 def test_native_backend_never_raises_from_callback_or_timer():
