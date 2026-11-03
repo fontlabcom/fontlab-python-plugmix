@@ -3,6 +3,9 @@
 
 ## Unreleased
 
+- Resolve dock close filters through FontLab's `PythonQt.private.QObject` and
+  keep palette Show working if close detection is unavailable. The Window
+  toggle remains the explicit close control in that case.
 - Keep tabbed and temporarily hidden palettes alive; only dock Close or the
   Window toggle changes their saved visibility. Resolve active glyphs through
   the workspace canvas, report failing captures once per key, and show palette

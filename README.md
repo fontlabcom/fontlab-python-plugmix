@@ -44,6 +44,9 @@ active glyph, master, revision or node selection changes, and release them on
 close. Tabbed or temporarily hidden docks remain open with their saved state;
 refresh pauses until they become visible again. One 250 ms timer serves all
 visible palettes and stops when none remain.
+Dock close detection uses `PythonQt.private.QObject` where available. If that
+event filter cannot be installed, the panel still opens; a hide only pauses
+refresh, and the Window toggle closes it and saves the visibility choice.
 The current refresh key reads the glyph modification timestamp and node
 selection; FontLab users should confirm that edits outside Plugmix advance
 that timestamp in their build.

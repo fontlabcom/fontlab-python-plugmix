@@ -51,6 +51,53 @@ class PaletteHost:
         self._context: Any = None
         self._has_context = False
         self._running = False
+        self._close_filter_available = True
+
+    def _close_filter_base(self) -> type:
+        """Use FontLab's PythonQt.private QObject, then older QtCore builds."""
+        qt = self.services.qt
+        base = getattr(getattr(qt, "private", None), "QObject", None)
+        if base is None:
+            base = getattr(qt.QtCore, "QObject", None)
+        if base is None:
+            raise AttributeError("PythonQt has no QObject base for dock close events")
+        return base
+
+    def _degrade_close(self, error: Exception) -> None:
+        """Report once; the Window action remains the reliable close control."""
+        self._close_filter_available = False
+        message = RuntimeError(
+            f"Dock close detection unavailable ({error}); use the Window toggle to close"
+        )
+        try:
+            self.services.sink(message, self)
+        except Exception:  # noqa: BLE001, S110 - diagnostics cannot block Show
+            pass
+
+    def _install_close_filter(self, panel: _Panel, name: str) -> None:
+        """Try the optional native event filter without risking panel Show."""
+        if not self._close_filter_available:
+            return
+        widget = panel.owned.widget
+        filter_object = None
+        try:
+            filter_object = _close_filter(
+                self._close_filter_base(),
+                self.services.qt.QtCore.QEvent.Close,
+                lambda: self._schedule_close(name),
+                panel.plugin,
+                self.services.sink,
+            )
+            widget.installEventFilter(filter_object)
+        except Exception as error:  # noqa: BLE001 - optional PythonQt capability
+            if filter_object is not None:
+                try:
+                    widget.removeEventFilter(filter_object)
+                except Exception:  # noqa: BLE001, S110 - may not have installed
+                    pass
+            self._degrade_close(error)
+        else:
+            panel.close_filter = filter_object
 
     def install(self) -> None:
         """Create one checkable Window action and restore chosen panels."""
@@ -137,14 +184,7 @@ class PaletteHost:
                 plugin, self.services.sink, lambda: self._visibility(name, shown)
             )
             signal.connect(panel.visibility)
-            panel.close_filter = _close_filter(
-                self.services.qt.QtCore.QObject,
-                self.services.qt.QtCore.QEvent.Close,
-                lambda: self._schedule_close(name),
-                plugin,
-                self.services.sink,
-            )
-            owned.widget.installEventFilter(panel.close_filter)
+            self._install_close_filter(panel, name)
             self._timer()
             if self._has_context and panel.visible:
                 guarded(

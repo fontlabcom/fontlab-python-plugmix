@@ -149,10 +149,14 @@ def fake_qt():
         QCheckBox=Control,
         QPushButton=Control,
     )
-    return NS(QtGui=gui, QtCore=NS(QTimer=Timer, QObject=object, QEvent=NS(Close=19)))
+    return NS(
+        QtGui=gui,
+        QtCore=NS(QTimer=Timer, QEvent=NS(Close=19)),
+        private=NS(QObject=object),
+    )
 
 
-def palette_host(tmp_path, monkeypatch):
+def palette_host(tmp_path, monkeypatch, *, qt=None):
     import fontlab_plugmix.palettes.host as module
 
     Timer.instances.clear()
@@ -174,7 +178,11 @@ def palette_host(tmp_path, monkeypatch):
     menus, errors = Menus(), []
     state = registry.Registry(tmp_path)
     services = Services(
-        fake_qt(), NS(), menus, None, lambda error, source: errors.append(str(error))
+        qt or fake_qt(),
+        NS(),
+        menus,
+        None,
+        lambda error, source: errors.append(str(error)),
     )
     host = PaletteHost(services, state)
     host.install()
@@ -222,6 +230,8 @@ def test_palette_host_toggle_timer_refresh_key_and_title_close(
     import fontlab_plugmix.palettes.host as module
 
     host, state, created, errors = palette_host(tmp_path, monkeypatch)
+    assert not hasattr(host.services.qt.QtCore, "QObject")
+    assert host.services.qt.private.QObject is object
     assert list(host.actions) == ["step_and_repeat"]
     token = host.actions["step_and_repeat"]
     assert host.services.menus.actions[token][0] == "Plugmix: Step and Repeat Panel"
@@ -261,6 +271,56 @@ def test_palette_host_toggle_timer_refresh_key_and_title_close(
     assert created[1].closed and state.enabled_palettes() == ()
     host.close()
     assert Timer.instances[0].deleted and host.actions == {} and errors == []
+
+
+def test_palette_shows_when_close_filter_base_is_missing(tmp_path, monkeypatch):
+    qt = fake_qt()
+    del qt.private
+    host, state, created, errors = palette_host(tmp_path, monkeypatch, qt=qt)
+    assert host.toggle("step_and_repeat") is True
+    assert len(created) == 1 and not created[0].filters
+    assert state.enabled_palettes() == ("step_and_repeat",)
+    assert len(errors) == 1 and "Dock close detection unavailable" in errors[0]
+    created[0].visible = False
+    created[0].widget.visibilityChanged.emit(False)
+    assert not created[0].closed and state.enabled_palettes() == ("step_and_repeat",)
+    host.toggle("step_and_repeat")
+    host.toggle("step_and_repeat")
+    assert len(errors) == 1, "the degraded close capability is reported once"
+    host.close()
+    assert all(item.closed for item in created)
+
+
+def test_palette_shows_when_event_filter_install_fails(tmp_path, monkeypatch):
+    original_init = Owned.__init__
+
+    def broken_filter(self):
+        original_init(self)
+        self.widget.installEventFilter = lambda item: (_ for _ in ()).throw(
+            TypeError("event filters unavailable")
+        )
+
+    monkeypatch.setattr(Owned, "__init__", broken_filter)
+    host, state, created, errors = palette_host(tmp_path, monkeypatch)
+    assert host.toggle("step_and_repeat") is True
+    assert not created[0].closed and state.enabled_palettes() == ("step_and_repeat",)
+    assert len(errors) == 1 and "event filters unavailable" in errors[0]
+    host.toggle("step_and_repeat")
+    assert created[0].closed and state.enabled_palettes() == ()
+    host.close()
+
+
+def test_palette_uses_qtcore_qobject_on_other_pythonqt_builds(tmp_path, monkeypatch):
+    qt = fake_qt()
+    del qt.private
+    qt.QtCore.QObject = object
+    host, state, created, errors = palette_host(tmp_path, monkeypatch, qt=qt)
+    host.toggle("step_and_repeat")
+    assert len(created[0].filters) == 1 and errors == []
+    created[0].user_close()
+    Timer.pending.pop(0)()
+    assert created[0].closed and state.enabled_palettes() == ()
+    host.close()
 
 
 def test_palette_host_restores_only_chosen_panel_and_guards_refresh(
