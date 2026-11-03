@@ -48,7 +48,12 @@ The native tool bridge maps viewport events through FontLab's pan/zoom and the
 active glyph's text-block transforms. General font-opened and font-closed hooks
 share the palette host's 250 ms timer; plugmix owns extra actions and timers a
 General plugin creates. Tool and General actions are removed by
-`boot.uninstall()`. The first in-app checks for these kinds are still pending.
+`boot.uninstall()`. General font-opened and font-closed hooks report the stable
+`flPackage.fgId`, matching the font IDs used by MCP, remopy and fontport.
+The orchestrator verified native Tool activation, drag mapping, overlay
+lifetime, and General actions and font events in FontLab 9. Shortcut handling
+and keyboard cursor mapping were then corrected from native findings and still
+need an in-app recheck.
 
 ## Built-in Palette
 

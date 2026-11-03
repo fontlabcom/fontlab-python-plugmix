@@ -44,7 +44,7 @@ class ToolBridge:
         self.painter = _ToolPainter(tool)
         self.paint_token: int | None = None
         self.active = False
-        self._last = (0.0, 0.0)
+        self._last: tuple[float, float] | None = None
         self._reported: set[tuple[str, str]] = set()
 
     def _error(self, name: str, error: Exception) -> None:
@@ -82,6 +82,7 @@ class ToolBridge:
                 self.paint_token = None
                 raise
             self.active = True
+            self._last = None
             return True
 
         return self._call("activate", action)
@@ -93,6 +94,7 @@ class ToolBridge:
             if not self.active and self.paint_token is None:
                 return True
             self.active = False
+            self._last = None
             try:
                 self.tool.deactivate()
             finally:
@@ -108,15 +110,16 @@ class ToolBridge:
     ) -> ToolEvent:
         """Copy Qt event fields before the native callback invalidates them."""
         qt = self.services.qt.QtCore.Qt
-        point = (
-            event.localPos()
-            if not key
-            else self.services.qt.QtCore.QPointF(*self._last)
-        )
+        if key and self._last is None:
+            point = canvas.viewPort.mapFromGlobal(self.services.qt.QtGui.QCursor.pos())
+        elif key:
+            point = self.services.qt.QtCore.QPointF(*self._last)
+        else:
+            point = event.localPos()
         view_x, view_y = float(point.x()), float(point.y())
+        x, y = _glyph_point(canvas, point)
         if not key:
             self._last = view_x, view_y
-        x, y = _glyph_point(canvas, point)
         flags = int(event.modifiers())
         return ToolEvent(
             x,

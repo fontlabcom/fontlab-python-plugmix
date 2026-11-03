@@ -120,11 +120,11 @@ def test_palette_active_glyph_and_selection_key_follow_current_master():
     glyph = NS(
         id=7,
         isNull=False,
-        package=NS(id=2),
+        package=NS(id=42, fgId=2),
         lastModified=NS(toMSecsSinceEpoch=lambda: 42),
         findLayer=lambda master: layer,
     )
-    package = NS(id=2, master="Regular", isNull=False)
+    package = NS(id=99, fgId=2, master="Regular", isNull=False)
     info = NS(isActive=True, glyph=glyph, symbol=NS(layerName=""))
     block = NS(glyphsCount=lambda: 1, getGlyphAt=lambda index: info)
     canvas = NS(isNull=False, textBlocks=lambda: [block])
@@ -142,7 +142,10 @@ def test_palette_active_glyph_and_selection_key_follow_current_master():
     active = active_glyph(fontlab, items=lambda get: list(get()))
     assert active == ActiveGlyph(package, glyph, layer)
     first = palette_key(active, items=lambda get: list(get()))
+    assert first[0] == 2
     assert first[3] == 42
+    package.id = 12345
+    assert palette_key(active, items=lambda get: list(get())) == first
     node.selected = True
     assert palette_key(active, items=lambda get: list(get())) != first
     package.master = "Bold"
@@ -164,7 +167,9 @@ def test_palette_active_glyph_and_selection_key_follow_current_master():
     assert active_glyph(fontlab, items=lambda get: list(get())) is None
     info.isActive = True
     glyph.package.id = 3
+    assert active_glyph(fontlab, items=lambda get: list(get())) is not None
+    glyph.package.fgId = 3
     assert active_glyph(fontlab, items=lambda get: list(get())) is None
-    glyph.package.id = 2
+    glyph.package.fgId = 2
     glyph.findLayer = lambda master: NS(isNull=True)
     assert active_glyph(fontlab, items=lambda get: list(get())) is None

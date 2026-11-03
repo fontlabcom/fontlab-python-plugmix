@@ -122,7 +122,7 @@ class GeneralContext:
 
 
 class General(Plugin):
-    """A menu command with optional font-opened and font-closed hooks."""
+    """A menu command with font hooks receiving stable ``flPackage.fgId`` ids."""
 
     kind: ClassVar[str] = "general"
     menu: ClassVar[str | None] = "Window"

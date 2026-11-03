@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+- Read General shortcuts through PythonQt's QAction property and compare
+  normalized QKeySequences before assignment. Use `fgId` for font identity
+  in General events, active-glyph checks and palette keys. Map a tool's first
+  key event from the live cursor instead of viewport origin.
 - Add native Tool registration with guarded event mapping, active-only mark
   painting and a selection-only Smart Select port. Add General menu commands,
   font-opened/closed polling on the palette timer, owned timers and actions,

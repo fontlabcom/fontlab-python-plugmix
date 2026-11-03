@@ -27,20 +27,28 @@ class GeneralHost:
         self._fonts: set[int] = set()
 
     def _font_ids(self) -> set[int]:
-        """Read open package ids from the workspace, not CurrentGlyph()."""
+        """Read stable font fgIds from the workspace, not wrapper object ids."""
         workspace = self.services.fontlab.flWorkspace.instance()
         items = import_module("fontlabapp.qtsafe").qt_list
-        return {int(package.id) for package in items(workspace.packages)}
+        # packages() yields flObject wrappers; only flPackage(item) exposes fgId.
+        package = self.services.fontlab.flPackage
+        return {int(package(item).fgId) for item in items(workspace.packages)}
 
-    def _shortcut(self, token: int, shortcut: str, plugin: Any) -> None:
-        """Leave an existing shortcut untouched and report a conflict."""
+    def _shortcut(self, token: int, shortcut: str) -> None:
+        """Compare Qt-normalized sequences and leave conflicts unassigned."""
         menus, qt = self.services.menus, self.services.qt
+        qt_value = import_module("fontlabapp.qt_properties").value
         action = menus.action(token)
+        sequence = qt.QtGui.QKeySequence(shortcut)
+        wanted = str(sequence.toString())
         siblings = menus.main_window().findChildren(qt.QtGui.QAction)
         for other in siblings:
-            if other is not action and str(other.shortcut().toString()) == shortcut:
+            if (
+                other is not action
+                and str(qt_value(other, "shortcut").toString()) == wanted
+            ):
                 raise ValueError(f"Shortcut {shortcut} is already in use")
-        action.setShortcut(shortcut)
+        action.setShortcut(sequence)
 
     def _start(self, name: str) -> None:
         """Install the command first; unwind it if start fails."""
@@ -60,7 +68,7 @@ class GeneralHost:
                 guarded(
                     plugin,
                     self.services.sink,
-                    lambda: self._shortcut(token, plugin.shortcut, plugin),
+                    lambda: self._shortcut(token, plugin.shortcut),
                 )
         except Exception:
             guarded(plugin, self.services.sink, plugin.stop)

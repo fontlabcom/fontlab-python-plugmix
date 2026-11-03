@@ -68,6 +68,19 @@ class Point:
         return self._y
 
 
+class KeySequence:
+    """PythonQt-shaped sequence with a canonical display string."""
+
+    def __init__(self, text):
+        parts = [part.strip().lower() for part in text.split("+") if part.strip()]
+        self.text = "+".join(
+            "Ctrl" if part == "ctrl" else part.title() for part in parts
+        )
+
+    def toString(self):
+        return self.text
+
+
 class Transform:
     def __init__(self, dx=0, dy=0):
         self._dx, self._dy = dx, dy
@@ -104,6 +117,9 @@ class Canvas:
             getAllGlyphs=lambda: [NS(isActive=False), self.info],
         )
         self.textBlocks = lambda: [self.block]
+        self.viewPort = NS(
+            mapFromGlobal=lambda point: Point(point.x() - 10, point.y() - 20)
+        )
         self.zoomed = []
         self._zoom, self._scroll = zoom, scroll
 
@@ -128,12 +144,16 @@ class Menus:
 
     def add_action(self, section, title, callback, *, checkable):
         token = len(self.actions) + len(self.removed) + 1
-        action = NS(
-            checked=False, enabled=True, shortcut=lambda: NS(toString=lambda: "")
-        )
+        action = NS(checked=False, enabled=True, shortcut=KeySequence(""))
         action.setChecked = lambda value: setattr(action, "checked", value)
         action.setEnabled = lambda value: setattr(action, "enabled", value)
-        action.setShortcut = lambda value: setattr(action, "shortcut_set", value)
+
+        def set_shortcut(value):
+            assert isinstance(value, KeySequence)
+            action.shortcut = value
+            action.shortcut_set = value
+
+        action.setShortcut = set_shortcut
         self.actions[token] = (section, title, callback, action)
         return token
 
@@ -155,7 +175,7 @@ class Workspace:
     def __init__(self):
         self.registered = []
         self.removed = []
-        self.fonts = [NS(id=1)]
+        self.fonts = [NS(id=9001, fgId=1)]
         self.canvas = Canvas()
 
     def registerPythonTool(self, title, icon, bridge):
@@ -166,7 +186,11 @@ class Workspace:
         self.removed.append(token)
 
     def packages(self):
-        return self.fonts
+        # Native items are flObject wrappers carrying only id; fgId needs flPackage(item).
+        return [NS(id=font.id) for font in self.fonts]
+
+    def package(self, item):
+        return next(font for font in self.fonts if font.id == item.id)
 
     def getActiveCanvas(self):
         return self.canvas
@@ -187,10 +211,16 @@ def environment(tmp_path):
             QRectF=lambda *parts: parts,
             Qt=NS(ShiftModifier=1, AltModifier=2, ControlModifier=4, MetaModifier=8),
         ),
-        QtGui=NS(QAction=object),
+        QtGui=NS(
+            QAction=object,
+            QKeySequence=KeySequence,
+            QCursor=NS(pos=lambda: Point(77.5, 79)),
+        ),
     )
     fontlab = NS(
-        flWorkspace=NS(instance=lambda: workspace), UpdateActiveCanvas=lambda: None
+        flWorkspace=NS(instance=lambda: workspace),
+        flPackage=workspace.package,
+        UpdateActiveCanvas=lambda: None,
     )
     services = Services(
         qt, fontlab, menus, painters, lambda error, owner: errors.append(str(error))
@@ -512,10 +542,13 @@ def test_general_shared_timer_font_difference_and_action_teardown(
     command = general.running[Probe.name].token
     services.menus.actions[command][2]()
     assert seen[-1] == "run"
-    workspace.fonts = [NS(id=2)]
+    workspace.fonts = [NS(id=12345, fgId=1)]
+    Timer.created[0].timeout.emit()
+    assert seen == ["start", "run"]
+    workspace.fonts = [NS(id=9002, fgId=2)]
     Timer.created[0].timeout.emit()
     Timer.created[0].timeout.emit()
-    assert palette_ticks == [1, 1]
+    assert palette_ticks == [1, 1, 1]
     assert seen[-2:] == [("open", 2), ("close", 1)]
     general.close()
     assert seen[-1] == "stop" and command not in services.menus.actions
@@ -645,7 +678,7 @@ def test_general_shortcut_conflict_is_reported_without_forcing(tmp_path, monkeyp
             k: v for k, v in classes.items() if kind is None or v.kind == kind
         },
     )
-    existing = NS(shortcut=lambda: NS(toString=lambda: "Ctrl+K"))
+    existing = NS(shortcut=KeySequence("ctrl+k"))
     services.menus.main_window = lambda: NS(findChildren=lambda cls: [existing])
     palettes = PaletteHost(services, state)
     palettes.install()
@@ -656,6 +689,50 @@ def test_general_shortcut_conflict_is_reported_without_forcing(tmp_path, monkeyp
     assert not hasattr(services.menus.action(token), "shortcut_set")
     host.close()
     palettes.close()
+
+
+def test_general_shortcut_property_is_assigned_as_key_sequence(tmp_path, monkeypatch):
+    services, state, _workspace, errors = environment(tmp_path)
+
+    class Shortcut(General):
+        name, title, shortcut = "shortcut", "Shortcut", "ctrl+l"
+
+    classes = state.available()
+    classes[Shortcut.name] = Shortcut
+    monkeypatch.setattr(
+        state,
+        "available",
+        lambda kind=None: {
+            k: v for k, v in classes.items() if kind is None or v.kind == kind
+        },
+    )
+    palettes = PaletteHost(services, state)
+    palettes.install()
+    host = GeneralHost(services, state, palettes)
+    host.install()
+    token = host.running["shortcut"].token
+    assert services.menus.action(token).shortcut_set.toString() == "Ctrl+L"
+    assert errors == []
+    host.close()
+    palettes.close()
+
+
+def test_key_before_mouse_uses_cursor_in_viewport(tmp_path):
+    services, _state, workspace, errors = environment(tmp_path)
+    seen = []
+
+    class Probe(Tool):
+        def key_down(self, event):
+            seen.append(event)
+            return True
+
+    bridge = ToolBridge(Probe(), services)
+    assert bridge.activate()
+    assert bridge.keyPressed(mouse(0, 0), workspace.canvas) is False
+    assert bridge._last is None
+    assert (seen[0].view_x, seen[0].view_y, seen[0].x, seen[0].y) == (67.5, 59, 25, 50)
+    assert errors == []
+    bridge.deactivate()
 
 
 def test_boot_wires_all_five_kinds_and_tears_down(tmp_path, monkeypatch):

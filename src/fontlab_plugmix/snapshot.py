@@ -110,7 +110,7 @@ def active_glyph(
             if (
                 glyph is None
                 or glyph.isNull
-                or int(glyph.package.id) != int(package.id)
+                or int(glyph.package.fgId) != int(package.fgId)
             ):
                 return None
             name = str(info.symbol.layerName)
@@ -145,7 +145,7 @@ def palette_key(
         for contour in items(lambda shape=shape: shape.contours):
             selected.append(tuple(bool(node.selected) for node in items(contour.nodes)))
     return (
-        int(active.package.id),
+        int(active.package.fgId),
         int(active.glyph.id),
         str(active.package.master),
         revision,
