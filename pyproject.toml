@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.26", "hatch-vcs>=0.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fontlab-python-plugmix"
+dynamic = ["version"]
+description = "Native FontLab 9 reporter plugins"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dependencies = ["fontlab-fontlabapp"]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-cov"]
+
+[project.entry-points."fontlab_plugmix.plugins"]
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = "0.1.0"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fontlab_plugmix"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=fontlab_plugmix --cov-report=term-missing --cov-report=json:coverage.json"
+
