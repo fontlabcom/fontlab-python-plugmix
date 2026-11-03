@@ -77,6 +77,60 @@ class NativeSource:
     layer: Any
 
 
+@dataclass(frozen=True)
+class ActiveGlyph:
+    """Checked current glyph and its selected-master layer for palette actions."""
+
+    package: Any
+    glyph: Any
+    layer: Any
+
+
+def active_glyph(fontlab: Any) -> ActiveGlyph | None:
+    """Resolve the active window glyph through the workspace's current package."""
+    workspace = fontlab.flWorkspace.instance()
+    package = workspace.currentPackage
+    shown = fontlab.CurrentGlyph()
+    if package is None or shown is None or getattr(package, "isNull", False):
+        return None
+    glyph = package.findName(shown.name)
+    if glyph is None or glyph.isNull:
+        return None
+    layer = glyph.findLayer(package.master)
+    if layer is None or layer.isNull:
+        return None
+    return ActiveGlyph(package, glyph, layer)
+
+
+def palette_key(
+    active: ActiveGlyph | None,
+    *,
+    items: Callable[[Callable[[], Any]], list[Any]] | None = None,
+) -> tuple[Any, ...] | None:
+    """Read a cheap revision and node-selection key without a full snapshot."""
+    if active is None:
+        return None
+    if items is None:
+        items = import_module("fontlabapp.qtsafe").qt_list
+    stamp = active.glyph.lastModified
+    revision = (
+        stamp.toMSecsSinceEpoch() if hasattr(stamp, "toMSecsSinceEpoch") else stamp
+    )
+    selected = []
+    for shape in items(lambda: active.layer.shapes):
+        if shape.isComponent:
+            continue
+        for contour in items(lambda shape=shape: shape.contours):
+            selected.append(tuple(bool(node.selected) for node in items(contour.nodes)))
+    return (
+        int(active.package.id),
+        int(active.glyph.id),
+        str(active.package.master),
+        revision,
+        tuple(selected),
+    )
+
+
 def selected_layers() -> Any:
     """Read the active Font/Glyph window selection through App's checked adapter."""
     return import_module("fontlabapp.layer_selection").capture(monotonic() + 2)

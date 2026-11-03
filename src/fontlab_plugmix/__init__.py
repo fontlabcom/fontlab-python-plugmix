@@ -8,6 +8,7 @@ __all__ = [
     "Filter",
     "LayerEdit",
     "Mark",
+    "Palette",
     "Param",
     "Plugin",
     "Reporter",
@@ -24,6 +25,8 @@ def __getattr__(name: str) -> Any:
         return getattr(import_module(".filter", __name__), name)
     if name == "Plugin":
         return import_module(".plugin", __name__).Plugin
+    if name == "Palette":
+        return import_module(".palette", __name__).Palette
     if name == "registry":
         return import_module(".registry", __name__)
     if name == "install":

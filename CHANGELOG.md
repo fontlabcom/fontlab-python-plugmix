@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+- Add the dockable Palette kind, persistent Window toggles, a shared refresh
+  timer, and Step and Repeat contour duplication through one geometry Undo step.
+- Reuse outline safety checks and the layer writer for palette edits. Keep
+  palettes out of Reporter and Filter menus; restore old preferences unchanged.
 - Measure Delete Small Paths over flattened curves; preserve newly discovered
   filters when no filter choice was saved. Keep Apply working when saving its
   parameters fails, and skip unsafe glyphs individually.

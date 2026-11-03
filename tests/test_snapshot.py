@@ -6,7 +6,14 @@ from types import SimpleNamespace as NS
 
 import pytest
 
-from fontlab_plugmix.snapshot import NativeSource, capture, resolve_source
+from fontlab_plugmix.snapshot import (
+    ActiveGlyph,
+    NativeSource,
+    active_glyph,
+    capture,
+    palette_key,
+    resolve_source,
+)
 
 
 class Point:
@@ -103,3 +110,38 @@ def test_capture_copies_transformed_nodes_anchors_metrics_immutably():
     assert (opposite.metrics.upm, opposite.metrics.italic_slant) == (2048, -12)
     with pytest.raises(FrozenInstanceError):
         snapshot.advance = 10
+
+
+def test_palette_active_glyph_and_selection_key_follow_current_master():
+    node = NS(selected=False)
+    contour = NS(nodes=lambda: [node])
+    shape = NS(isComponent=False, contours=[contour])
+    layer = NS(isNull=False, shapes=[shape])
+    glyph = NS(
+        id=7,
+        isNull=False,
+        lastModified=NS(toMSecsSinceEpoch=lambda: 42),
+        findLayer=lambda master: layer,
+    )
+    package = NS(id=2, master="Regular", isNull=False, findName=lambda name: glyph)
+    workspace = NS(currentPackage=package)
+    fontlab = NS(
+        flWorkspace=NS(instance=lambda: workspace), CurrentGlyph=lambda: NS(name="a")
+    )
+    active = active_glyph(fontlab)
+    assert active == ActiveGlyph(package, glyph, layer)
+    first = palette_key(active, items=lambda get: list(get()))
+    assert first[3] == 42
+    node.selected = True
+    assert palette_key(active, items=lambda get: list(get())) != first
+    package.master = "Bold"
+    assert palette_key(active, items=lambda get: list(get()))[2] == "Bold"
+    assert palette_key(None) is None
+    fontlab.CurrentGlyph = lambda: None
+    assert active_glyph(fontlab) is None
+    fontlab.CurrentGlyph = lambda: NS(name="a")
+    package.findName = lambda name: NS(isNull=True)
+    assert active_glyph(fontlab) is None
+    package.findName = lambda name: glyph
+    glyph.findLayer = lambda master: NS(isNull=True)
+    assert active_glyph(fontlab) is None

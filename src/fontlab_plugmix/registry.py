@@ -1,5 +1,5 @@
 # this_file: src/fontlab_plugmix/registry.py
-"""Discover plugin kinds and persist reporter/filter preferences without host imports."""
+"""Discover plugin kinds and persist reporter, filter and palette preferences."""
 
 import json
 import pkgutil
@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .filter import Filter
+from .palette import Palette
 from .plugin import Plugin
 from .reporter import Reporter
 
@@ -39,9 +40,10 @@ def _accept(found: dict[str, type[Plugin]], cls: Any) -> None:
     if (
         not isinstance(cls, type)
         or not issubclass(cls, Plugin)
-        or cls.kind not in {"reporter", "filter"}
+        or cls.kind not in {"reporter", "filter", "palette"}
         or (cls.kind == "reporter" and not issubclass(cls, Reporter))
         or (cls.kind == "filter" and not issubclass(cls, Filter))
+        or (cls.kind == "palette" and not issubclass(cls, Palette))
         or not cls.name
         or not cls.title
     ):
@@ -71,9 +73,9 @@ def _scan(
 
 
 def discover(error_sink: ErrorSink | None = None) -> dict[str, type[Plugin]]:
-    """Find built-in reporters, filters and third-party classes on demand."""
+    """Find built-in classes and third-party entry points on demand."""
     found: dict[str, type[Plugin]] = {}
-    for package_name in ("plugins", "filters"):
+    for package_name in ("plugins", "filters", "palettes"):
         _scan(package_name, found, error_sink)
     try:
         points = metadata.entry_points().select(group=ENTRY_GROUP)
@@ -100,6 +102,7 @@ class Registry:
         self._classes: dict[str, type[Plugin]] | None = None
         self._wanted: set[str] = set()
         self._filter_wanted: set[str] | None = None
+        self._palette_wanted: set[str] | None = None
         self._params: dict[str, dict[str, Any]] = {}
         self._extras: dict[str, Any] = {}
         self._tokens: dict[str, int] = {}
@@ -118,12 +121,18 @@ class Registry:
             if any(not isinstance(name, str) for name in data["enabled"]):
                 raise ValueError(f"Invalid plugmix enabled names: {self.path}")
             filters = data.get("enabled_filters")
+            palettes = data.get("enabled_palettes")
             params = data.get("params", {})
             if filters is not None and (
                 not isinstance(filters, list)
                 or any(not isinstance(n, str) for n in filters)
             ):
                 raise ValueError(f"Invalid plugmix enabled filters: {self.path}")
+            if palettes is not None and (
+                not isinstance(palettes, list)
+                or any(not isinstance(n, str) for n in palettes)
+            ):
+                raise ValueError(f"Invalid plugmix enabled palettes: {self.path}")
             if not isinstance(params, dict) or any(
                 not isinstance(v, dict) for v in params.values()
             ):
@@ -135,11 +144,12 @@ class Registry:
             return
         self._wanted = {RENAMED.get(name, name) for name in data["enabled"]}
         self._filter_wanted = None if filters is None else set(filters)
+        self._palette_wanted = None if palettes is None else set(palettes)
         self._params = params
         self._extras = {
             k: v
             for k, v in data.items()
-            if k not in {"enabled", "enabled_filters", "params"}
+            if k not in {"enabled", "enabled_filters", "enabled_palettes", "params"}
         }
 
     def _save(self) -> None:
@@ -147,6 +157,8 @@ class Registry:
         data = {**self._extras, "enabled": sorted(self._wanted), "params": self._params}
         if self._filter_wanted is not None:
             data["enabled_filters"] = sorted(self._filter_wanted)
+        if self._palette_wanted is not None:
+            data["enabled_palettes"] = sorted(self._palette_wanted)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(
             json.dumps(data, indent=2) + "\n",
@@ -171,6 +183,24 @@ class Registry:
             else self._filter_wanted
         )
         return tuple(sorted(names))
+
+    def enabled_palettes(self) -> tuple[str, ...]:
+        """Return shown palettes; old preference files default to hidden."""
+        return tuple(sorted(self._palette_wanted or ()))
+
+    def set_palette_enabled(self, name: str, enabled: bool) -> None:
+        """Persist an explicit panel visibility choice, rolling back on failure."""
+        if name not in self.available("palette"):
+            raise KeyError(name)
+        previous = self._palette_wanted
+        wanted = set(self.enabled_palettes())
+        wanted.add(name) if enabled else wanted.discard(name)
+        self._palette_wanted = wanted
+        try:
+            self._save()
+        except Exception:
+            self._palette_wanted = previous
+            raise
 
     def values(self, name: str) -> dict[str, Any]:
         """Return validated saved filter values, falling back to defaults."""

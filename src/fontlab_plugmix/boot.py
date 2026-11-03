@@ -10,6 +10,7 @@ from . import menu, registry
 from .backend import select_backend
 from .filters.host import FilterHost
 from .kinds import Services
+from .palettes.host import PaletteHost
 
 
 @dataclass
@@ -21,6 +22,7 @@ class _State:
     painters: Any
     menus: Any
     filters: FilterHost
+    palettes: PaletteHost
 
 
 _state: _State | None = None
@@ -43,7 +45,7 @@ def _runtime() -> tuple[Any, Any, Any]:
 
 
 def install(config_dir: str | Path | None = None) -> None:
-    """Idempotently restore enabled reporters and add their View actions."""
+    """Idempotently restore reporters, filters and visible palettes."""
     global _state
     path = None if config_dir is None else Path(config_dir)
     if _state is not None:
@@ -57,27 +59,36 @@ def install(config_dir: str | Path | None = None) -> None:
     painters = select_backend(qt, fontlab, _error)
     menus = None
     filters = None
+    palettes = None
     try:
         menus = menus_cls(qt, fontlab, error_sink=_error, owned_title="Plugmix")
         reporters.attach(painters, qt, _error)
         menu.install(menus, reporters)
         filters = FilterHost(Services(qt, fontlab, menus, painters, _error), reporters)
         filters.install()
+        palettes = PaletteHost(
+            Services(qt, fontlab, menus, painters, _error), reporters
+        )
+        palettes.install()
     except Exception:
         try:
             reporters.detach()
         finally:
             try:
                 try:
-                    if filters is not None:
-                        filters.close()
+                    try:
+                        if palettes is not None:
+                            palettes.close()
+                    finally:
+                        if filters is not None:
+                            filters.close()
                 finally:
                     if menus is not None:
                         menus.close()
             finally:
                 painters.close()
         raise
-    _state = _State(path, reporters, painters, menus, filters)
+    _state = _State(path, reporters, painters, menus, filters, palettes)
 
 
 def uninstall() -> None:
@@ -88,7 +99,10 @@ def uninstall() -> None:
     state, _state = _state, None
     try:
         try:
-            state.filters.close()
+            try:
+                state.palettes.close()
+            finally:
+                state.filters.close()
         finally:
             state.menus.close()
     finally:

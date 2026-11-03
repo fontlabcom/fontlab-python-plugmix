@@ -42,11 +42,17 @@ class Menus:
     def add_action(self, section, title, callback, *, checkable):
         token = len(self.actions) + 1
         assert (
-            section == "View" and title.startswith("Plugmix: Show ") and checkable
-        ) or (
-            section == "Glyph"
-            and title.startswith("Plugmix: Delete Small Paths")
-            and not checkable
+            (section == "View" and title.startswith("Plugmix: Show ") and checkable)
+            or (
+                section == "Glyph"
+                and title.startswith("Plugmix: Delete Small Paths")
+                and not checkable
+            )
+            or (
+                section == "Window"
+                and title == "Plugmix: Step and Repeat Panel"
+                and checkable
+            )
         )
         self.actions[token] = (Action(), callback)
         return token
@@ -68,7 +74,7 @@ def test_discovery_includes_builtins_and_entry_points(monkeypatch):
     points = NS(select=lambda group: [NS(load=lambda: External)])
     monkeypatch.setattr(registry.metadata, "entry_points", lambda: points)
     found = registry.discover()
-    assert len(found) == 21
+    assert len(found) == 22
     assert found["external"] is External
 
     class Bad(Reporter):
@@ -76,18 +82,18 @@ def test_discovery_includes_builtins_and_entry_points(monkeypatch):
 
     points.select = lambda group: [NS(load=lambda: Bad)]
     errors = []
-    assert len(registry.discover(lambda error, source: errors.append(error))) == 20
+    assert len(registry.discover(lambda error, source: errors.append(error))) == 21
     points.select = lambda group: [
         NS(load=lambda: object),
         NS(load=lambda: (_ for _ in ()).throw(ImportError("broken"))),
     ]
-    assert len(registry.discover(lambda error, source: errors.append(error))) == 20
+    assert len(registry.discover(lambda error, source: errors.append(error))) == 21
     assert [type(error) for error in errors] == [ValueError, TypeError, ImportError]
 
 
 def test_registry_enable_disable_persists_and_restores(tmp_path):
     state = registry.Registry(tmp_path)
-    assert len(state.available()) == 20
+    assert len(state.available()) == 21
     assert state.enabled() == ()
     assert not state.path.exists(), "initialization must not write preferences"
     painters = Painters()
@@ -222,7 +228,7 @@ def test_boot_install_is_idempotent_and_uninstall_preserves_preferences(
     monkeypatch.setattr(boot, "_state", None)
     boot.install(tmp_path)
     state = boot._state
-    assert state is not None and len(state.menus.actions) == 20
+    assert state is not None and len(state.menus.actions) == 21
     boot.install(tmp_path)
     assert boot._state is state
     with pytest.raises(ValueError):

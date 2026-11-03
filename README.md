@@ -1,7 +1,8 @@
 <!-- this_file: README.md -->
 # fontlab-python-plugmix
 
-Native FontLab 9 plugins: toggleable Reporter overlays and an undoable Filter.
+Native FontLab 9 plugins: toggleable Reporter overlays, an undoable Filter and
+a dockable Palette.
 Plugmix uses MeVisLab PythonQt and native per-canvas painters when available,
 with `fontlabapp.editor_painters.EditorPainters` for older builds.
 It does not use PySide2 or Glyphs/Cocoa emulation. The repository also contains
@@ -18,15 +19,32 @@ Neither file here edits a FontLab installation.
 
 The View menu gains 19 checkable `Plugmix: Show …` reporter actions. The Glyph
 menu gains `Plugmix: Delete Small Paths…` with a numeric threshold dialog.
+The Window menu gains a checkable `Plugmix: Step and Repeat Panel` action.
 The selection is
 remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json`.
 `install(config_dir=...)` selects another directory, which is useful in tests.
-`boot.uninstall()` removes the actions and overlays while retaining the selection.
+`boot.uninstall()` removes the actions, overlays and panels while retaining the selection.
 Selections saved under the former `nodes_outside_paths` name restore as
 `offcurve_outside_bounds`.
-The same JSON file keeps `enabled_filters` and last-used `params`; old files
+The same JSON file keeps `enabled_filters`, `enabled_palettes` and last-used
+`params`; old files
 with only `enabled` still load. Filters are enabled by default, and the
 `Registry.set_filter_enabled()` API can change that before the next install.
+Palettes start hidden until shown, and `enabled_palettes` is written only after
+the user chooses a visibility state.
+
+## Built-in Palette
+
+| Palette | Action |
+| --- | --- |
+| Step and Repeat | Docked count, X offset and Y offset controls duplicate selected contours of the active glyph. Count is the number of added copies; each is shifted by another (dx, dy). Apply uses one geometry Undo step, retains unselected contours and refuses shared or transformed outlines. Count 0 and no contour selection report a no-op. |
+
+Palettes build their controls once through `PaletteUI`, refresh only when the
+active glyph, master, revision or node selection changes, and release them on
+close. One 250 ms timer serves all visible palettes and stops when none remain.
+The current refresh key reads the glyph modification timestamp and node
+selection; FontLab users should confirm that edits outside Plugmix advance
+that timestamp in their build.
 
 ## Built-in Filter
 
