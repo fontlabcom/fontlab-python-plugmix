@@ -1,0 +1,54 @@
+# this_file: NOTICE
+Six reporters are adapted from mekkablue's Glyphs reporter behaviours; a
+seventh (`offcurve_outside_bounds`) is only inspired by ShowNodesOutsidePaths
+and uses a different bounds test. The source plugins below are authored by
+mekkablue (Rainer Erich Scheichelbauer) and distributed under Apache-2.0.
+No source code from them is copied.
+
+- ShowAnchorsWithDuplicateCoordinates — https://github.com/mekkablue/ShowAnchorsWithDuplicateCoordinates
+- ShowNodeIndexes — https://github.com/mekkablue/ShowNodeIndexes
+- ShowCoordinatesOfSelectedNodes — https://github.com/mekkablue/ShowCoordinatesOfSelectedNodes
+- ShowDistanceBetweenTwoPoints — https://github.com/mekkablue/ShowDistanceBetweenTwoPoints
+- ShowNodesOutsidePaths — https://github.com/mekkablue/ShowNodesOutsidePaths (inspiration only; Plugmix's Off-curve Handles Outside Bounds uses a different bounds test)
+- ShowCenterLines — https://github.com/mekkablue/ShowCenterLines
+- ShowVerticalMetrics — https://github.com/mekkablue/ShowVerticalMetrics
+
+License for each listed upstream repository: Apache-2.0.
+
+Task 7 reporters are original behavioural implementations inspired by these
+repositories. No source code is copied. Each source repository's `LICENSE`
+was checked; only NodesCloseToZones uses MIT, while the others use Apache-2.0.
+
+- Angled Handles — mekkablue (Rainer Erich Scheichelbauer), ShowAngledHandles, Apache-2.0: https://github.com/mekkablue/ShowAngledHandles
+- Crosshair — mekkablue (Rainer Erich Scheichelbauer), ShowCrosshair, Apache-2.0: https://github.com/mekkablue/ShowCrosshair
+- Tops and Bottoms — mekkablue (Rainer Erich Scheichelbauer), ShowTopsAndBottoms, Apache-2.0: https://github.com/mekkablue/ShowTopsAndBottoms
+- Segment Length — mekkablue (Rainer Erich Scheichelbauer), SegmentLength, Apache-2.0: https://github.com/mekkablue/SegmentLength
+- Glyph Focus — mekkablue (Rainer Erich Scheichelbauer), ShowGlyphFocus, Apache-2.0: https://github.com/mekkablue/ShowGlyphFocus
+- Emphasise Selected Handles — mekkablue (Rainer Erich Scheichelbauer), ShowOnlySelectedHandles, Apache-2.0: https://github.com/mekkablue/ShowOnlySelectedHandles
+- Anchor Cloud — Simon Cozens (Corvel Software), ShowAnchorCloud, Apache-2.0: https://github.com/simoncozens/ShowAnchorCloud
+- RSB Line — Fadhl Haqq (akufadhl), RSBline, Apache-2.0: https://github.com/akufadhl/RSBline
+- Unitizer — Pablo Impallari, with contributions by Simon Cozens and based on sample code by Rainer Erich Scheichelbauer (mekkablue), Unitizer, Apache-2.0: https://github.com/schriftgestalt/Unitizer
+- Nodes Close to Zones — Olli Meier, NodesCloseToZones-Glyphs, MIT: https://github.com/ollimeier/NodesCloseToZones-Glyphs
+- Imprecise Italic Angle — michaelrafailyk, HighlightImpreciseItalicAngle, Apache-2.0: https://github.com/michaelrafailyk/HighlightImpreciseItalicAngle
+- Smooth Node Angles — Henrique Beier (harbortype), ShowSmoothNodeAngleAndProportion, Apache-2.0: https://github.com/harbortype/ShowSmoothNodeAngleAndProportion
+
+Task 16 Filter: Delete Small Paths is an original behavioural reimplementation
+inspired by `DeleteSmallPaths`, authored by Rainer Erich Scheichelbauer
+(@mekkablue), Apache-2.0: https://github.com/mekkablue/DeleteSmallPaths
+The upstream README and LICENSE were read; no source code was copied.
+
+Task 16 Palette: Step and Repeat is an original behavioural reimplementation
+inspired by `StepAndRepeat`, authored by Rainer Erich Scheichelbauer
+(@mekkablue), based on sample code by Georg Seifert and Jan Gerner,
+Apache-2.0: https://github.com/mekkablue/StepAndRepeat
+The upstream README and LICENSE were read; no source code was copied.
+
+Task 16 Tool: Smart Select is an original selection-only behavioural port
+inspired by `SmartSelectTool`, authored by But Ko (@buttaiwan), Apache-2.0:
+https://github.com/ButTaiwan/SmartSelectTool
+The upstream README and LICENSE were read; no source code was copied.
+
+Task 16 General: Zoom to Selection is an original behavioural port inspired by
+`zoom-to-selection`, authored by TzuYuan Yin (@yintzuyuan), MIT:
+https://github.com/yintzuyuan/zoom-to-selection
+The upstream README and LICENSE were read; no source code was copied.
