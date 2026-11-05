@@ -193,8 +193,12 @@ runs `python3 tests/check_coverage.py coverage.json`. Selectors skip that checke
 Keep the ordinary installed pre-push gate as a separate requirement.
 The recorded installed-hook baseline passed 125 tests with zero changed modules.
 That baseline does not prove the full repository checker passed.
-The full recipe and compatibility with the chosen current App tuple still need
-verification. Offline fake-host tests do not establish native behavior.
+The later full no-selector `sh test.sh` run on 2026-11-05 at 21:46:13 UTC
+passed: exit 0, 125 tests and the full per-module checker. It used this
+source and owned App `fb6a93776772b996b25604f88711feb300b90109`.
+The observed 96% overall line coverage supplements the unchanged 80%
+combined-module policy. Requalify after a source or App tuple change.
+Offline fake-host tests do not establish native or installed-artifact acceptance.
 
 ## Future plugin architecture
 

@@ -2,6 +2,18 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-05 — Full source recipe qualification
+
+Corrected the six-guide handoff to the retained 21:46:13 UTC full-run
+receipt: no selectors, exit 0, 125 passes and full per-module checker,
+Plugmix `dddadcd9bc8cee21d5f7b8fe60027495e13fd41a` with owned App
+`fb6a93776772b996b25604f88711feb300b90109`. The 96% overall result is
+line coverage; the 80% combined-module policy is unchanged. The earlier
+installed-hook baseline remains historical evidence. Future tuple changes
+require requalification; ordinary hooks, native and installed-artifact
+acceptance remain separate. No additional product test was run for this
+prose correction. Source, tests and policy files are unchanged.
+
 ## 2026-11-05 — Issue 230 remote documentation variant
 
 Prepared six source-specific root guides for the package at

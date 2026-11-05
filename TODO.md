@@ -4,7 +4,7 @@ this_file: TODO.md
 
 # Open tasks
 
-- [ ] Run the full no-selector repository recipe against the chosen owned App tuple and retain the installed pre-push result separately.
+- [ ] Requalify the full no-selector recipe after a source or App tuple change; keep the ordinary installed pre-push result separate.
 - [ ] Specify the Issue 210 bundle name/manifest contract and qualify all four Extensions kinds, discovery, duplicate registration and unload/reload.
 - [ ] Qualify callback containment, ownership teardown and preservation-safe startup fixtures before changing activation.
 - [ ] Register the Reporters palette and View > Reporters, Tools > Tool/toolbar, and Window > Panels surfaces under the future framework.
