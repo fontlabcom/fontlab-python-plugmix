@@ -1,3 +1,7 @@
+---
+this_file: README.md
+---
+
 <!-- this_file: README.md -->
 # fontlab-python-plugmix
 
@@ -170,3 +174,54 @@ module for at least 80% line coverage. The orchestrator checked the original
 seven reporters and native canvas drawing in FontLab 9 before Task 7. The
 orchestrator also checked all 18 pre-revision reporters natively; Glyph Focus
 and the revised slant and unit grid have offline coverage only.
+
+
+## Development checks
+
+This source base is `dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`.
+`src/fontlab_plugmix/` contains the package. `tests/`, `test.sh` and
+`tests/check_coverage.py` provide its own offline suite and coverage check.
+Use an arm64 Python 3.11 process and the owned sibling App source:
+
+```sh
+PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
+```
+
+Run this command without selectors. The wrapper installs this local package and
+the selected App source in its uv test environment. With no arguments, it also
+runs `python3 tests/check_coverage.py coverage.json`. Selectors skip that checker.
+Keep the ordinary installed pre-push gate as a separate requirement.
+The recorded installed-hook baseline passed 125 tests with zero changed modules.
+That baseline does not prove the full repository checker passed.
+The full recipe and compatibility with the chosen current App tuple still need
+verification. Offline fake-host tests do not establish native behavior.
+
+## Future plugin architecture
+
+Issue 210 requires a specified bundle name and manifest contract before code.
+App must own scaffolding, discovery, registration and lifecycle under
+`fontlabapp.plugins`. Plugmix must own concrete bundles under
+`Extensions/reporters`, `filters`, `tools` and `palettes`.
+Discover the actual Extensions root. Test all four kinds, duplicate registration,
+unload/reload, callback failures and owned teardown.
+
+Register a Reporters palette and View > Reporters. Put tools in the toolbar and
+Tools > Tool. Put palettes in Window > Panels. `install.vfpy` must prepare a
+minimal startup hook while preserving existing `initScript.py` contents and
+ownership. Prove this with owned fixtures before any owner installation.
+Replace reporter-per-script activation only after discovery and self-registration
+pass. Retain genuine action scripts. Four additional action scripts are optional.
+
+Issue 211's nine native probes and four minor fixes remain follow-up work.
+The README's dated native observations do not close those integrated checks.
+Canonical migration to App `fontlabapp.plugmix` is separate work. Reconcile its
+ten later product commits with this remote package and all consumers before
+selecting a source tuple. Do not import that migration through a docs commit.
+
+## Licence and contribution workflow
+
+Apache-2.0; see [LICENSE](LICENSE). Preserve the upstream authors and the
+Apache-2.0/MIT behavioural-port attributions in [NOTICE](NOTICE).
+Read [AGENTS.md](AGENTS.md), [PLAN.md](PLAN.md) and [TODO.md](TODO.md) before
+changes. Issue 123 remains paused. Source tests, installed artifacts, native
+behavior and publication require separate evidence.

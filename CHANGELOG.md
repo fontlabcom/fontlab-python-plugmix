@@ -1,3 +1,16 @@
+---
+this_file: CHANGELOG.md
+---
+
+## 2026-11-05 — Issue 230 remote documentation variant
+
+Prepared six source-specific root guides for the package at
+`dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`. Retained existing README usage
+and CHANGELOG history. Clarified the complete no-selector check, reporter
+restrictions, undoable Filter/Palette edits and future Issue 210 architecture.
+Checked guide structure and preservation hashes. No product test, native,
+installation, canonical migration or remote-delivery result is claimed.
+
 <!-- this_file: CHANGELOG.md -->
 # Changelog
 
