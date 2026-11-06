@@ -115,3 +115,17 @@ The recovered App-based launchers retain their original product bytes. The
 compatibility package is deliberately retained; removing it requires a complete
 consumer/distribution/licence audit and qualified recovery. This additive
 recovery does not finish consolidation or implement the future framework.
+
+## Issue 233 source/build-only documentation
+
+Maintained site source is `src_docs/md`, configured by `src_docs/mkdocs.yml`;
+`docs/` is generated output. Use a separate Python 3.13 docs environment, uv
+0.13.7 and the exact hash-locked requirements. Run `sh src_docs/build.sh` and
+`python -m unittest discover -s tests_docs -v` with that environment on PATH.
+Every main push builds exact source X, optionally makes a normal docs-only child
+Y, and independently verifies immutable lineage, source identity, source epoch
+and complete tracked/untracked generated parity. No private Pages permission,
+configuration, deployment or automatic publication request is enabled.
+Source/generated review, actual Actions, owner installation and native acceptance
+remain separate. Do not change runtime dependencies, startup or recovery pins for
+a site build.

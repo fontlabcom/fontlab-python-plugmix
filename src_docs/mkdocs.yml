@@ -1,0 +1,38 @@
+# this_file: src_docs/mkdocs.yml
+site_name: Plugmix for FontLab
+site_description: App menu scripts and the retained compatibility plugins.
+site_url: https://fontlabcom.github.io/fontlab-python-plugmix/
+repo_url: https://github.com/fontlabcom/fontlab-python-plugmix
+repo_name: fontlabcom/fontlab-python-plugmix
+docs_dir: md
+site_dir: ../docs
+use_directory_urls: true
+theme:
+  name: materialx
+  custom_dir: overrides
+  palette:
+    scheme: default
+  features:
+    - search.highlight
+    - content.code.copy
+plugins:
+  - search
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.highlight
+  - pymdownx.superfences
+nav:
+  - Overview: index.md
+  - Installation: installation.md
+  - App menu scripts: app-menu-scripts.md
+  - Compatibility package: compatibility-package.md
+  - Development and limits: development-and-limits.md
+  - Licence: licence.md
+extra_css:
+  - stylesheets/local.css
+  - https://i.fontlab.com/fltheme26/1.0.0/components.css
+  - https://i.fontlab.com/fltheme26/1.0.0/theme.css
+extra_javascript:
+  - https://i.fontlab.com/fltheme26/1.0.0/basecoat.js
+  - https://i.fontlab.com/fltheme26/1.0.0/theme.js

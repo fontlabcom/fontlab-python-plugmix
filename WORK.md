@@ -108,3 +108,33 @@ exclusion changed. Source checksums are provenance, not functional tests.
 Independent review, the normal installed pre-push gate, commit/default delivery,
 canonical adoption, native FontLab behavior and publication remain separate.
 No owner installation or native operation was performed.
+
+
+## 2026-11-06 — Issue 233 source/build-only site candidate
+
+Added complete authored site pages, the separate 31-package hash-locked
+ProperDocs/MaterialX environment, light fltheme26 controls, generated output and
+a main-only two-job build workflow. The read-only job verifies exact source or
+direct docs-only child lineage, non-doc identity, the shared source epoch and
+full tracked/untracked parity. No Pages permission, request or deployment exists.
+
+Strict builds, all 20 docs tests, actionlint and shellcheck passed. Independent
+docs environments rebuilt every output file byte-identically. Real local Git
+tests cover changed/unchanged output, foreign staged source, wrong checkout,
+missing/unreachable main, stale/concurrent source, hook refusal, immutable lineage
+and unexpected ignored output. Cross-date builds retain the original source epoch.
+Local Chromium desktop/mobile searches and ordinary result clicks passed;
+Escape returns focus to the opener and navigation closes. Dark OS preference
+and stored slate remain light. Bulk fill/type event failures and the shared
+outside-close focus gap remain disclosed; no WCAG or universal-repeatability
+claim follows.
+
+Product source/data, original licences, scripts, runtime locks, recovery pins
+and Git refs/configuration remain unchanged. The later freeze found an isolated
+index byte-guard exception; staged entries still match HEAD, with no cached
+source changes. The cause is not proved. Preserve the current index and use
+fresh delivery guards; no old index is restored. Source/generated
+patches are local review candidates based on the current source epoch. Independent
+review, actual main Actions, fresh-epoch generated delivery, installed/native
+acceptance and private P/L remain separate. No product/native suite, owner
+installation, commit, push or Pages operation was performed.

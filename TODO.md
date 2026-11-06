@@ -14,3 +14,5 @@ this_file: TODO.md
 - [ ] Qualify native App-based script activation/rendering on the exact recovered tuple under the separate native gates.
 - [ ] Obtain independent review of the additive recovery, qualify its ordinary gates, verify the remote SHA and integrate into `main`.
 - [ ] After qualified integration and recovery, remove only proven obsolete items without unique or attached owner work.
+
+- [ ] Independently review the complete Issue 233 site and qualify exact-SHA main Actions, changed-output bot-child and code-only triggers; private Pages stays owner-held.

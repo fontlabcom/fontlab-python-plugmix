@@ -173,7 +173,7 @@ callbacks, ownership teardown and preservation-safe startup fixtures. Replace
 reporter-per-script activation only after self-registration qualifies. Issue 211's
 nine native probes and four minor fixes remain open. Issue 123 remains paused.
 Further removal of the compatibility surface requires a full consumer,
-distribution, source-recovery and licence audit. Website work is a later milestone.
+distribution, source-recovery and licence audit. The source/build-only website is maintained separately under `src_docs`; private Pages publication remains owner-held.
 
 ## Licence and contribution workflow
 
@@ -181,3 +181,17 @@ Apache-2.0; retain `LICENSE` and all Apache-2.0/MIT attribution in `NOTICE`.
 Read `AGENTS.md`, `PLAN.md` and `TODO.md` before changes. Qualified source,
 ordinary artifacts, native behavior, canonical adoption and publication have
 separate acceptance gates.
+
+## Issue 233 source/build-only documentation
+
+Maintained site source is `src_docs/md`, configured by `src_docs/mkdocs.yml`;
+`docs/` is generated output. Use a separate Python 3.13 docs environment, uv
+0.13.7 and the exact hash-locked requirements. Run `sh src_docs/build.sh` and
+`python -m unittest discover -s tests_docs -v` with that environment on PATH.
+Every main push builds exact source X, optionally makes a normal docs-only child
+Y, and independently verifies immutable lineage, source identity, source epoch
+and complete tracked/untracked generated parity. No private Pages permission,
+configuration, deployment or automatic publication request is enabled.
+Source/generated review, actual Actions, owner installation and native acceptance
+remain separate. Do not change runtime dependencies, startup or recovery pins for
+a site build.

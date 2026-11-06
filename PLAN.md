@@ -63,3 +63,10 @@ Offline fake-host tests do not establish native or installed-artifact acceptance
 Follow [AGENTS.md](AGENTS.md) for reviewed milestone commits/pushes, `main`
 integration and recovery-first cleanup. Keep native, installation, generated
 reference and publication gates separate.
+
+## Documentation delivery gates
+
+Obtain independent review of the complete source and generated site, preserve
+current source bytes, then qualify exact-SHA main Actions through the ordinary
+reviewed delivery process. Exercise changed-output bot-child and code-only live
+triggers separately. Private Pages publication remains owner-held.
