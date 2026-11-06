@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://fontlabcom.github.io/fontlab-python-plugmix/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://fontlabcom.github.io/fontlab-python-plugmix/app-menu-scripts/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://fontlabcom.github.io/fontlab-python-plugmix/compatibility-package/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://fontlabcom.github.io/fontlab-python-plugmix/development-and-limits/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://fontlabcom.github.io/fontlab-python-plugmix/installation/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>daily</changefreq>
+    </url>
+    <url>
+        <loc>https://fontlabcom.github.io/fontlab-python-plugmix/licence/</loc>
+        <lastmod>2026-11-06</lastmod>
+        <changefreq>daily</changefreq>
+    </url>
+</urlset>

@@ -1,0 +1,874 @@
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="App menu scripts and the retained compatibility plugins.">
+      
+      
+      
+        <link rel="canonical" href="https://fontlabcom.github.io/fontlab-python-plugmix/app-menu-scripts/">
+      
+      
+        <link rel="prev" href="../installation/">
+      
+      
+        <link rel="next" href="../compatibility-package/">
+      
+      
+        
+      
+      
+      
+      
+        
+        
+        
+          <link rel="icon" href="../assets/images/favicon.png">
+        
+      
+      <meta name="generator" content="mkdocs-ProperDocs 1.6.7, mkdocs-materialx-10.1.8">
+    
+    
+      
+        <title>App menu scripts - Plugmix for FontLab</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.314bbef5.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a45159b5.min.css">
+      
+    
+    
+
+    
+
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/local.css">
+    
+      <link rel="stylesheet" href="https://i.fontlab.com/fltheme26/1.0.0/components.css">
+    
+      <link rel="stylesheet" href="https://i.fontlab.com/fltheme26/1.0.0/theme.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  
+  <script src="https://i.fontlab.com/menu/fontlab.js" defer></script>
+
+  </head>
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" data-mx-topbar="glass">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="toc" type="checkbox" id="__toc" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__toc"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#app-menu-script-catalogue" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+  <fontlab-menu mode="light" site-label="Plugmix for FontLab"
+                site-url="https://fontlabcom.github.io/fontlab-python-plugmix/"
+                mobile-menu="materialx" mobile-search="materialx"></fontlab-menu>
+  
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Plugmix for FontLab" class="md-header__button md-logo" aria-label="Plugmix for FontLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Plugmix for FontLab
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              App menu scripts
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.25 2a8.25 8.25 0 0 1 6.34 13.53l5.69 5.69a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215l-5.69-5.69A8.25 8.25 0 1 1 10.25 2M3.5 10.25a6.75 6.75 0 1 0 13.5 0 6.75 6.75 0 0 0-13.5 0"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10.25 2a8.25 8.25 0 0 1 6.34 13.53l5.69 5.69a.749.749 0 0 1-.326 1.275.75.75 0 0 1-.734-.215l-5.69-5.69A8.25 8.25 0 1 1 10.25 2M3.5 10.25a6.75 6.75 0 1 0 13.5 0 6.75 6.75 0 0 0-13.5 0"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/fontlabcom/fontlab-python-plugmix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    fontlabcom/fontlab-python-plugmix
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Plugmix for FontLab" class="md-nav__button md-logo" aria-label="Plugmix for FontLab" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Plugmix for FontLab
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/fontlabcom/fontlab-python-plugmix" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    fontlabcom/fontlab-python-plugmix
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App menu scripts
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    App menu scripts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc">
+      
+        <li class="md-nav__item">
+  <a href="#painting-and-acceptance-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Painting and acceptance limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#app-reporter-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App reporter contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compatibility-package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compatibility package
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-and-limits/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Development and limits
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../licence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Licence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc">
+      
+        <li class="md-nav__item">
+  <a href="#painting-and-acceptance-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Painting and acceptance limits
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#app-reporter-contract" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        App reporter contract
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+  
+
+
+<h1 id="app-menu-script-catalogue">App menu-script catalogue</h1>
+<p>All 39 launchers below live in <code>Scripts/Reports/</code> and call App's <code>fontlabapp.plugmix</code>, not <code>fontlab_plugmix</code>. They enable the named reporter in every Glyph window; the matching View &gt; Plugmix: Show action disables it. They do not edit font geometry. App owns discovery, painter registration, preference saves, rollback and teardown.</p>
+<p><code>Scripts/Plugmix/Install Plugmix Menu.py</code> is the fortieth recovered file: it installs the App menu and restores saved plugin choices without enabling an additional reporter. The two runtimes' startup paths must not be combined.</p>
+<table>
+<thead>
+<tr>
+<th>Launcher filename</th>
+<th>Overlay and limits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>All Angles.py</code></td>
+<td>Angle of each straight segment from vertical, mod 180°; components excluded</td>
+</tr>
+<tr>
+<td><code>Anchor Cloud.py</code></td>
+<td>Names and positions of the current glyph's anchors (local anchors only)</td>
+</tr>
+<tr>
+<td><code>Angled Handles.py</code></td>
+<td>Rings on handles off the horizontal, vertical and italic axes</td>
+</tr>
+<tr>
+<td><code>Blindfold.py</code></td>
+<td>Opaque blocks hide the strip from 70 units under the descender up to the baseline, and everything from x-height up to 70 units over the ascender (<code>band = "cap_height"</code> for cap height); the band between baseline and that height stays visible</td>
+</tr>
+<tr>
+<td><code>Center Lines.py</code></td>
+<td>Advance/2, x-height/2 and cap-height/2 lines</td>
+</tr>
+<tr>
+<td><code>Color Toner.py</code></td>
+<td>Each component filled in translucent black (<code>darken = 0.15</code>, wrapped into 0..1) so composed parts stand out from drawn outlines</td>
+</tr>
+<tr>
+<td><code>Crosshair.py</code></td>
+<td>Long guides through selected nodes; no mouse tracking</td>
+</tr>
+<tr>
+<td><code>Duplicate Anchor Rings.py</code></td>
+<td>Red/yellow rings for every anchor pair less than one unit apart</td>
+</tr>
+<tr>
+<td><code>Emphasise Selected Handles.py</code></td>
+<td>Accent lines and rings for handles next to selected nodes</td>
+</tr>
+<tr>
+<td><code>Glyph Focus.py</code></td>
+<td>Shade outside the advance box between descender and ascender</td>
+</tr>
+<tr>
+<td><code>Imprecise Italic Angle.py</code></td>
+<td>Straight segments within 2° of the slant but not on it</td>
+</tr>
+<tr>
+<td><code>Kern Indicator.py</code></td>
+<td>Displayed kerning of the pairs touching the glyph, above each junction (orange positive, blue negative); shown only between 3% and 90% zoom</td>
+</tr>
+<tr>
+<td><code>Node Count.py</code></td>
+<td>Total on- and off-curve nodes; components excluded</td>
+</tr>
+<tr>
+<td><code>Node Indexes.py</code></td>
+<td>Contour index beside every node</td>
+</tr>
+<tr>
+<td><code>Nodes Close to Zones.py</code></td>
+<td>Rings on on-curves near zone edges or metric heights</td>
+</tr>
+<tr>
+<td><code>Off-curve Handles Outside Bounds.py</code></td>
+<td>Handles beyond the on-curve bounding rectangle</td>
+</tr>
+<tr>
+<td><code>RSB Line.py</code></td>
+<td>Advance boundary with RSB and LSB labels</td>
+</tr>
+<tr>
+<td><code>Rekha Viewer.py</code></td>
+<td>Head-line bar for Devanagari, Bengali and Gurmukhi letters, moved by <code>rekha</code> and <code>rekha_stop</code> anchors; suffixed or interrupted anchors are not supported</td>
+</tr>
+<tr>
+<td><code>Segment Length.py</code></td>
+<td>Straight and flattened curve lengths</td>
+</tr>
+<tr>
+<td><code>Selected Node Coordinates.py</code></td>
+<td>Coordinates beside selected nodes</td>
+</tr>
+<tr>
+<td><code>Show Background.py</code></td>
+<td>Outlines of the glyph's background layer filled in pale blue (alpha 0.3), counters open; background components are not shown</td>
+</tr>
+<tr>
+<td><code>Show Character.py</code></td>
+<td>The glyph's first Unicode as 100 px text above the glyph; hidden below 20% zoom; no base-name lookup</td>
+</tr>
+<tr>
+<td><code>Show Export Status.py</code></td>
+<td>Red cross over the body of a glyph that is set not to export</td>
+</tr>
+<tr>
+<td><code>Show Global Glyph.py</code></td>
+<td>Contours of a helper glyph named <code>_global</code> behind every other glyph: closed paths orange outline with faint fill, open paths blue outline with faint fill; its components are not shown and it is not drawn on itself</td>
+</tr>
+<tr>
+<td><code>Show Glyphs In Label Color.py</code></td>
+<td>Glyph and component outlines filled in the mark colour, counters open</td>
+</tr>
+<tr>
+<td><code>Show Interpolation.py</code></td>
+<td>For each other compatible master, the glyph blended halfway (<code>factor = 0.5</code>) node by node between the shown layer and that master, filled in dark magenta (alpha 0.25), counters open; components are not drawn (neither the shown layer's nor the masters'); no instances, anchors or recentering, and masters with the same coordinates are skipped</td>
+</tr>
+<tr>
+<td><code>Show Kerning Group Reference.py</code></td>
+<td>Members of the glyph's left kerning class drawn on top of each other as small (0.2) teal silhouettes 150 units left of the glyph, and of its right class 150 units right of it, baseline at half x-height; opacity is 0.8 divided by the class size (floor 0.04), so crowded classes read denser. Left-to-right text only. Very large classes are truncated: at most 32 glyphs are requested, alternating left and right</td>
+</tr>
+<tr>
+<td><code>Show Label Color.py</code></td>
+<td>Bar in the glyph's mark colour under the descender (<code>placement</code> baseline or body), slanted by the italic angle; layer marks are not distinguished</td>
+</tr>
+<tr>
+<td><code>Show Rotated.py</code></td>
+<td>Outline turned 180° about its bounds centre; components excluded</td>
+</tr>
+<tr>
+<td><code>Show Siblings.py</code></td>
+<td>Look-alike Latin letters (c/e/o, b/p, d/q/u, h/l/n/r/a) filled in green behind the glyph, fainter in larger groups; Latin groups only</td>
+</tr>
+<tr>
+<td><code>Show Stems.py</code></td>
+<td>Rings and span widths along a scan line at half x-height; components excluded</td>
+</tr>
+<tr>
+<td><code>Smart Plumblines.py</code></td>
+<td>Centre lines through each contour's and the selection's extents; components excluded</td>
+</tr>
+<tr>
+<td><code>Smooth Node Angles.py</code></td>
+<td>Handle-angle mismatch and length ratio at smooth nodes</td>
+</tr>
+<tr>
+<td><code>Speed Punk.py</code></td>
+<td>Colour-ramped curvature comb; components excluded</td>
+</tr>
+<tr>
+<td><code>Stem Thickness.py</code></td>
+<td>Wherever the mouse is (no proximity limit), a line across the outline from the outline point nearest it, perpendicular to it, to the nearer crossing more than 1 unit away, labelled with its rounded length; nothing at a corner where the ray runs along the outline; own contours only, no guide command or modifier key</td>
+</tr>
+<tr>
+<td><code>Tops and Bottoms.py</code></td>
+<td>Rings and y labels at the highest and lowest on-curves</td>
+</tr>
+<tr>
+<td><code>Two Point Distance.py</code></td>
+<td>Segment, length and angle for exactly two selected nodes</td>
+</tr>
+<tr>
+<td><code>Unitizer.py</code></td>
+<td>Vertical grid at UPM / 18</td>
+</tr>
+<tr>
+<td><code>Vertical Metrics.py</code></td>
+<td>Labelled ascender, descender, x-height, cap-height and baseline</td>
+</tr>
+</tbody>
+</table>
+<h2 id="painting-and-acceptance-limits">Painting and acceptance limits</h2>
+<p>Center Lines, Vertical Metrics, Crosshair, Tops and Bottoms, RSB Line, Unitizer, Node Count, Smart Plumblines, Show Stems, Speed Punk, Show Rotated,
+Show Label Color, Show Glyphs In Label Color, Show Character, Rekha Viewer,
+Show Background, Color Toner, Show Global Glyph, Show Siblings, Show Kerning
+Group Reference and Show Interpolation draw under the native glyph layer when native
+canvas painters are available; the rest draw over it, and on older builds all
+draw over the canvas.
+The original seven reporters, native canvas drawing and all 18 pre-revision
+reporters were checked in FontLab 9; Glyph Focus and the revised slant and unit
+grid have offline coverage only. Node Count, All Angles, Smart Plumblines, Show
+Stems, Speed Punk, Show Rotated, Blindfold, Show Label Color, Show Glyphs In
+Label Color, Show Character, Rekha Viewer, Show Export Status, Show Background,
+Color Toner, Show Global Glyph, Show Siblings, Show Kerning Group Reference,
+Kern Indicator, Show Interpolation and Stem Thickness have offline test coverage
+only.</p>
+<h2 id="app-reporter-contract">App reporter contract</h2>
+<p>Write a reporter by subclassing <code>fontlabapp.plugmix.Reporter</code> with a unique
+<code>name</code>, a <code>title</code> and a pure <code>compute(snapshot)</code> that returns <code>Mark</code> objects
+(<code>ring</code>, <code>line</code>, <code>polyline</code>, <code>polygon</code>, <code>text</code>) in glyph units; pixel sizes are
+view pixels. Set <code>layer = "background"</code> to paint under the glyph layer.
+An error raised by <code>compute</code> or <code>requested_glyphs</code> goes to the error sink
+once per reporter and message until Plugmix is uninstalled. Every snapshot also carries <code>identity</code> (name, Unicodes, raw mark, mark RGB,
+export flag) and <code>view.px_per_unit</code>; either is None when it cannot be read,
+and the read error goes to the plugin error sink once. Mark RGB uses HSL lightness
+0.65, so it differs slightly from FontLab's flag swatches (inferred, unverified
+natively). Offline coverage only.
+Opt-in class flags add costlier data: <code>needs_components</code> gives <code>components</code>
+(base name, transform and decomposed base contours, nested up to 8 levels),
+<code>needs_background</code> gives <code>background</code> (the mask's contours, <code>()</code> when empty,
+None when there is none), and <code>needs_masters</code> gives <code>masters</code> (each master's
+contours, anchors, advance and a <code>compatible</code> flag that compares contour
+count, node count per contour and on/off-curve pattern with the shown layer,
+ignoring components and open/closed state). Components and masters are cached
+per glyph revision and shared by all reporters; components also re-check
+their base glyphs. Master outlines may lag until the foreground glyph's
+<code>lastModified</code> moves, which is unverified natively. The background is read on
+every paint. An empty component layer means the master that owns the shown
+layer. Metrics also come from that master. Zones and the italic angle need a
+master switch to read, so when the shown layer belongs to another master the
+zones are empty and the italic slant is the current master's.
+Skipped components and failed reads go to the error sink once.
+Offline coverage only.
+<code>needs_kerning</code> gives <code>kerning_groups</code> (the classes used when the glyph is a
+pair's first member, <code>left</code>, and second member, <code>right</code>, with their
+members), read on every paint because a class edit may not move the glyph's
+timestamp. Override <code>requested_glyphs(identity, kerning_groups=None)</code> to name up to 32 other
+glyphs; <code>others</code> maps each one that exists to its own unselected contours
+(components skipped), cached per requested glyph's revision. Both use the
+master that owns the shown layer. <code>needs_neighbours</code> gives
+<code>view.neighbours</code>: the previous and next glyph on the same line as
+<code>(name, kerning)</code>, kerning in font units as displayed (0 when kerning
+processing is off). Which glyph stores a pair's kerning is inferred,
+unverified natively. Neighbours need the native canvas painter backend; with
+EditorPainters, or when the view scale is unusable, they are None.
+Offline coverage only.
+<code>needs_mouse</code> gives <code>view.mouse</code>, the cursor in the glyph's own units
+(<code>canvas.mousePosition()</code> mapped back through the glyph and text-block
+transforms), or None when the map is not invertible. While any enabled
+reporter asks for it, one event filter watches the active glyph window and
+flushes (<code>updateScreenRect</code> plus <code>updateViewport</code>) at most once per 16 ms after
+mouse moves, ending with a flush after the last move. The filter goes when the last such reporter is disabled, when the
+active canvas changes or closes, and on <code>uninstall()</code>. Only the watched canvas
+gets a mouse; with EditorPainters it is None. Whether moves reach the filter
+under every tool is unverified natively.
+Offline coverage only.
+Third-party packages publish plugin classes in the <code>fontlabapp.plugmix</code>
+entry-point group.</p>
+<p>Historical App native observations do not qualify activation or rendering of this recovered forty-file tuple. Issue 211 native probes remain separate.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+          <div class="md-top" data-md-component="top" hidden>
+  <div class="md-top__center">
+    <button type="button" class="md-top__button md-top__button--main" data-md-action="top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+      <span>Back to top</span>
+    </button>
+    
+      
+      
+      <label class="md-top__button md-top__side md-top__side--nav" for="__drawer" >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-panel-left" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg>
+      </label>
+    
+    
+      
+      
+      <label class="md-top__button md-top__side md-top__side--toc" for="__toc" >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-panel-right" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M15 3v18"/></svg>
+      </label>
+    
+  </div>
+</div>
+      </main>
+      
+  
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://jaywhj.github.io/mkdocs-materialx/" target="_blank" rel="noopener">
+      MaterialX
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+  <fontlab-footer mode="light"></fontlab-footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "code": null, "features": ["search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "code.collapse": "Collapse", "code.download": "Download", "code.expand": "Expand remaining # lines", "code.select": "Toggle line selection", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.fc193f93.min.js"></script>
+      
+        <script src="https://i.fontlab.com/fltheme26/1.0.0/basecoat.js"></script>
+      
+        <script src="https://i.fontlab.com/fltheme26/1.0.0/theme.js"></script>
+      
+    
+  </body>
+</html>
