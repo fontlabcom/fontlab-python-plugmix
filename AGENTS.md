@@ -4,8 +4,11 @@ this_file: AGENTS.md
 
 # Plugmix: agent guide
 
-This remote package provides 19 reporters, a Filter, a Palette, a Tool and a
-General plugin. Keep geometry and metrics capture in `snapshot.py`, painter
+The recovered `Scripts/` entry points use App `fontlabapp.plugmix`: 39 reporter
+launchers and one menu installer. The retained `fontlab_plugmix` compatibility
+package separately provides 19 reporters, a Filter, a Palette, a Tool and a
+General plugin. Keep these runtime and entry-point groups distinct; both use
+the Plugmix preference filename and must not be installed together in one session. Keep geometry and metrics capture in `snapshot.py`, painter
 access in `backend.py`, and startup imports in `boot.py`.
 Keep reporter `compute()` pure. Reporter compute and paint must not write font
 data. Filters and Palettes can make the documented undoable font edits through
@@ -18,7 +21,8 @@ Preserve Apache-2.0 terms in LICENSE and all attribution in NOTICE.
 
 ## Development checks
 
-This source base is `dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`.
+The retained compatibility package descends from
+`dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`; recovered scripts use App separately.
 `src/fontlab_plugmix/` contains the package. `tests/`, `test.sh` and
 `tests/check_coverage.py` provide its own offline suite and coverage check.
 Use an arm64 Python 3.11 process and the owned sibling App source:
@@ -27,6 +31,8 @@ Use an arm64 Python 3.11 process and the owned sibling App source:
 PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
+The runner-layout test also requires a sibling App source directory. Set
+`UV_PYTHON_PREFERENCE=only-system` and verify the actual interpreter is arm64.
 Run this command without selectors. The wrapper installs this local package and
 the selected App source in its uv test environment. With no arguments, it also
 runs `python3 tests/check_coverage.py coverage.json`. Selectors skip that checker.
@@ -50,19 +56,25 @@ Confirm stale, empty or unknown graph results against the actual source.
 
 Run the exact repository checks. Keep the unchanged 80% coverage gate for each
 complete changed production module where the milestone gate applies.
+Measure all forty recovered `Scripts` modules separately with branch coverage
+and the unchanged 80% combined gate; the old package/hook selectors cover only
+`src`. Run all tests with `--cov=Scripts --cov-branch` after the full no-selector
+recipe. Keep actual App registration/persistence/menu and rollback tests; source
+checksums establish provenance, not functional coverage.
 Documentation checks cover headers, fences, links, privacy and the exact diff.
 Keep ordinary installed hooks active. Do not bypass a failed gate.
 Obtain independent specification and quality review before a milestone commit.
 Stage only the approved paths after checking their preimage hashes.
 Run graph change analysis before committing.
 
-Issue 230 authorizes reviewed, passing documentation milestone commits and pushes.
+Issues 230/233 authorize the scoped reviewed recovery and documentation
+milestones, with passing checks before commits and pushes.
 Verify the actual remote branch SHA after a push. Refresh remote refs before
 integration. Reconcile concurrent work and consumers before primary-branch
 integration. Run the applicable combined-source and CI checks.
 Do not infer publication, installation or native acceptance from a branch push.
 Do not create release tags, dispatch release workflows or publish packages for
-this documentation milestone.
+this source-recovery milestone.
 
 Before obsolete branch or file removal, verify recovery and integration.
 Check fresh owner/worktree attachments and unique work. Preserve sealed evidence
@@ -99,6 +111,7 @@ pass. Retain genuine action scripts. Four additional action scripts are optional
 
 Issue 211's nine native probes and four minor fixes remain follow-up work.
 The README's dated native observations do not close those integrated checks.
-Canonical migration to App `fontlabapp.plugmix` is separate work. Reconcile its
-ten later product commits with this remote package and all consumers before
-selecting a source tuple. Do not import that migration through a docs commit.
+The recovered App-based launchers retain their original product bytes. The
+compatibility package is deliberately retained; removing it requires a complete
+consumer/distribution/licence audit and qualified recovery. This additive
+recovery does not finish consolidation or implement the future framework.

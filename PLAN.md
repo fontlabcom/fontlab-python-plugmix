@@ -4,8 +4,9 @@ this_file: PLAN.md
 
 # Forward plan
 
-Issue 123 remains paused. Keep the separate canonical migration and Issue 207
-candidate distinct from this observed remote package.
+Issue 123 remains paused. The additive recovery retains App-based scripts and
+the remote compatibility package together. Further consolidation remains a
+separate reviewed product milestone.
 
 ## Future plugin architecture
 
@@ -25,13 +26,15 @@ pass. Retain genuine action scripts. Four additional action scripts are optional
 
 Issue 211's nine native probes and four minor fixes remain follow-up work.
 The README's dated native observations do not close those integrated checks.
-Canonical migration to App `fontlabapp.plugmix` is separate work. Reconcile its
-ten later product commits with this remote package and all consumers before
-selecting a source tuple. Do not import that migration through a docs commit.
+Before removing retained `fontlab_plugmix`, audit all consumers, entry-point
+groups, distributions, startup paths, preferences and attribution. Preserve
+complete recoverable source and qualify the actual replacement. The recovered
+App-based script entry points alone do not finish this consolidation.
 
 ## Development checks
 
-This source base is `dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`.
+The retained compatibility package descends from
+`dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`; recovered scripts use App separately.
 `src/fontlab_plugmix/` contains the package. `tests/`, `test.sh` and
 `tests/check_coverage.py` provide its own offline suite and coverage check.
 Use an arm64 Python 3.11 process and the owned sibling App source:
@@ -40,6 +43,10 @@ Use an arm64 Python 3.11 process and the owned sibling App source:
 PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
+Requalify the recovered forty-script surface against the actual App dependency
+with the full suite, explicit `--cov=Scripts --cov-branch`, and the unchanged
+80% combined gate per complete script module. Keep the sibling App source needed
+by the runner-layout test; set `UV_PYTHON_PREFERENCE=only-system` and verify arm64.
 Run this command without selectors. The wrapper installs this local package and
 the selected App source in its uv test environment. With no arguments, it also
 runs `python3 tests/check_coverage.py coverage.json`. Selectors skip that checker.

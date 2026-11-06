@@ -84,3 +84,27 @@ unchanged. The private manifest binds all six preimages and proposal hashes.
 Independent review precedes guarded application. Later controller application,
 checks, remote branch SHA and integration belong in the external live ledger.
 This entry claims documentation authoring only.
+
+## 2026-11-06 — Additive App script recovery
+
+Recovered 38 missing reporter launchers and the two existing menu/report scripts
+from the retained pre-pull product, byte-exact. Scripts use App
+`fontlabapp.plugmix`; the separate `fontlab_plugmix` compatibility package, tests,
+startup snippet, dependency metadata, NOTICE and licences remain. The guides now
+distinguish both runtimes and retain future consolidation/framework/native tasks.
+Do not combine their installers in one FontLab session.
+
+Added 41 host-free recovery cases that execute all forty scripts against real
+App discovery, boot, registry and menus with existing fake host owners and owned
+preferences. They check repeated activation, painter registration, menu disable,
+unknown preference preservation, handle-size setup and save-failure rollback.
+The red run reproduced missing paths and wrong-runtime entry points. The exact
+arm64 Python 3.11 full recipe then passed 166 tests and the existing 51-module
+checker; explicit branch coverage measured all forty complete script modules
+at 100% (122 statements, no branches). The unchanged per-module 80% combined
+gate remains. No production package source, test oracle, coverage selector or
+exclusion changed. Source checksums are provenance, not functional tests.
+
+Independent review, the normal installed pre-push gate, commit/default delivery,
+canonical adoption, native FontLab behavior and publication remain separate.
+No owner installation or native operation was performed.

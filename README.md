@@ -2,96 +2,63 @@
 this_file: README.md
 ---
 
-<!-- this_file: README.md -->
 # fontlab-python-plugmix
 
-Native FontLab 9 plugins: Reporter overlays, an undoable Filter, a dockable
-Palette, a native Tool and a General menu command.
-Plugmix uses MeVisLab PythonQt and native per-canvas painters when available,
-with `fontlabapp.editor_painters.EditorPainters` for older builds.
-It does not use PySide2 or Glyphs/Cocoa emulation. The repository also contains
-FontLab menu scripts under `Scripts/`.
+FontLab menu scripts for App's `fontlabapp.plugmix` framework, alongside the
+retained `fontlab_plugmix` compatibility package. This recovery keeps both source
+histories, tests and licences; it does not complete their consolidation.
 
-## Install
+## App-based menu scripts
 
-Install this package and its `fontlab-fontlabapp` runtime dependency in FontLab's
-Python 3.11 environment. Copy the three lines from
-[`initScript-snippet.py`](initScript-snippet.py) into your own FontLab `initScript.py`.
-The hook calls `fontlab_plugmix.install()` once per FontLab session. Alternatively,
-run `Scripts/Plugmix/Install Plugmix Menu.py` from FontLab's Script menu.
-Neither file here edits a FontLab installation.
+`Scripts/Reports/` contains 39 reporter launchers. They use the framework already
+provided by `fontlab-fontlabapp`; they do not import `fontlab_plugmix`.
+`Scripts/Plugmix/Install Plugmix Menu.py` installs App's Plugmix menus. It does
+not select an additional reporter; App restores saved plugin choices. Without
+saved enabled reporter choices, reporters remain disabled. Run these files
+through FontLab's Script menu. They are source scripts, not members of this
+repository's compatibility wheel.
 
-The View menu gains 19 checkable `Plugmix: Show …` reporter actions. The Glyph
-menu gains `Plugmix: Delete Small Paths…` with a numeric threshold dialog.
-The Window menu gains a checkable `Plugmix: Step and Repeat Panel` action.
-It also gains `Plugmix: Tool Smart Select`, which registers a native tool when
-enabled. The View menu gains `Plugmix: Zoom to Selection`.
-The selection is
-remembered in `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json`.
-`install(config_dir=...)` selects another directory, which is useful in tests.
-`boot.uninstall()` removes the actions, overlays and panels while retaining the selection.
-Selections saved under the former `nodes_outside_paths` name restore as
-`offcurve_outside_bounds`.
-The same JSON file keeps `enabled_filters`, `enabled_palettes`, `enabled_tools`,
-`enabled_general` and last-used
-`params`; old files
-with only `enabled` still load. Filters, tools and General plugins are enabled
-by default until the user chooses otherwise. The
-`Registry.set_filter_enabled()` API can change that before the next install.
-Palettes start hidden until shown, and `enabled_palettes` is written only after
-the user chooses a visibility state.
+The 38 recovered reporters and two updated existing launchers retain their
+pre-pull product bytes. The reporters cover geometry, anchors, metrics, node
+selection, backgrounds, labels, interpolation and related reference overlays.
+Duplicate Anchor Rings retains its editable `HANDLE_SIZE` choice of 5, 8 or 12.
+Reporters do not edit font geometry; enabling one saves its name in Plugmix's
+preference JSON. App owns discovery, registration, painters and teardown.
 
-## Built-in Tool and General plugin
+App's framework and the compatibility package below both use
+`fontlab-plugmix.json` and can contribute Plugmix menus. Choose one runtime in a
+FontLab session. Do not combine their startup installers. Preference migration
+between the two implementations and native recovery acceptance are unqualified.
+No script here installs packages or edits FontLab's startup file.
 
-| Kind | Plugin | Behaviour |
-| --- | --- | --- |
-| Tool | Smart Select | Drag a rectangle to select whole contours touched by any node. Shift toggles those contours. This selection-only port omits the source plugin's double-click containment and native move handling; it never changes outline geometry. The rectangle overlay appears only while the tool is active. |
-| General | Zoom to Selection | View-menu command fits the active glyph's selected nodes in the canvas with a margin. It omits the source plugin's delayed viewport adjustment and shortcut. |
+## Retained compatibility package
 
-The native tool bridge maps viewport events through FontLab's pan/zoom and the
-active glyph's text-block transforms. General font-opened and font-closed hooks
-share the palette host's 250 ms timer; plugmix owns extra actions and timers a
-General plugin creates. Tool and General actions are removed by
-`boot.uninstall()`. General font-opened and font-closed hooks report the stable
-`flPackage.fgId`, matching the font IDs used by MCP, remopy and fontport.
-The orchestrator verified native Tool activation, drag mapping, overlay
-lifetime, and General actions and font events in FontLab 9. Shortcut handling
-and keyboard cursor mapping were then corrected from native findings and still
-need an in-app recheck.
+`src/fontlab_plugmix/` remains a separate installable package with 19 reporters,
+an undoable Filter, a dockable Palette, a native Tool and a General menu command.
+Its code, tests, dependencies, startup snippet and legal attribution are retained.
 
-## Built-in Palette
+For this runtime, install the package and `fontlab-fontlabapp` in FontLab's
+Python 3.11 environment. The optional `initScript-snippet.py` calls
+`fontlab_plugmix.install()` once per session; it remains the compatibility startup
+snippet, whereas the menu scripts above now target App. Neither file modifies an
+installation. Use native MeVisLab PythonQt inside FontLab, without another Qt
+binding. Native per-canvas painters are preferred, with App's `EditorPainters`
+fallback on older builds.
 
-| Palette | Action |
-| --- | --- |
-| Step and Repeat | Docked count, X offset and Y offset controls duplicate selected contours of the active glyph. Count means additional copies, excluding the original; each is shifted by another (dx, dy). Apply uses one geometry Undo step, retains unselected contours and refuses shared or transformed outlines. New copies are not selected. Count 0 and no contour selection report a no-op; two zero offsets are refused. |
+The compatibility View menu has 19 `Plugmix: Show …` actions and Zoom to Selection.
+Glyph has Delete Small Paths; Window has Step and Repeat Panel and Tool Smart
+Select. Choices live in FontLab's Data directory as `fontlab-plugmix.json`.
+`install(config_dir=...)` selects an owned directory for tests, and
+`boot.uninstall()` removes owned actions, overlays and panels while retaining
+saved choices. Unknown preference keys survive. The compatibility runtime maps
+old `nodes_outside_paths` choices to `offcurve_outside_bounds`; this is not a
+cross-runtime migration guarantee.
 
-Palettes build their controls once through `PaletteUI`, refresh only when the
-active glyph, master, revision or node selection changes, and release them on
-close. Tabbed or temporarily hidden docks remain open with their saved state;
-refresh pauses until they become visible again. One 250 ms timer serves all
-visible palettes and General font watchers, stopping when neither needs it.
-Dock close detection uses `PythonQt.private.QObject` where available. If that
-event filter cannot be installed, the panel still opens; a hide only pauses
-refresh, and the Window toggle closes it and saves the visibility choice.
-The current refresh key reads the glyph modification timestamp and node
-selection; FontLab users should confirm that edits outside Plugmix advance
-that timestamp in their build.
+Filter, Tool and General choices default on until explicitly changed. Palettes
+start hidden. Saved preferences retain `enabled`, `enabled_filters`,
+`enabled_palettes`, `enabled_tools`, `enabled_general` and last-used `params`.
 
-## Built-in Filter
-
-| Filter | Edit |
-| --- | --- |
-| Delete Small Paths | Delete closed contours whose flattened path area or flattened bounds area falls below the threshold (default 400 font units squared). Open contours and values exactly at the threshold stay. Apply targets selected glyphs in the current master and uses one geometry Undo step. |
-
-The current Filter writer supports contour deletion. It skips shared or
-transformed outlines per glyph and skips automatic layers, while applying safe
-glyphs in the same selection. Filter `compute(snapshot,
-values)` receives frozen Python data and returns a `LayerEdit`; parameters are
-declared with `Param`. Native selection, writes, history and Qt dialog calls
-stay in plugmix's host modules. The Glyph menu command opens a non-modal
-dialog owned by `fontlabapp.OwnedMenus`.
-
-## Built-in reporters
+### Compatibility reporters
 
 | Reporter | Overlay |
 | --- | --- |
@@ -115,32 +82,43 @@ dialog owned by `fontlabapp.OwnedMenus`.
 | Imprecise Italic Angle | Straight segments within 2° of the master slant but not exactly on it. |
 | Smooth Node Angles | Handle-angle mismatch and handle-length ratio at smooth nodes. |
 
-Anchor Cloud currently shows local anchors only; a font-wide cloud needs a reliable font revision key
-for bounded cache invalidation.
 
-Duplicate rings use a 16-view-pixel diameter by default. The moved launcher
-has a `HANDLE_SIZE` constant with the previous 5/8/12 choices. Stroke and label
-sizes stay constant while zooming. Center Lines, Vertical Metrics, Crosshair,
-Tops and Bottoms, RSB Line and Unitizer draw under the native glyph layer when
-native canvas painters are available. The other reporters draw over it. On
-older builds, all reporters draw over the canvas; plugmix logs that background
-substitution once.
+Anchor Cloud shows local anchors only. A font-wide cloud still needs reliable
+revision-based invalidation. Stroke, text and ring sizes stay constant while
+zooming. Center Lines, Vertical Metrics, Crosshair, Tops and Bottoms, RSB Line and
+Unitizer request background painting; older builds substitute foreground painting
+and log that choice once. Each reporter captures the glyph separately on repaint;
+zones and native ink bounds are read only when requested.
 
-The native backend attaches to a Glyph window when it becomes active. Each
-reporter reads the glyph separately on repaint; this is acceptable for the
-reporter set, and remains a cost with many reporters enabled. Alignment zones
-and the native ink box are read only for reporters that request them.
+Native drawing maps glyph points through the glyph text-block transform, the
+block placement and `canvas.mapToViewportF`. Text-block placement matters away
+from the canvas origin. Native compatibility observations are historical;
+shortcut and keyboard cursor mapping changes still need an in-app recheck.
 
-The native renderer maps a layer point through `info.transform` (glyph
-position in its text block), then `block.transform` (text block placement),
-then `canvas.mapToViewportF` (viewport pixels). This follows FontLab's text
-block rendering and `EditorPainters`; the extra block transform matters when
-the text block is positioned away from the canvas origin.
+### Other compatibility plugins
 
-## Write a reporter
+- Delete Small Paths deletes closed contours below the threshold (default 400
+  font units squared) using flattened path area or flattened bounds area. Open
+  contours and exact-threshold values stay. It edits selected current-master
+  glyphs through one geometry Undo step, skips automatic layers and unsafe
+  shared/transformed outlines per glyph, and retains safe glyphs in the selection.
+- Step and Repeat duplicates selected contours with count additional copies and
+  repeated X/Y offsets through one geometry Undo step. It retains unselected
+  contours, leaves copies unselected and refuses shared/transformed outlines,
+  non-master display layers, stale contour counts and zero-offset repeats.
+  Count zero or no selection is a no-op. Dock ownership survives temporary
+  hiding; the Window toggle provides explicit close if close detection is absent.
+- Smart Select selects whole contours touched by a dragged rectangle; Shift
+  toggles them. It changes selection only and omits the source plugin's
+  double-click containment and native move handling.
+- Zoom to Selection fits the selected nodes with a margin. It omits delayed
+  viewport adjustment and a shortcut. General font events use stable `fgId`
+  identities and share the palette host's refresh timer.
 
-Reporter `compute()` receives immutable, plain Python data and returns marks in font
-units. Importing this module does not need FontLab:
+### Write a compatibility reporter
+
+`compute()` receives immutable Python data and returns marks in font units.
+Native reads and writes belong in the host layer. Pure imports do not need FontLab:
 
 ```python
 from fontlab_plugmix import Mark, Reporter
@@ -154,78 +132,52 @@ class Origin(Reporter):
         return [Mark("ring", ((0, 0),), diameter_px=12)]
 ```
 
-Publish the class through the `fontlab_plugmix.plugins` entry-point group. A
-plugin class needs a unique `name` and a human-readable `title`. Mark kinds are
-`ring`, `line`, `polyline`, `polygon` and `text`; polygons use an RGBA `fill`.
-Coordinates are glyph units, while `stroke_px`, `text_px` and `diameter_px` are view pixels. Runtime calls and
-exceptions are handled by the base class and selected backend. Set
-`layer = "background"` to request painting under FontLab's glyph layer on
-builds with native canvas painters.
-
-## Test without FontLab
-
-Run `./test.sh`. It finds the canonical sibling `fontlab-fontlabapp` checkout
-through this worktree's git common directory. Set `PLUGMIX_FONTLABAPP_SOURCE`
-to override that path. Run the full suite without selectors for the per-module
-coverage gate; with pytest arguments, the gate is skipped because partial
-coverage is expected.
-The test suite uses fake Qt and FontLab objects and checks every production
-module for at least 80% line coverage. The orchestrator checked the original
-seven reporters and native canvas drawing in FontLab 9 before Task 7. The
-orchestrator also checked all 18 pre-revision reporters natively; Glyph Focus
-and the revised slant and unit grid have offline coverage only.
-
+Publish compatibility classes through `fontlab_plugmix.plugins` entry points.
+App uses the separate `fontlabapp.plugmix` group. Names must be unique and titles
+human-readable. Marks support ring, line, polyline, polygon and text; polygon
+fill is RGBA, coordinates are font units, and stroke/text/diameter values are
+view pixels. `layer = "background"` requests painting beneath native glyphs on
+supported builds. Callbacks contain failures; reporter compute/paint must not
+write font data.
 
 ## Development checks
 
-This source base is `dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`.
-`src/fontlab_plugmix/` contains the package. `tests/`, `test.sh` and
-`tests/check_coverage.py` provide its own offline suite and coverage check.
-Use an arm64 Python 3.11 process and the owned sibling App source:
+Use arm64 Python 3.11 and an owned App source. The exact full recipe is:
 
 ```sh
-PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
+UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
-Run this command without selectors. The wrapper installs this local package and
-the selected App source in its uv test environment. With no arguments, it also
-runs `python3 tests/check_coverage.py coverage.json`. Selectors skip that checker.
-Keep the ordinary installed pre-push gate as a separate requirement.
-The recorded installed-hook baseline passed 125 tests with zero changed modules.
-That baseline does not prove the full repository checker passed.
-The later full no-selector `sh test.sh` run on 2026-11-05 at 21:46:13 UTC
-passed: exit 0, 125 tests and the full per-module checker. It used this
-source and owned App `fb6a93776772b996b25604f88711feb300b90109`.
-The observed 96% overall line coverage supplements the unchanged 80%
-combined-module policy. Requalify after a source or App tuple change.
-Offline fake-host tests do not establish native or installed-artifact acceptance.
+The existing runner-layout test also requires that sibling App source directory.
+The no-selector run executes all tests and checks every compatibility production
+module for at least 80% line coverage. Arguments skip that checker. To measure
+the complete recovered script surface with branches as well, run the full suite:
 
-## Future plugin architecture
+```sh
+UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh --cov=Scripts --cov-branch --cov-report=json:coverage.json
+```
 
-Issue 210 requires a specified bundle name and manifest contract before code.
-App must own scaffolding, discovery, registration and lifecycle under
-`fontlabapp.plugins`. Plugmix must own concrete bundles under
-`Extensions/reporters`, `filters`, `tools` and `palettes`.
-Discover the actual Extensions root. Test all four kinds, duplicate registration,
-unload/reload, callback failures and owned teardown.
+Recovery tests use real App discovery/boot/registry with existing fake host owners
+and temporary preferences. They execute all forty files, repeat installation,
+toggle reporters through menus and check rollback on a preference-save failure.
+These ordinary checks do not establish native rendering, owner installation,
+installed artifact contents or publication. Keep the ordinary installed pre-push
+gate active; its current selector alone does not measure Plugmix's `Scripts`.
 
-Register a Reporters palette and View > Reporters. Put tools in the toolbar and
-Tools > Tool. Put palettes in Window > Panels. `install.vfpy` must prepare a
-minimal startup hook while preserving existing `initScript.py` contents and
-ownership. Prove this with owned fixtures before any owner installation.
-Replace reporter-per-script activation only after discovery and self-registration
-pass. Retain genuine action scripts. Four additional action scripts are optional.
+## Remaining architecture and acceptance
 
-Issue 211's nine native probes and four minor fixes remain follow-up work.
-The README's dated native observations do not close those integrated checks.
-Canonical migration to App `fontlabapp.plugmix` is separate work. Reconcile its
-ten later product commits with this remote package and all consumers before
-selecting a source tuple. Do not import that migration through a docs commit.
+Issue 210's future `fontlabapp.plugins` framework and `Extensions` bundles are
+not implemented by this recovery. Specify the bundle/manifest contract first,
+then qualify discovery, all four plugin kinds, duplicate registration, reload,
+callbacks, ownership teardown and preservation-safe startup fixtures. Replace
+reporter-per-script activation only after self-registration qualifies. Issue 211's
+nine native probes and four minor fixes remain open. Issue 123 remains paused.
+Further removal of the compatibility surface requires a full consumer,
+distribution, source-recovery and licence audit. Website work is a later milestone.
 
 ## Licence and contribution workflow
 
-Apache-2.0; see [LICENSE](LICENSE). Preserve the upstream authors and the
-Apache-2.0/MIT behavioural-port attributions in [NOTICE](NOTICE).
-Read [AGENTS.md](AGENTS.md), [PLAN.md](PLAN.md) and [TODO.md](TODO.md) before
-changes. Issue 123 remains paused. Source tests, installed artifacts, native
-behavior and publication require separate evidence.
+Apache-2.0; retain `LICENSE` and all Apache-2.0/MIT attribution in `NOTICE`.
+Read `AGENTS.md`, `PLAN.md` and `TODO.md` before changes. Qualified source,
+ordinary artifacts, native behavior, canonical adoption and publication have
+separate acceptance gates.
