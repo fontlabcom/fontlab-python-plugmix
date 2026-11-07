@@ -155,3 +155,25 @@ No product release or installation is claimed. Prior ordinary artifacts remain b
 The current HTML/CSS contains 45 distinct ordered SVG path tuples. A complete scan of the four installed MaterialX icon families finds 43 exact installed matches and two unmatched Lucide tuples, refining the earlier known-candidate inventory. The additional installed match is the Font Awesome version caret-down. Its existing CSS header and full notice retain Font Awesome Free 7.1.0, Fonticons and CC-BY-4.0 icon attribution. The official NPM caret SVG has different raw path bytes; no unmodified-primary SVG, whole-geometry or optimizer-recipe equivalence is claimed. The two unmatched Lucide tuples retain their pinned SCSS source attribution.
 
 A new actual-output regression derives these counts and checks installed matches, unmatched CSS references and the caret header. It fails against the prior 42 count and passes with the corrected metadata. All 36 current documentation tests pass; full strict and independent exact-lock builds match every output byte and mode. Only the legal paragraph, corresponding inventory and legal search row change in the site. Runtime, packaging, generators, vendor assets, full notices, existing guidance and the Fly search fix remain exact. Fresh browser verification and independent review are recorded separately. No private Pages operation, delivery, installed-product upgrade or native acceptance is claimed.
+
+
+## 2026-11-07 — Reconcile recovered-script tests with App menus
+
+Updated only the recovered-script test fixture for current App's owned
+View > Reporters submenu, label order, separator and Hide All action. The
+compatibility package's existing menu fake remains unchanged. Tests find each
+reporter by its visible label, exercise real App menu callbacks, verify repeated
+installation, and preserve painter-removal, preference and save-failure checks.
+The menu installer now correctly expects 39 reporters, Hide All, Filter and
+Palette actions (42 total).
+
+Against App `99851b8aafbe00e9588b1485807e0eeac4fdd9d3`, the unmodified source
+reproduced 41 failures and 125 passes. After this test-only correction, all 166
+cases pass in the full no-selector recipe and the normal-hook test recipe on
+asserted arm64 CPython 3.11. The full 51-module compatibility coverage checker
+passes; the separate full branch-coverage run measures all forty recovered
+Scripts at 100% (122 statements, no branches). All existing runtime source,
+scripts, packaging, recovery hashes, site source and generated output remain
+unchanged. The ordinary installed hook, reviewed source delivery and current
+Actions must still run on the final committed tuple. No native acceptance,
+owner installation, product release or private Pages operation is claimed.

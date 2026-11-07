@@ -11,9 +11,48 @@ import pytest
 from fontlabapp.plugmix import boot, registry
 from fontlabapp.plugmix.plugins.duplicate_anchors import DuplicateAnchors
 from fontlab_plugmix import boot as compatibility_boot
-from test_registry_boot_menu import Menus, Painters
+from test_registry_boot_menu import Action, Menus, Painters
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+class Submenu:
+    """Record the owned View > Reporters menu used by the current App."""
+
+    def __init__(self, parent, title):
+        self.parent, self.title, self.entries = parent, title, []
+
+    def addSeparator(self):
+        self.entries.append("-")
+
+
+class AppMenus(Menus):
+    """Extend the compatibility fake with App's owned submenu/token contract."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.menus = {}
+        self.titles = {}
+
+    def add_menu(self, section, title):
+        token = -(len(self.menus) + 1)
+        self.menus[token] = Submenu(section, title)
+        return token
+
+    def menu(self, token):
+        return self.menus[token]
+
+    def add_action(self, section, title, callback, *, checkable=False):
+        if not isinstance(section, Submenu):
+            return super().add_action(section, title, callback, checkable=checkable)
+        assert (section.parent, section.title) == ("View", "Reporters")
+        assert not title.startswith(("Plugmix", "Show "))
+        assert checkable == (title != "Hide All")
+        token = len(self.actions) + 1
+        section.entries.append(title)
+        self.actions[token] = (Action(), callback)
+        self.titles[token] = title
+        return token
 
 
 @pytest.fixture
@@ -24,7 +63,7 @@ def app_runtime(tmp_path, monkeypatch):
     monkeypatch.setattr(registry, "DEFAULT_FILE", path)
     monkeypatch.setattr(registry, "_current", None)
     monkeypatch.setattr(boot, "_state", None)
-    monkeypatch.setattr(boot, "_runtime", lambda: (object(), object(), Menus))
+    monkeypatch.setattr(boot, "_runtime", lambda: (object(), object(), AppMenus))
     monkeypatch.setattr(boot, "select_backend", lambda *args: Painters())
     for kind in ("ToolHost", "GeneralHost"):
         monkeypatch.setattr(
@@ -97,7 +136,8 @@ def test_reporter_script_when_run_twice_then_registers_once_and_menu_disables(
     assert state.painters.calls[0][0].name == name
     saved = json.loads(app_runtime.read_text())
     assert saved["enabled"] == [name] and saved["preserved"] is True
-    token = sorted(registry.available("reporter")).index(name) + 1
+    title = registry.available("reporter")[name].title.removeprefix("Show ")
+    token, = [token for token, label in state.menus.titles.items() if label == title]
     action, toggle = state.menus.actions[token]
     toggle()
     assert registry.enabled() == () and action.checked is False
@@ -114,9 +154,29 @@ def test_menu_script_when_run_twice_then_installs_all_reporter_actions(app_runti
     runpy.run_path(str(script))
     assert boot._state is state
     assert len(registry.available("reporter")) == 39
-    assert len(state.menus.actions) == 41  # reporters, Filter and Palette
+    assert len(state.menus.actions) == 42  # reporters, Hide All, Filter and Palette
+    submenu, = state.menus.menus.values()
+    assert (submenu.parent, submenu.title) == ("View", "Reporters")
+    labels = sorted(cls.title.removeprefix("Show ")
+                    for cls in registry.available("reporter").values())
+    assert submenu.entries == labels + ["-", "Hide All"]
     assert registry.enabled() == () and state.painters.calls == []
     assert json.loads(app_runtime.read_text())["preserved"] is True
+    for name in ("node_indexes", "center_lines"):
+        title = registry.available("reporter")[name].title.removeprefix("Show ")
+        token, = [token for token, label in state.menus.titles.items() if label == title]
+        action, toggle = state.menus.actions[token]
+        toggle()
+        assert action.checked is True
+    assert registry.enabled() == ("center_lines", "node_indexes")
+    hide_token, = [token for token, title in state.menus.titles.items()
+                   if title == "Hide All"]
+    state.menus.actions[hide_token][1]()
+    assert registry.enabled() == ()
+    assert all(not state.menus.action(token).checked for token in state.menus.titles)
+    assert state.painters.calls[-2:] == [("remove", 2), ("remove", 1)]
+    saved = json.loads(app_runtime.read_text())
+    assert saved["enabled"] == [] and saved["preserved"] is True
 
 
 def test_reporter_script_when_save_fails_then_removes_registered_painter(
