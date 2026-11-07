@@ -9,6 +9,7 @@ site_dir: ../docs
 use_directory_urls: true
 theme:
   name: materialx
+  language: en
   custom_dir: overrides
   palette:
     scheme: default
@@ -16,7 +17,8 @@ theme:
     - search.highlight
     - content.code.copy
 plugins:
-  - search
+  - search:
+      lang: [en]
 markdown_extensions:
   - admonition
   - tables
@@ -36,3 +38,5 @@ extra_css:
 extra_javascript:
   - https://i.fontlab.com/fltheme26/1.0.0/basecoat.js
   - https://i.fontlab.com/fltheme26/1.0.0/theme.js
+hooks:
+  - english_search.py
