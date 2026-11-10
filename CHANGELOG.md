@@ -2,6 +2,10 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-10 — live font editing rule (Issue 250, D44)
+
+- AGENTS.md: agents test and edit the font open in FontLab 9, starting from the Desktop VFJs, and may save them.
+
 ## 2026-11-10 — Issue 210 Extensions reference pack
 
 Moved App's 39 reporters and four concrete Filter/Palette/Tool/General examples
