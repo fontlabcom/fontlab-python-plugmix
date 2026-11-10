@@ -11,36 +11,36 @@ Use arm64 Python 3.11 and an owned App source. The exact full recipe is:
 UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
-The existing runner-layout test also requires that sibling App source directory.
-The no-selector run executes all tests and checks every compatibility production
-module for at least 80% line coverage. Arguments skip that checker. To measure
-the complete recovered script surface with branches as well, run the full suite:
+The runner-layout test requires the sibling App source directory. The
+no-selector run executes the complete suite and the compatibility package's
+coverage gate, plus at least 80% line coverage and 80% branch coverage separately
+for every Extensions and Scripts module. Arguments skip the checker; after a
+selected run, use the full suite before invoking
+`python3 tests/check_coverage.py coverage.json`.
 
-```sh
-UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh --cov=Scripts --cov-branch --cov-report=json:coverage.json
-```
+Tests exercise real App bundle discovery, boot, registry and menus with fake host
+owners and temporary preferences. Reporter behavior assertions are retained with
+imports redirected to bundle modules. Registration tests cover repeated enable,
+menu disable, unknown preferences and failed-save rollback. These offline checks
+do not establish native rendering, owner installation, installed artifact
+contents or publication. Keep the ordinary installed pre-push gate active.
 
-Recovery tests use real App discovery/boot/registry with existing fake host owners
-and temporary preferences. They execute all forty files, repeat installation,
-toggle reporters through menus and check rollback on a preference-save failure.
-These ordinary checks do not establish native rendering, owner installation,
-installed artifact contents or publication. Keep the ordinary installed pre-push
-gate active; its current selector alone does not measure Plugmix's `Scripts`.
+## Remaining acceptance
 
-## Remaining architecture and acceptance
+Issue 210's source split is implemented: App's `fontlabapp.plugins` core owns
+scaffolding, discovery, registration and lifecycle; Plugmix supplies 43 manifest
+bundles under `Extensions/` and one Show Reporters action. The deprecated
+`fontlabapp.plugmix` import shim and the separate `fontlab_plugmix` compatibility
+package remain distinct.
 
-Issue 210's future `fontlabapp.plugins` framework and `Extensions` bundles are
-not implemented by this recovery. Specify the bundle/manifest contract first,
-then qualify discovery, all four plugin kinds, duplicate registration, reload,
-callbacks, ownership teardown and preservation-safe startup fixtures. Replace
-reporter-per-script activation only after self-registration qualifies. Issue 211's
-nine native probes and four minor fixes remain open. Issue 123 remains paused.
-Further removal of the compatibility surface requires a full consumer,
-distribution, source-recovery and licence audit. Website work is a later milestone.
-
+Qualify native Reporters palette/View > Reporters synchronization, toolbar and
+Tools > Tool, Window > Panels, startup, teardown, drawing and writer history on
+the exact installed tuple. Issue 211's nine native probes and four minor fixes
+remain separate. Issue 123 remains paused. Removing the compatibility package
+still requires a full consumer, distribution, source-recovery and licence audit.
 
 ## Website checks
 
 Use a separate Python 3.13 environment and uv 0.13.7, installing the exact hash-locked `src_docs/requirements.txt`. Run `sh src_docs/build.sh` and `python -m unittest discover -s tests_docs -v`. These checks build complete catalogue pages without importing App or Plugmix. The build captures the source commit's timestamp once and both main-triggered jobs use it. A generated output child must be a direct docs-only child of the source SHA with identical non-doc source. The read-only second job checks the actual immutable output and requires full tracked and untracked parity.
 
-The existing 166-test recovery result and retained 68 compatibility/recovery source contracts remain separate historical source qualification. No product code, fixtures, startup script, recovery hash pin or licence is changed by this site. Publication, owner installation and native FontLab rendering remain separate. Private Pages configuration, permissions and requests stay owner-held.
+Earlier recovery test results remain historical source qualification and do not qualify the current Extensions tuple. No product code, fixtures, startup script, recovery hash pin or licence is changed by this site. Publication, owner installation and native FontLab rendering remain separate. Private Pages configuration, permissions and requests stay owner-held.

@@ -12,8 +12,8 @@ Its code, tests, dependencies, startup snippet and legal attribution are retaine
 For this runtime, install the package and `fontlab-fontlabapp` in FontLab's
 Python 3.11 environment. The optional `initScript-snippet.py` calls
 `fontlab_plugmix.install()` once per session; it remains the compatibility startup
-snippet, whereas the menu scripts above now target App. Neither file modifies an
-installation. Use native MeVisLab PythonQt inside FontLab, without another Qt
+snippet; the separate Show Reporters action targets App. Neither file modifies
+an installation. Use native MeVisLab PythonQt inside FontLab, without another Qt
 binding. Native per-canvas painters are preferred, with App's `EditorPainters`
 fallback on older builds.
 
@@ -95,7 +95,8 @@ Native reads and writes belong in the host layer. Pure imports do not need FontL
 `Reporter.compute(snapshot)` receives immutable data and returns `Mark` objects. Keep this callback pure; no implementation bodies are rendered on this site.
 
 Publish compatibility classes through `fontlab_plugmix.plugins` entry points.
-App uses the separate `fontlabapp.plugmix` group. Names must be unique and titles
+App retains the separate `fontlabapp.plugmix` entry-point group alongside
+Extensions discovery in `fontlabapp.plugins`. Names must be unique and titles
 human-readable. Marks support ring, line, polyline, polygon and text; polygon
 fill is RGBA, coordinates are font units, and stroke/text/diameter values are
 view pixels. `layer = "background"` requests painting beneath native glyphs on

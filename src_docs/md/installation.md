@@ -4,17 +4,41 @@ this_file: src_docs/md/installation.md
 
 # Installation and startup
 
-## App menu scripts
+## App Extensions
 
-Install the reviewed `fontlab-fontlabapp` package through the owner-managed FontLab Python 3.11 arm64 environment. Run `Scripts/Plugmix/Install Plugmix Menu.py` from FontLab's Script menu, then choose a reporter or run one of the 39 `Scripts/Reports/` launchers. The menu installer restores saved choices and does not select another reporter. Without saved enabled reporter choices, reporters remain disabled.
+Install the reviewed `fontlab-fontlabapp` package in FontLab's Python 3.11 arm64
+environment using App's `install.vfpy`. App's installer adds its marked startup
+block to `initScript.py`, preserving existing contents; the block calls
+`fontlabapp.plugins.install()` at launch. The App core discovers the user-data
+folder from `fontlab.flPreferences().dataPathDefault` and scans its `Extensions/`
+folder. Use FontLab's reported folder rather than assuming a platform path.
 
-Each reporter launcher installs App's menu runtime, enables its named reporter and persists that choice. Use its View > Plugmix: Show action to turn it off. No launcher edits font geometry, installs a Python package or changes the startup file. These source scripts are not included in the compatibility wheel. Duplicate Anchor Rings preserves the source's editable `HANDLE_SIZE` choices 5, 8 or 12.
+Copy the contents of this repository's `Extensions/` into that folder, preserving
+`reporters`, `filters`, `general`, `palettes` and `tools` and their bundle folders.
+The pack contains 39 reporter bundles and one of each other kind. Each bundle
+includes `plugin.json` and Python source; the bundles need no package install.
+Restart FontLab for startup discovery and after changing bundle source.
+
+Open the Reporters palette from Window > Panels, or run the optional
+`Scripts/Plugmix/Show Reporters.py` action. Enable reporters in that palette or
+View > Reporters; disable them there too. Choices persist by stable ID, and
+saved choices are restored at startup. Without saved enabled reporter choices,
+reporters remain disabled. The source places tools in the toolbar and Tools >
+Tool, and palettes in Window > Panels. Native placement and synchronization
+still require verification on the exact installed tuple.
+
+The Show Reporters action calls `fontlabapp.plugins.show_reporters()`; it does
+not install packages or change the startup file. The retired per-reporter
+launchers and Install Plugmix Menu script are no longer used. Duplicate Anchor
+Rings retains `set_handle_size(5|8|12)`, with a default of 8. Reporters do not
+edit font geometry. Startup, teardown, drawing and writer history remain native
+acceptance checks; these instructions do not claim those checks have passed.
 
 ## Compatibility package
 
 From an authorized checkout, install the compatibility package and its App dependency in the owner-managed FontLab Python 3.11 arm64 environment. In an isolated ordinary development environment, the package can be installed with `uv pip install .` once the required App distribution is available. Use native MeVisLab PythonQt inside FontLab, without another Qt binding.
 
-`initScript-snippet.py` is an optional compatibility startup snippet: it calls `fontlab_plugmix.install()` once per session. It does not target App's `fontlabapp.plugmix` runtime and does not modify an installation. No documentation build installs into FontLab's user folder.
+`initScript-snippet.py` is an optional compatibility startup snippet: it calls `fontlab_plugmix.install()` once per session. It does not target App's `fontlabapp.plugins` runtime and does not modify an installation. No documentation build installs into FontLab's user folder.
 
 ## Runtime and preference ownership
 

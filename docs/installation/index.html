@@ -7,7 +7,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="App menu scripts and the retained compatibility plugins.">
+        <meta name="description" content="App Extensions and the retained compatibility plugins.">
       
       
       
@@ -346,10 +346,10 @@
     <ul class="md-nav__list" data-md-component="toc">
       
         <li class="md-nav__item">
-  <a href="#app-menu-scripts" class="md-nav__link">
+  <a href="#app-extensions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        App menu scripts
+        App Extensions
       
     </span>
   </a>
@@ -400,7 +400,7 @@
   <span class="md-ellipsis">
     
   
-    App menu scripts
+    App Extensions
   
 
     
@@ -521,10 +521,10 @@
     <ul class="md-nav__list" data-md-component="toc">
       
         <li class="md-nav__item">
-  <a href="#app-menu-scripts" class="md-nav__link">
+  <a href="#app-extensions" class="md-nav__link">
     <span class="md-ellipsis">
       
-        App menu scripts
+        App Extensions
       
     </span>
   </a>
@@ -572,12 +572,34 @@
 
 
 <h1 id="installation-and-startup">Installation and startup</h1>
-<h2 id="app-menu-scripts">App menu scripts</h2>
-<p>Install the reviewed <code>fontlab-fontlabapp</code> package through the owner-managed FontLab Python 3.11 arm64 environment. Run <code>Scripts/Plugmix/Install Plugmix Menu.py</code> from FontLab's Script menu, then choose a reporter or run one of the 39 <code>Scripts/Reports/</code> launchers. The menu installer restores saved choices and does not select another reporter. Without saved enabled reporter choices, reporters remain disabled.</p>
-<p>Each reporter launcher installs App's menu runtime, enables its named reporter and persists that choice. Use its View &gt; Plugmix: Show action to turn it off. No launcher edits font geometry, installs a Python package or changes the startup file. These source scripts are not included in the compatibility wheel. Duplicate Anchor Rings preserves the source's editable <code>HANDLE_SIZE</code> choices 5, 8 or 12.</p>
+<h2 id="app-extensions">App Extensions</h2>
+<p>Install the reviewed <code>fontlab-fontlabapp</code> package in FontLab's Python 3.11 arm64
+environment using App's <code>install.vfpy</code>. App's installer adds its marked startup
+block to <code>initScript.py</code>, preserving existing contents; the block calls
+<code>fontlabapp.plugins.install()</code> at launch. The App core discovers the user-data
+folder from <code>fontlab.flPreferences().dataPathDefault</code> and scans its <code>Extensions/</code>
+folder. Use FontLab's reported folder rather than assuming a platform path.</p>
+<p>Copy the contents of this repository's <code>Extensions/</code> into that folder, preserving
+<code>reporters</code>, <code>filters</code>, <code>general</code>, <code>palettes</code> and <code>tools</code> and their bundle folders.
+The pack contains 39 reporter bundles and one of each other kind. Each bundle
+includes <code>plugin.json</code> and Python source; the bundles need no package install.
+Restart FontLab for startup discovery and after changing bundle source.</p>
+<p>Open the Reporters palette from Window &gt; Panels, or run the optional
+<code>Scripts/Plugmix/Show Reporters.py</code> action. Enable reporters in that palette or
+View &gt; Reporters; disable them there too. Choices persist by stable ID, and
+saved choices are restored at startup. Without saved enabled reporter choices,
+reporters remain disabled. The source places tools in the toolbar and Tools &gt;
+Tool, and palettes in Window &gt; Panels. Native placement and synchronization
+still require verification on the exact installed tuple.</p>
+<p>The Show Reporters action calls <code>fontlabapp.plugins.show_reporters()</code>; it does
+not install packages or change the startup file. The retired per-reporter
+launchers and Install Plugmix Menu script are no longer used. Duplicate Anchor
+Rings retains <code>set_handle_size(5|8|12)</code>, with a default of 8. Reporters do not
+edit font geometry. Startup, teardown, drawing and writer history remain native
+acceptance checks; these instructions do not claim those checks have passed.</p>
 <h2 id="compatibility-package">Compatibility package</h2>
 <p>From an authorized checkout, install the compatibility package and its App dependency in the owner-managed FontLab Python 3.11 arm64 environment. In an isolated ordinary development environment, the package can be installed with <code>uv pip install .</code> once the required App distribution is available. Use native MeVisLab PythonQt inside FontLab, without another Qt binding.</p>
-<p><code>initScript-snippet.py</code> is an optional compatibility startup snippet: it calls <code>fontlab_plugmix.install()</code> once per session. It does not target App's <code>fontlabapp.plugmix</code> runtime and does not modify an installation. No documentation build installs into FontLab's user folder.</p>
+<p><code>initScript-snippet.py</code> is an optional compatibility startup snippet: it calls <code>fontlab_plugmix.install()</code> once per session. It does not target App's <code>fontlabapp.plugins</code> runtime and does not modify an installation. No documentation build installs into FontLab's user folder.</p>
 <h2 id="runtime-and-preference-ownership">Runtime and preference ownership</h2>
 <p>Choose one runtime per session. Do not combine their startup installers or assume a preference migration guarantee. The shared filename is <code>fontlab-plugmix.json</code> in FontLab's Data directory. <code>install(config_dir=...)</code> selects an owned test directory. Runtime uninstall removes its owned actions, overlays and panels while retaining saved choices. Unknown preference keys survive; failed preference saves roll back activation. Preserve failed-teardown recovery rather than treating a partial teardown as success.</p>
 <p>Filter, Tool and General choices default on until explicitly changed; palettes start hidden. Saved choices retain <code>enabled</code>, <code>enabled_filters</code>, <code>enabled_palettes</code>, <code>enabled_tools</code>, <code>enabled_general</code> and last-used <code>params</code>. The compatibility rename from <code>nodes_outside_paths</code> to <code>offcurve_outside_bounds</code> is an internal migration only.</p>

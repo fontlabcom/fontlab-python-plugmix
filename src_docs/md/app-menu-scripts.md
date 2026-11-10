@@ -2,53 +2,72 @@
 this_file: src_docs/md/app-menu-scripts.md
 ---
 
-# App menu-script catalogue
+# App Extensions catalogue
 
-All 39 launchers below live in `Scripts/Reports/` and call App's `fontlabapp.plugmix`, not `fontlab_plugmix`. They enable the named reporter in every Glyph window; the matching View > Plugmix: Show action disables it. They do not edit font geometry. App owns discovery, painter registration, preference saves, rollback and teardown.
+All 39 reporter bundles below live in `Extensions/reporters/`. Each has its own
+`plugin.json` and Python source; no package install or individual launcher is
+needed for a bundle. App's `fontlabapp.plugins` core owns discovery, painter
+registration, preferences, rollback and teardown. `fontlabapp.plugmix` remains
+a deprecated import shim, separate from the retained `fontlab_plugmix` runtime.
 
-`Scripts/Plugmix/Install Plugmix Menu.py` is the fortieth recovered file: it installs the App menu and restores saved plugin choices without enabling an additional reporter. The two runtimes' startup paths must not be combined.
+App's startup hook discovers the Extensions folder. Enable or disable reporters
+in the Reporters palette or View > Reporters; enabling persists the stable ID.
+Reporters do not edit font geometry. `Scripts/Plugmix/Show Reporters.py` is the
+remaining optional action script: it opens the palette. Do not combine the two
+runtimes' startup paths. See [installation](installation.md) for setup.
 
-| Launcher filename | Overlay and limits |
+| Bundle name / reporter | Overlay and limits |
 | --- | --- |
-| `All Angles.py` | Angle of each straight segment from vertical, mod 180°; components excluded |
-| `Anchor Cloud.py` | Names and positions of the current glyph's anchors (local anchors only) |
-| `Angled Handles.py` | Rings on handles off the horizontal, vertical and italic axes |
-| `Blindfold.py` | Opaque blocks hide the strip from 70 units under the descender up to the baseline, and everything from x-height up to 70 units over the ascender (`band = "cap_height"` for cap height); the band between baseline and that height stays visible |
-| `Center Lines.py` | Advance/2, x-height/2 and cap-height/2 lines |
-| `Color Toner.py` | Each component filled in translucent black (`darken = 0.15`, wrapped into 0..1) so composed parts stand out from drawn outlines |
-| `Crosshair.py` | Long guides through selected nodes; no mouse tracking |
-| `Duplicate Anchor Rings.py` | Red/yellow rings for every anchor pair less than one unit apart |
-| `Emphasise Selected Handles.py` | Accent lines and rings for handles next to selected nodes |
-| `Glyph Focus.py` | Shade outside the advance box between descender and ascender |
-| `Imprecise Italic Angle.py` | Straight segments within 2° of the slant but not on it |
-| `Kern Indicator.py` | Displayed kerning of the pairs touching the glyph, above each junction (orange positive, blue negative); shown only between 3% and 90% zoom |
-| `Node Count.py` | Total on- and off-curve nodes; components excluded |
-| `Node Indexes.py` | Contour index beside every node |
-| `Nodes Close to Zones.py` | Rings on on-curves near zone edges or metric heights |
-| `Off-curve Handles Outside Bounds.py` | Handles beyond the on-curve bounding rectangle |
-| `RSB Line.py` | Advance boundary with RSB and LSB labels |
-| `Rekha Viewer.py` | Head-line bar for Devanagari, Bengali and Gurmukhi letters, moved by `rekha` and `rekha_stop` anchors; suffixed or interrupted anchors are not supported |
-| `Segment Length.py` | Straight and flattened curve lengths |
-| `Selected Node Coordinates.py` | Coordinates beside selected nodes |
-| `Show Background.py` | Outlines of the glyph's background layer filled in pale blue (alpha 0.3), counters open; background components are not shown |
-| `Show Character.py` | The glyph's first Unicode as 100 px text above the glyph; hidden below 20% zoom; no base-name lookup |
-| `Show Export Status.py` | Red cross over the body of a glyph that is set not to export |
-| `Show Global Glyph.py` | Contours of a helper glyph named `_global` behind every other glyph: closed paths orange outline with faint fill, open paths blue outline with faint fill; its components are not shown and it is not drawn on itself |
-| `Show Glyphs In Label Color.py` | Glyph and component outlines filled in the mark colour, counters open |
-| `Show Interpolation.py` | For each other compatible master, the glyph blended halfway (`factor = 0.5`) node by node between the shown layer and that master, filled in dark magenta (alpha 0.25), counters open; components are not drawn (neither the shown layer's nor the masters'); no instances, anchors or recentering, and masters with the same coordinates are skipped |
-| `Show Kerning Group Reference.py` | Members of the glyph's left kerning class drawn on top of each other as small (0.2) teal silhouettes 150 units left of the glyph, and of its right class 150 units right of it, baseline at half x-height; opacity is 0.8 divided by the class size (floor 0.04), so crowded classes read denser. Left-to-right text only. Very large classes are truncated: at most 32 glyphs are requested, alternating left and right |
-| `Show Label Color.py` | Bar in the glyph's mark colour under the descender (`placement` baseline or body), slanted by the italic angle; layer marks are not distinguished |
-| `Show Rotated.py` | Outline turned 180° about its bounds centre; components excluded |
-| `Show Siblings.py` | Look-alike Latin letters (c/e/o, b/p, d/q/u, h/l/n/r/a) filled in green behind the glyph, fainter in larger groups; Latin groups only |
-| `Show Stems.py` | Rings and span widths along a scan line at half x-height; components excluded |
-| `Smart Plumblines.py` | Centre lines through each contour's and the selection's extents; components excluded |
-| `Smooth Node Angles.py` | Handle-angle mismatch and length ratio at smooth nodes |
-| `Speed Punk.py` | Colour-ramped curvature comb; components excluded |
-| `Stem Thickness.py` | Wherever the mouse is (no proximity limit), a line across the outline from the outline point nearest it, perpendicular to it, to the nearer crossing more than 1 unit away, labelled with its rounded length; nothing at a corner where the ray runs along the outline; own contours only, no guide command or modifier key |
-| `Tops and Bottoms.py` | Rings and y labels at the highest and lowest on-curves |
-| `Two Point Distance.py` | Segment, length and angle for exactly two selected nodes |
-| `Unitizer.py` | Vertical grid at UPM / 18 |
-| `Vertical Metrics.py` | Labelled ascender, descender, x-height, cap-height and baseline |
+| `AllAngles.fontlabReporter` — All Angles | Angle of each straight segment from vertical, mod 180°; components excluded |
+| `AnchorCloud.fontlabReporter` — Anchor Cloud | Names and positions of the current glyph's anchors (local anchors only) |
+| `AngledHandles.fontlabReporter` — Angled Handles | Rings on handles off the horizontal, vertical and italic axes |
+| `Blindfold.fontlabReporter` — Blindfold | Opaque blocks hide the strip from 70 units under the descender up to the baseline, and everything from x-height up to 70 units over the ascender (`band = "cap_height"` for cap height); the band between baseline and that height stays visible |
+| `CenterLines.fontlabReporter` — Center Lines | Advance/2, x-height/2 and cap-height/2 lines |
+| `ColorToner.fontlabReporter` — Color Toner | Each component filled in translucent black (`darken = 0.15`, wrapped into 0..1) so composed parts stand out from drawn outlines |
+| `Crosshair.fontlabReporter` — Crosshair | Long guides through selected nodes; no mouse tracking |
+| `DuplicateAnchors.fontlabReporter` — Duplicate Anchor Rings | Red/yellow rings for every anchor pair less than one unit apart |
+| `OnlySelectedHandles.fontlabReporter` — Emphasise Selected Handles | Accent lines and rings for handles next to selected nodes |
+| `GlyphFocus.fontlabReporter` — Glyph Focus | Shade outside the advance box between descender and ascender |
+| `ImpreciseItalicAngle.fontlabReporter` — Imprecise Italic Angle | Straight segments within 2° of the slant but not on it |
+| `KernIndicator.fontlabReporter` — Kern Indicator | Displayed kerning of the pairs touching the glyph, above each junction (orange positive, blue negative); shown only between 3% and 90% zoom |
+| `NodeCount.fontlabReporter` — Node Count | Total on- and off-curve nodes; components excluded |
+| `NodeIndexes.fontlabReporter` — Node Indexes | Contour index beside every node |
+| `NodesCloseToZones.fontlabReporter` — Nodes Close to Zones | Rings on on-curves near zone edges or metric heights |
+| `OffcurveOutsideBounds.fontlabReporter` — Off-curve Handles Outside Bounds | Handles beyond the on-curve bounding rectangle |
+| `RSBLine.fontlabReporter` — RSB Line | Advance boundary with RSB and LSB labels |
+| `Rekha.fontlabReporter` — Rekha Viewer | Head-line bar for Devanagari, Bengali and Gurmukhi letters, moved by `rekha` and `rekha_stop` anchors; suffixed or interrupted anchors are not supported |
+| `SegmentLength.fontlabReporter` — Segment Length | Straight and flattened curve lengths |
+| `SelectedCoordinates.fontlabReporter` — Selected Node Coordinates | Coordinates beside selected nodes |
+| `ShowBackground.fontlabReporter` — Show Background | Outlines of the glyph's background layer filled in pale blue (alpha 0.3), counters open; background components are not shown |
+| `ShowCharacter.fontlabReporter` — Show Character | The glyph's first Unicode as 100 px text above the glyph; hidden below 20% zoom; no base-name lookup |
+| `ExportStatus.fontlabReporter` — Show Export Status | Red cross over the body of a glyph that is set not to export |
+| `GlobalGlyph.fontlabReporter` — Show Global Glyph | Contours of a helper glyph named `_global` behind every other glyph: closed paths orange outline with faint fill, open paths blue outline with faint fill; its components are not shown and it is not drawn on itself |
+| `GlyphsInLabelColor.fontlabReporter` — Show Glyphs In Label Color | Glyph and component outlines filled in the mark colour, counters open |
+| `ShowInterpolation.fontlabReporter` — Show Interpolation | For each other compatible master, the glyph blended halfway (`factor = 0.5`) node by node between the shown layer and that master, filled in dark magenta (alpha 0.25), counters open; components are not drawn (neither the shown layer's nor the masters'); no instances, anchors or recentering, and masters with the same coordinates are skipped |
+| `KerningGroupReference.fontlabReporter` — Show Kerning Group Reference | Members of the glyph's left kerning class drawn on top of each other as small (0.2) teal silhouettes 150 units left of the glyph, and of its right class 150 units right of it, baseline at half x-height; opacity is 0.8 divided by the class size (floor 0.04), so crowded classes read denser. Left-to-right text only. Very large classes are truncated: at most 32 glyphs are requested, alternating left and right |
+| `LabelColor.fontlabReporter` — Show Label Color | Bar in the glyph's mark colour under the descender (`placement` baseline or body), slanted by the italic angle; layer marks are not distinguished |
+| `ShowRotated.fontlabReporter` — Show Rotated | Outline turned 180° about its bounds centre; components excluded |
+| `Siblings.fontlabReporter` — Show Siblings | Look-alike Latin letters (c/e/o, b/p, d/q/u, h/l/n/r/a) filled in green behind the glyph, fainter in larger groups; Latin groups only |
+| `ShowStems.fontlabReporter` — Show Stems | Rings and span widths along a scan line at half x-height; components excluded |
+| `SmartPlumblines.fontlabReporter` — Smart Plumblines | Centre lines through each contour's and the selection's extents; components excluded |
+| `SmoothNodeAngles.fontlabReporter` — Smooth Node Angles | Handle-angle mismatch and length ratio at smooth nodes |
+| `SpeedPunk.fontlabReporter` — Speed Punk | Colour-ramped curvature comb; components excluded |
+| `StemThickness.fontlabReporter` — Stem Thickness | Wherever the mouse is (no proximity limit), a line across the outline from the outline point nearest it, perpendicular to it, to the nearer crossing more than 1 unit away, labelled with its rounded length; nothing at a corner where the ray runs along the outline; own contours only, no guide command or modifier key |
+| `TopsAndBottoms.fontlabReporter` — Tops and Bottoms | Rings and y labels at the highest and lowest on-curves |
+| `TwoPointDistance.fontlabReporter` — Two Point Distance | Segment, length and angle for exactly two selected nodes |
+| `Unitizer.fontlabReporter` — Unitizer | Vertical grid at UPM / 18 |
+| `VerticalMetrics.fontlabReporter` — Vertical Metrics | Labelled ascender, descender, x-height, cap-height and baseline |
+
+## Other Extensions
+
+The same pack supplies `Extensions/filters/DeleteSmallPaths.fontlabFilter`,
+`Extensions/general/ZoomToSelection.fontlabGeneral`,
+`Extensions/palettes/StepAndRepeat.fontlabPalette` and
+`Extensions/tools/SmartSelect.fontlabTool`, each with a `plugin.json` manifest.
+These provide Delete Small Paths, Zoom to Selection, Step and Repeat and Smart
+Select respectively. App owns their host operations; filters and palettes use
+its guarded writer APIs. Native Undo/Redo and saved/reopened behavior remain
+unverified for this installed tuple.
 
 ## Painting and acceptance limits
 
@@ -70,7 +89,7 @@ only.
 
 ## App reporter contract
 
-Write a reporter by subclassing `fontlabapp.plugmix.Reporter` with a unique
+Write a reporter by subclassing `fontlabapp.plugins.Reporter` with a unique
 `name`, a `title` and a pure `compute(snapshot)` that returns `Mark` objects
 (`ring`, `line`, `polyline`, `polygon`, `text`) in glyph units; pixel sizes are
 view pixels. Set `layer = "background"` to paint under the glyph layer.
@@ -119,7 +138,12 @@ active canvas changes or closes, and on `uninstall()`. Only the watched canvas
 gets a mouse; with EditorPainters it is None. Whether moves reach the filter
 under every tool is unverified natively.
 Offline coverage only.
-Third-party packages publish plugin classes in the `fontlabapp.plugmix`
+Bundles declare `id`, `name`, `kind`, `version`, `entry` and `min_app_version`
+in `plugin.json`. The ID, display name and kind must match the entry class;
+IDs are unique across kinds and the entry module must be inside the bundle.
+Invalid manifests and imports are logged and skipped. Discovery is sorted and
+retains class identity on repeated scans; restart FontLab to load changed source.
+Third-party packages can still use the retained `fontlabapp.plugmix`
 entry-point group.
 
-Historical App native observations do not qualify activation or rendering of this recovered forty-file tuple. Issue 211 native probes remain separate.
+Historical App native observations do not qualify activation or rendering of the current Extensions pack. Native palette/menu synchronization, toolbar placement, startup, teardown, drawing and writer history still require qualification on the exact installed App/Plugmix tuple. Issue 211 native probes remain separate.
