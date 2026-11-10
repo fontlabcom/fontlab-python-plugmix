@@ -129,3 +129,7 @@ configuration, deployment or automatic publication request is enabled.
 Source/generated review, actual Actions, owner installation and native acceptance
 remain separate. Do not change runtime dependencies, startup or recovery pins for
 a site build.
+
+## Integration rounds
+
+After each important round, independently verify the result, refresh the actual upstream main (or existing default branch), and reconcile concurrent team work in an isolated successor. Integrate qualified changes upstream through normal gates without force-pushing. Move only verified solved TODO items to cumulative CHANGELOG, update PLAN for remaining work, and continue the authorized backlog. Existing preservation rules, exclusions, pauses, native/install restrictions, private P/L holds and capability gates remain in force.

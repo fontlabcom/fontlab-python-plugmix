@@ -185,3 +185,7 @@ scripts, packaging, recovery hashes, site source and generated output remain
 unchanged. The ordinary installed hook, reviewed source delivery and current
 Actions must still run on the final committed tuple. No native acceptance,
 owner installation, product release or private Pages operation is claimed.
+
+## 2026-11-10 — integration-round guidance
+
+Require independent verification, fresh upstream/team reconciliation and normal nonforce integration after important rounds. Move only verified solved TODO scope into cumulative history, update remaining plans and continue authorized work; existing preservation and admission holds remain unchanged.

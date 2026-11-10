@@ -177,3 +177,7 @@ scripts, packaging, recovery hashes, site source and generated output remain
 unchanged. The ordinary installed hook, reviewed source delivery and current
 Actions must still run on the final committed tuple. No native acceptance,
 owner installation, product release or private Pages operation is claimed.
+
+## 2026-11-10 — integration-round guidance
+
+Added the owner’s round-by-round review, upstream reconciliation and backlog-maintenance rule to AGENTS. This is documentation-only preparation; independent review and applicable repository checks remain required before delivery. No runtime, installation, native or publication acceptance is asserted.
