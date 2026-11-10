@@ -1,0 +1,8 @@
+{
+  "id": "kerning_group_reference",
+  "name": "Show Kerning Group Reference",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "kerning_group_reference:KerningGroupReference",
+  "min_app_version": "1.0.0"
+}

@@ -1,5 +1,5 @@
 # this_file: tests/test_recovered_scripts.py
-"""Run the public script files against App's real discovery, registry and menus."""
+"""Exercise moved reporter bundles through App registration and owned menus."""
 
 import json
 import runpy
@@ -8,8 +8,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from fontlabapp.plugmix import boot, registry
-from fontlabapp.plugmix.plugins.duplicate_anchors import DuplicateAnchors
+from fontlabapp.plugins import boot, registry
+from plugmix_examples.duplicate_anchors import DuplicateAnchors
 from fontlab_plugmix import boot as compatibility_boot
 from test_registry_boot_menu import Action, Menus, Painters
 
@@ -45,6 +45,13 @@ class AppMenus(Menus):
     def add_action(self, section, title, callback, *, checkable=False):
         if not isinstance(section, Submenu):
             return super().add_action(section, title, callback, checkable=checkable)
+        if (section.parent, section.title) == ("Window", "Panels"):
+            assert title in {"Reporters", "Step and Repeat", "Plugmix: Step and Repeat Panel"}
+            assert checkable == (title != "Reporters")
+            token = len(self.actions) + 1
+            section.entries.append(title)
+            self.actions[token] = (Action(), callback)
+            return token
         assert (section.parent, section.title) == ("View", "Reporters")
         assert not title.startswith(("Plugmix", "Show "))
         assert checkable == (title != "Hide All")
@@ -61,6 +68,7 @@ def app_runtime(tmp_path, monkeypatch):
     path = tmp_path / "fontlab-plugmix.json"
     path.write_text('{"enabled": [], "params": {}, "preserved": true}')
     monkeypatch.setattr(registry, "DEFAULT_FILE", path)
+    monkeypatch.setattr(registry, "DEFAULT_EXTENSIONS", ROOT / "Extensions")
     monkeypatch.setattr(registry, "_current", None)
     monkeypatch.setattr(boot, "_state", None)
     monkeypatch.setattr(boot, "_runtime", lambda: (object(), object(), AppMenus))
@@ -70,7 +78,7 @@ def app_runtime(tmp_path, monkeypatch):
             boot, kind,
             lambda *args: SimpleNamespace(install=lambda: None, close=lambda: None),
         )
-    monkeypatch.setattr(DuplicateAnchors, "handle_size", 5)
+    monkeypatch.setattr(DuplicateAnchors, "handle_size", 8)
     monkeypatch.setattr(
         compatibility_boot, "_runtime",
         lambda: pytest.fail("Recovered scripts must use the App runtime"),
@@ -123,12 +131,13 @@ def app_runtime(tmp_path, monkeypatch):
         ('Vertical Metrics.py', 'vertical_metrics'),
     ],
 )
-def test_reporter_script_when_run_twice_then_registers_once_and_menu_disables(
+def test_reporter_bundle_when_enabled_twice_then_registers_once_and_menu_disables(
     filename, name, app_runtime
 ):
-    script = ROOT / "Scripts" / "Reports" / filename
-    runpy.run_path(str(script))
-    runpy.run_path(str(script))
+    assert not (ROOT / "Scripts" / "Reports" / filename).exists()
+    boot.install()
+    registry.enable(name)
+    registry.enable(name)
     state = boot._state
     assert state is not None
     assert registry.enabled() == (name,)
@@ -147,15 +156,15 @@ def test_reporter_script_when_run_twice_then_registers_once_and_menu_disables(
         assert DuplicateAnchors.handle_size == 8
 
 
-def test_menu_script_when_run_twice_then_installs_all_reporter_actions(app_runtime):
-    script = ROOT / "Scripts" / "Plugmix" / "Install Plugmix Menu.py"
-    runpy.run_path(str(script))
+def test_bundle_boot_when_run_twice_then_installs_all_reporter_actions(app_runtime):
+    boot.install()
     state = boot._state
-    runpy.run_path(str(script))
+    boot.install()
     assert boot._state is state
     assert len(registry.available("reporter")) == 39
-    assert len(state.menus.actions) == 42  # reporters, Hide All, Filter and Palette
-    submenu, = state.menus.menus.values()
+    assert len(state.menus.actions) == 43  # reporters, Hide All, Filter, Palette, core panel
+    submenu, = [value for value in state.menus.menus.values()
+                if (value.parent, value.title) == ("View", "Reporters")]
     assert (submenu.parent, submenu.title) == ("View", "Reporters")
     labels = sorted(cls.title.removeprefix("Show ")
                     for cls in registry.available("reporter").values())
@@ -179,7 +188,7 @@ def test_menu_script_when_run_twice_then_installs_all_reporter_actions(app_runti
     assert saved["enabled"] == [] and saved["preserved"] is True
 
 
-def test_reporter_script_when_save_fails_then_removes_registered_painter(
+def test_reporter_bundle_when_save_fails_then_removes_registered_painter(
     app_runtime, monkeypatch
 ):
     boot.install()
@@ -191,7 +200,19 @@ def test_reporter_script_when_save_fails_then_removes_registered_painter(
 
     monkeypatch.setattr(state.reporters, "_save", fail_save)
     with pytest.raises(OSError, match="read-only fixture"):
-        runpy.run_path(str(ROOT / "Scripts" / "Reports" / "Node Indexes.py"))
+        registry.enable("node_indexes")
     assert registry.enabled() == ()
     assert state.painters.calls[-1] == ("remove", 1)
     assert app_runtime.read_bytes() == original
+
+
+def test_reporters_action_when_run_then_shows_core_palette(monkeypatch):
+    from fontlabapp import plugins
+
+    calls = []
+    monkeypatch.setattr(plugins, "show_reporters", lambda: calls.append("shown"))
+    runpy.run_path(str(ROOT / "Scripts/Plugmix/Show Reporters.py"))
+    assert calls == ["shown"]
+    assert list((ROOT / "Scripts").rglob("*.py")) == [
+        ROOT / "Scripts/Plugmix/Show Reporters.py"
+    ]

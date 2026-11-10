@@ -1,0 +1,8 @@
+{
+  "id": "blindfold",
+  "name": "Blindfold",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "blindfold:Blindfold",
+  "min_app_version": "1.0.0"
+}

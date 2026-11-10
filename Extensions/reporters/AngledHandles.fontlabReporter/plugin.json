@@ -1,0 +1,8 @@
+{
+  "id": "angled_handles",
+  "name": "Angled Handles",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "angled_handles:AngledHandles",
+  "min_app_version": "1.0.0"
+}

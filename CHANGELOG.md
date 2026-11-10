@@ -2,6 +2,24 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-10 — Issue 210 Extensions reference pack
+
+Moved App's 39 reporters and four concrete Filter/Palette/Tool/General examples
+into 43 manifest bundles under Extensions. Retained their behavior and notices;
+core imports use `fontlabapp.plugins`. Replaced reporter launchers with one
+Show Reporters action; retained the separate compatibility package unchanged.
+Documented the bundle contract and open native checks. Independent paired
+source review approved; the controller repeated the 353-test suite and gates.
+
+The complete direct source suite passed 353 tests on arm64 CPython 3.11.18.
+All 43 bundle modules and the remaining action script exceed 80% line and 80%
+branch coverage separately; the existing 51-module compatibility gate passes.
+Ruff 0.14.10 F821 passes. The exact shell wrapper setup could not resolve PyPI
+because DNS is unavailable; its attempted baseline is not a passing result.
+Full commands and per-module evidence are in ISSUE210-PACK-REPORT.md.
+Native UI/drawing/startup/history, installation, artifacts and delivery remain
+open. No FontLab process or user installation was used.
+
 ## 2026-11-05 — Full source recipe qualification
 
 Corrected the six-guide handoff to the retained 21:46:13 UTC full-run

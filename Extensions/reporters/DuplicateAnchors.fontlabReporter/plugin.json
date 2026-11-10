@@ -1,0 +1,8 @@
+{
+  "id": "duplicate_anchors",
+  "name": "Duplicate Anchor Rings",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "duplicate_anchors:DuplicateAnchors",
+  "min_app_version": "1.0.0"
+}

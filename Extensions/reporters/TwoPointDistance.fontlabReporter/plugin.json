@@ -1,0 +1,8 @@
+{
+  "id": "two_point_distance",
+  "name": "Two Point Distance",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "two_point_distance:TwoPointDistance",
+  "min_app_version": "1.0.0"
+}

@@ -23,5 +23,5 @@ packages = ["src/fontlab_plugmix"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=fontlab_plugmix --cov-report=term-missing --cov-report=json:coverage.json"
+addopts = "--cov=fontlab_plugmix --cov=Extensions --cov=Scripts --cov-branch --cov-report=term-missing --cov-report=json:coverage.json"
 

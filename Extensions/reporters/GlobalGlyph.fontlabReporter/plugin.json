@@ -1,0 +1,8 @@
+{
+  "id": "global_glyph",
+  "name": "Show Global Glyph",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "global_glyph:GlobalGlyph",
+  "min_app_version": "1.0.0"
+}

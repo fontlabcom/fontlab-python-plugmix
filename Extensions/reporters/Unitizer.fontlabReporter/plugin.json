@@ -1,0 +1,8 @@
+{
+  "id": "unitizer",
+  "name": "Unitizer",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "unitizer:Unitizer",
+  "min_app_version": "1.0.0"
+}

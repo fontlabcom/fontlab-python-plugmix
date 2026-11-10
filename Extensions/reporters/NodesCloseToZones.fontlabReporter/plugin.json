@@ -1,0 +1,8 @@
+{
+  "id": "nodes_close_to_zones",
+  "name": "Nodes Close to Zones",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "nodes_close_to_zones:NodesCloseToZones",
+  "min_app_version": "1.0.0"
+}

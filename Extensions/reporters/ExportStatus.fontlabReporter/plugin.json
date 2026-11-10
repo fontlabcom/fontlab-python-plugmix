@@ -1,0 +1,8 @@
+{
+  "id": "export_status",
+  "name": "Show Export Status",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "export_status:ExportStatus",
+  "min_app_version": "1.0.0"
+}

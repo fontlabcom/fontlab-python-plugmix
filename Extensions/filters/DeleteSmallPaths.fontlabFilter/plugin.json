@@ -1,0 +1,8 @@
+{
+  "id": "delete_small_paths",
+  "name": "Delete Small Paths",
+  "kind": "filter",
+  "version": "1.0.0",
+  "entry": "delete_small_paths:DeleteSmallPaths",
+  "min_app_version": "1.0.0"
+}

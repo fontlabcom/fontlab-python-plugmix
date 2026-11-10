@@ -1,0 +1,8 @@
+{
+  "id": "crosshair",
+  "name": "Crosshair",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "crosshair:Crosshair",
+  "min_app_version": "1.0.0"
+}

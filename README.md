@@ -4,32 +4,27 @@ this_file: README.md
 
 # fontlab-python-plugmix
 
-FontLab menu scripts for App's `fontlabapp.plugmix` framework, alongside the
-retained `fontlab_plugmix` compatibility package. This recovery keeps both source
-histories, tests and licences; it does not complete their consolidation.
+Reference Extensions pack for App's `fontlabapp.plugins` core: 39 reporters,
+one filter, one tool, one palette and one General plugin. Concrete plugins live
+in `Extensions/`; the core owns discovery, preferences, callbacks and native UI.
+The separate `fontlab_plugmix` compatibility package remains intact.
 
-## App-based menu scripts
+## Extensions and action scripts
 
-`Scripts/Reports/` contains 39 reporter launchers. They use the framework already
-provided by `fontlab-fontlabapp`; they do not import `fontlab_plugmix`.
-`Scripts/Plugmix/Install Plugmix Menu.py` installs App's Plugmix menus. It does
-not select an additional reporter; App restores saved plugin choices. Without
-saved enabled reporter choices, reporters remain disabled. Run these files
-through FontLab's Script menu. They are source scripts, not members of this
-repository's compatibility wheel.
+See [Extensions/README.md](Extensions/README.md) for the bundle layout and manifest.
+Copy the Extensions contents into the FontLab user-data `Extensions/` folder;
+App's startup hook discovers them. Each bundle is self-contained Python source
+with a `plugin.json`; it needs no package install or reporter launcher.
 
-The 38 recovered reporters and two updated existing launchers retain their
-pre-pull product bytes. The reporters cover geometry, anchors, metrics, node
-selection, backgrounds, labels, interpolation and related reference overlays.
-Duplicate Anchor Rings retains its editable `HANDLE_SIZE` choice of 5, 8 or 12.
-Reporters do not edit font geometry; enabling one saves its name in Plugmix's
-preference JSON. App owns discovery, registration, painters and teardown.
+Use the Reporters palette or View > Reporters to enable reporters. The only
+remaining script, `Scripts/Plugmix/Show Reporters.py`, opens that palette. Reporters
+do not edit font geometry; enabling one persists its stable ID. Duplicate Anchor
+Rings retains its 5, 8 or 12 handle-size API, with the default of 8.
 
-App's framework and the compatibility package below both use
-`fontlab-plugmix.json` and can contribute Plugmix menus. Choose one runtime in a
-FontLab session. Do not combine their startup installers. Preference migration
-between the two implementations and native recovery acceptance are unqualified.
-No script here installs packages or edits FontLab's startup file.
+App and the retained compatibility runtime both use `fontlab-plugmix.json`.
+Choose one runtime per FontLab session; do not combine their startup installers.
+Cross-runtime preference migration remains unqualified. No script here installs
+packages or edits FontLab's startup file.
 
 ## Retained compatibility package
 
@@ -133,7 +128,8 @@ class Origin(Reporter):
 ```
 
 Publish compatibility classes through `fontlab_plugmix.plugins` entry points.
-App uses the separate `fontlabapp.plugmix` group. Names must be unique and titles
+App retains the separate `fontlabapp.plugmix` entry-point group for compatibility
+and also discovers Extensions bundles. Names must be unique and titles
 human-readable. Marks support ring, line, polyline, polygon and text; polygon
 fill is RGBA, coordinates are font units, and stroke/text/diameter values are
 view pixels. `layer = "background"` requests painting beneath native glyphs on
@@ -148,32 +144,28 @@ Use arm64 Python 3.11 and an owned App source. The exact full recipe is:
 UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
-The existing runner-layout test also requires that sibling App source directory.
-The no-selector run executes all tests and checks every compatibility production
-module for at least 80% line coverage. Arguments skip that checker. To measure
-the complete recovered script surface with branches as well, run the full suite:
+The runner-layout test requires the sibling App source. The no-selector run
+executes the complete suite, retaining the compatibility package coverage gate
+and requiring at least 80% line coverage and 80% branch coverage separately for
+every Extensions and Scripts module. Arguments skip the checker; after a selected
+run, use the full suite before invoking `python3 tests/check_coverage.py coverage.json`.
 
-```sh
-UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh --cov=Scripts --cov-branch --cov-report=json:coverage.json
-```
+Tests use real App bundle discovery, boot, registry and menus with fake host owners
+and temporary preferences. Reporter behavior tests retain the original assertions
+from App, with imports redirected to the bundle modules. Registration tests cover
+repeated enable, menu disable, unknown preferences and failed-save rollback.
+No offline result establishes native rendering, owner installation, published
+artifacts or FontLab menu/toolbar insertion.
 
-Recovery tests use real App discovery/boot/registry with existing fake host owners
-and temporary preferences. They execute all forty files, repeat installation,
-toggle reporters through menus and check rollback on a preference-save failure.
-These ordinary checks do not establish native rendering, owner installation,
-installed artifact contents or publication. Keep the ordinary installed pre-push
-gate active; its current selector alone does not measure Plugmix's `Scripts`.
+## Remaining acceptance
 
-## Remaining architecture and acceptance
-
-Issue 210's future `fontlabapp.plugins` framework and `Extensions` bundles are
-not implemented by this recovery. Specify the bundle/manifest contract first,
-then qualify discovery, all four plugin kinds, duplicate registration, reload,
-callbacks, ownership teardown and preservation-safe startup fixtures. Replace
-reporter-per-script activation only after self-registration qualifies. Issue 211's
-nine native probes and four minor fixes remain open. Issue 123 remains paused.
-Further removal of the compatibility surface requires a full consumer,
-distribution, source-recovery and licence audit. The source/build-only website is maintained separately under `src_docs`; private Pages publication remains owner-held.
+Issue 210's source split is implemented in this paired candidate. Qualify native
+Reporters palette/menu synchronization, toolbar and Tools > Tool, Window > Panels,
+startup, teardown, drawing and writer history on the exact installed tuple.
+Issue 211's existing native checks remain separate. Issue 123 remains paused.
+Removing the retained compatibility package requires a consumer, distribution,
+source-recovery and licence audit. The source/build website remains separately
+maintained under `src_docs`; private Pages publication remains owner-held.
 
 ## Licence and contribution workflow
 

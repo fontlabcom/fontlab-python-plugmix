@@ -1,6 +1,11 @@
 # this_file: tests/conftest.py
 """Python-only snapshot fixtures for every built-in reporter."""
 
+import json
+import sys
+from pathlib import Path
+from types import ModuleType
+
 import pytest
 
 from fontlab_plugmix.snapshot import Anchor, Contour, GlyphSnapshot, Metrics, Node
@@ -30,3 +35,18 @@ def glyph() -> GlyphSnapshot:
         500,
         Metrics(800, -200, 500, 700, 10, 1000),
     )
+
+
+def pytest_configure():
+    """Expose actual bundle modules to the retained behavioral test imports."""
+    from fontlabapp.plugins.bundles import load_bundle
+
+    root = Path(__file__).resolve().parents[1]
+    package = ModuleType("plugmix_examples")
+    package.__path__ = []
+    sys.modules[package.__name__] = package
+    for row in json.loads((root / "tests/bundle-map.json").read_text()):
+        cls = load_bundle(root / row["bundle"])
+        module = sys.modules[cls.__module__]
+        sys.modules[f"plugmix_examples.{row['module']}"] = module
+        setattr(package, row["module"], module)

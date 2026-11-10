@@ -1,0 +1,346 @@
+[
+  {
+    "original": "plugins/all_angles.py",
+    "bundle": "Extensions/reporters/AllAngles.fontlabReporter",
+    "module": "all_angles",
+    "class": "AllAngles",
+    "id": "all_angles",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/anchor_cloud.py",
+    "bundle": "Extensions/reporters/AnchorCloud.fontlabReporter",
+    "module": "anchor_cloud",
+    "class": "AnchorCloud",
+    "id": "anchor_cloud",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/angled_handles.py",
+    "bundle": "Extensions/reporters/AngledHandles.fontlabReporter",
+    "module": "angled_handles",
+    "class": "AngledHandles",
+    "id": "angled_handles",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/blindfold.py",
+    "bundle": "Extensions/reporters/Blindfold.fontlabReporter",
+    "module": "blindfold",
+    "class": "Blindfold",
+    "id": "blindfold",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/center_lines.py",
+    "bundle": "Extensions/reporters/CenterLines.fontlabReporter",
+    "module": "center_lines",
+    "class": "CenterLines",
+    "id": "center_lines",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/color_toner.py",
+    "bundle": "Extensions/reporters/ColorToner.fontlabReporter",
+    "module": "color_toner",
+    "class": "ColorToner",
+    "id": "color_toner",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/crosshair.py",
+    "bundle": "Extensions/reporters/Crosshair.fontlabReporter",
+    "module": "crosshair",
+    "class": "Crosshair",
+    "id": "crosshair",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/duplicate_anchors.py",
+    "bundle": "Extensions/reporters/DuplicateAnchors.fontlabReporter",
+    "module": "duplicate_anchors",
+    "class": "DuplicateAnchors",
+    "id": "duplicate_anchors",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/export_status.py",
+    "bundle": "Extensions/reporters/ExportStatus.fontlabReporter",
+    "module": "export_status",
+    "class": "ExportStatus",
+    "id": "export_status",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/global_glyph.py",
+    "bundle": "Extensions/reporters/GlobalGlyph.fontlabReporter",
+    "module": "global_glyph",
+    "class": "GlobalGlyph",
+    "id": "global_glyph",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/glyph_focus.py",
+    "bundle": "Extensions/reporters/GlyphFocus.fontlabReporter",
+    "module": "glyph_focus",
+    "class": "GlyphFocus",
+    "id": "glyph_focus",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/glyphs_in_label_color.py",
+    "bundle": "Extensions/reporters/GlyphsInLabelColor.fontlabReporter",
+    "module": "glyphs_in_label_color",
+    "class": "GlyphsInLabelColor",
+    "id": "glyphs_in_label_color",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/imprecise_italic_angle.py",
+    "bundle": "Extensions/reporters/ImpreciseItalicAngle.fontlabReporter",
+    "module": "imprecise_italic_angle",
+    "class": "ImpreciseItalicAngle",
+    "id": "imprecise_italic_angle",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/kern_indicator.py",
+    "bundle": "Extensions/reporters/KernIndicator.fontlabReporter",
+    "module": "kern_indicator",
+    "class": "KernIndicator",
+    "id": "kern_indicator",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/kerning_group_reference.py",
+    "bundle": "Extensions/reporters/KerningGroupReference.fontlabReporter",
+    "module": "kerning_group_reference",
+    "class": "KerningGroupReference",
+    "id": "kerning_group_reference",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/label_color.py",
+    "bundle": "Extensions/reporters/LabelColor.fontlabReporter",
+    "module": "label_color",
+    "class": "LabelColor",
+    "id": "label_color",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/node_count.py",
+    "bundle": "Extensions/reporters/NodeCount.fontlabReporter",
+    "module": "node_count",
+    "class": "NodeCount",
+    "id": "node_count",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/node_indexes.py",
+    "bundle": "Extensions/reporters/NodeIndexes.fontlabReporter",
+    "module": "node_indexes",
+    "class": "NodeIndexes",
+    "id": "node_indexes",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/nodes_close_to_zones.py",
+    "bundle": "Extensions/reporters/NodesCloseToZones.fontlabReporter",
+    "module": "nodes_close_to_zones",
+    "class": "NodesCloseToZones",
+    "id": "nodes_close_to_zones",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/offcurve_outside_bounds.py",
+    "bundle": "Extensions/reporters/OffcurveOutsideBounds.fontlabReporter",
+    "module": "offcurve_outside_bounds",
+    "class": "OffcurveOutsideBounds",
+    "id": "offcurve_outside_bounds",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/only_selected_handles.py",
+    "bundle": "Extensions/reporters/OnlySelectedHandles.fontlabReporter",
+    "module": "only_selected_handles",
+    "class": "OnlySelectedHandles",
+    "id": "only_selected_handles",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/rekha.py",
+    "bundle": "Extensions/reporters/Rekha.fontlabReporter",
+    "module": "rekha",
+    "class": "Rekha",
+    "id": "rekha",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/rsb_line.py",
+    "bundle": "Extensions/reporters/RSBLine.fontlabReporter",
+    "module": "rsb_line",
+    "class": "RSBLine",
+    "id": "rsb_line",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/segment_length.py",
+    "bundle": "Extensions/reporters/SegmentLength.fontlabReporter",
+    "module": "segment_length",
+    "class": "SegmentLength",
+    "id": "segment_length",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/selected_coordinates.py",
+    "bundle": "Extensions/reporters/SelectedCoordinates.fontlabReporter",
+    "module": "selected_coordinates",
+    "class": "SelectedCoordinates",
+    "id": "selected_coordinates",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/show_background.py",
+    "bundle": "Extensions/reporters/ShowBackground.fontlabReporter",
+    "module": "show_background",
+    "class": "ShowBackground",
+    "id": "show_background",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/show_character.py",
+    "bundle": "Extensions/reporters/ShowCharacter.fontlabReporter",
+    "module": "show_character",
+    "class": "ShowCharacter",
+    "id": "show_character",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/show_interpolation.py",
+    "bundle": "Extensions/reporters/ShowInterpolation.fontlabReporter",
+    "module": "show_interpolation",
+    "class": "ShowInterpolation",
+    "id": "show_interpolation",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/show_rotated.py",
+    "bundle": "Extensions/reporters/ShowRotated.fontlabReporter",
+    "module": "show_rotated",
+    "class": "ShowRotated",
+    "id": "show_rotated",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/show_stems.py",
+    "bundle": "Extensions/reporters/ShowStems.fontlabReporter",
+    "module": "show_stems",
+    "class": "ShowStems",
+    "id": "show_stems",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/siblings.py",
+    "bundle": "Extensions/reporters/Siblings.fontlabReporter",
+    "module": "siblings",
+    "class": "Siblings",
+    "id": "siblings",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/smart_plumblines.py",
+    "bundle": "Extensions/reporters/SmartPlumblines.fontlabReporter",
+    "module": "smart_plumblines",
+    "class": "SmartPlumblines",
+    "id": "smart_plumblines",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/smooth_node_angles.py",
+    "bundle": "Extensions/reporters/SmoothNodeAngles.fontlabReporter",
+    "module": "smooth_node_angles",
+    "class": "SmoothNodeAngles",
+    "id": "smooth_node_angles",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/speed_punk.py",
+    "bundle": "Extensions/reporters/SpeedPunk.fontlabReporter",
+    "module": "speed_punk",
+    "class": "SpeedPunk",
+    "id": "speed_punk",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/stem_thickness.py",
+    "bundle": "Extensions/reporters/StemThickness.fontlabReporter",
+    "module": "stem_thickness",
+    "class": "StemThickness",
+    "id": "stem_thickness",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/tops_and_bottoms.py",
+    "bundle": "Extensions/reporters/TopsAndBottoms.fontlabReporter",
+    "module": "tops_and_bottoms",
+    "class": "TopsAndBottoms",
+    "id": "tops_and_bottoms",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/two_point_distance.py",
+    "bundle": "Extensions/reporters/TwoPointDistance.fontlabReporter",
+    "module": "two_point_distance",
+    "class": "TwoPointDistance",
+    "id": "two_point_distance",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/unitizer.py",
+    "bundle": "Extensions/reporters/Unitizer.fontlabReporter",
+    "module": "unitizer",
+    "class": "Unitizer",
+    "id": "unitizer",
+    "kind": "reporter"
+  },
+  {
+    "original": "plugins/vertical_metrics.py",
+    "bundle": "Extensions/reporters/VerticalMetrics.fontlabReporter",
+    "module": "vertical_metrics",
+    "class": "VerticalMetrics",
+    "id": "vertical_metrics",
+    "kind": "reporter"
+  },
+  {
+    "original": "filters/delete_small_paths.py",
+    "bundle": "Extensions/filters/DeleteSmallPaths.fontlabFilter",
+    "module": "delete_small_paths",
+    "class": "DeleteSmallPaths",
+    "id": "delete_small_paths",
+    "kind": "filter"
+  },
+  {
+    "original": "palettes/step_and_repeat.py",
+    "bundle": "Extensions/palettes/StepAndRepeat.fontlabPalette",
+    "module": "step_and_repeat",
+    "class": "StepAndRepeat",
+    "id": "step_and_repeat",
+    "kind": "palette"
+  },
+  {
+    "original": "tools/smart_select.py",
+    "bundle": "Extensions/tools/SmartSelect.fontlabTool",
+    "module": "smart_select",
+    "class": "SmartSelect",
+    "id": "smart_select",
+    "kind": "tool"
+  },
+  {
+    "original": "general_plugins/zoom_to_selection.py",
+    "bundle": "Extensions/general/ZoomToSelection.fontlabGeneral",
+    "module": "zoom_to_selection",
+    "class": "ZoomToSelection",
+    "id": "zoom_to_selection",
+    "kind": "general"
+  }
+]

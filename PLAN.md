@@ -8,21 +8,14 @@ Issue 123 remains paused. The additive recovery retains App-based scripts and
 the remote compatibility package together. Further consolidation remains a
 separate reviewed product milestone.
 
-## Future plugin architecture
+## Issue 210 remaining acceptance
 
-Issue 210 requires a specified bundle name and manifest contract before code.
-App must own scaffolding, discovery, registration and lifecycle under
-`fontlabapp.plugins`. Plugmix must own concrete bundles under
-`Extensions/reporters`, `filters`, `tools` and `palettes`.
-Discover the actual Extensions root. Test all four kinds, duplicate registration,
-unload/reload, callback failures and owned teardown.
-
-Register a Reporters palette and View > Reporters. Put tools in the toolbar and
-Tools > Tool. Put palettes in Window > Panels. `install.vfpy` must prepare a
-minimal startup hook while preserving existing `initScript.py` contents and
-ownership. Prove this with owned fixtures before any owner installation.
-Replace reporter-per-script activation only after discovery and self-registration
-pass. Retain genuine action scripts. Four additional action scripts are optional.
+The reference pack now contains 43 manifest bundles under Extensions and a
+single action script that opens App's Reporters palette. The original plugin
+behavior is retained; framework and host operations remain in App. The bundle
+format is documented in Extensions/README.md. Qualify the exact paired artifacts
+and native UI, startup, drawing, callbacks, teardown and writer history after
+independent source review. No FontLab process was started for this candidate.
 
 Issue 211's nine native probes and four minor fixes remain follow-up work.
 The README's dated native observations do not close those integrated checks.
@@ -34,7 +27,7 @@ App-based script entry points alone do not finish this consolidation.
 ## Development checks
 
 The retained compatibility package descends from
-`dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`; recovered scripts use App separately.
+`dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`; Extensions use App separately.
 `src/fontlab_plugmix/` contains the package. `tests/`, `test.sh` and
 `tests/check_coverage.py` provide its own offline suite and coverage check.
 Use an arm64 Python 3.11 process and the owned sibling App source:
@@ -43,9 +36,10 @@ Use an arm64 Python 3.11 process and the owned sibling App source:
 PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
-Requalify the recovered forty-script surface against the actual App dependency
-with the full suite, explicit `--cov=Scripts --cov-branch`, and the unchanged
-80% combined gate per complete script module. Keep the sibling App source needed
+Requalify all 43 bundle modules and the remaining action script against the actual
+App dependency with the full suite and its configured line/branch coverage.
+The pack gate requires at least 80% line and 80% branch coverage per module;
+the retained compatibility package gate also remains active. Keep the sibling App source needed
 by the runner-layout test; set `UV_PYTHON_PREFERENCE=only-system` and verify arm64.
 Run this command without selectors. The wrapper installs this local package and
 the selected App source in its uv test environment. With no arguments, it also
