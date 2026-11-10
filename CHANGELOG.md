@@ -6,6 +6,20 @@ this_file: CHANGELOG.md
 
 - AGENTS.md: agents test and edit the font open in FontLab 9, starting from the Desktop VFJs, and may save them.
 
+## 2026-11-10 — Issue 210 documentation repair
+
+Updated the website for the 39 reporter Extensions bundles and Show Reporters
+action, preserving every reporter description. Documented App core discovery,
+startup and palette/menu enablement, the four other plugin kinds, and the
+separate compatibility runtime with its native acceptance limits. Refreshed
+NOTICE downloads byte-for-byte from root; LICENSE already matched. Rebuilt the
+generated site and strengthened catalogue, search and attribution checks.
+
+Validation: strict site build, 36 documentation tests and 353 normal tests pass.
+The existing external Python 3.13 docs environment matches all 31 locked
+versions; a fresh hash-locked dependency install was blocked by PyPI DNS.
+No commit, push, package installation into FontLab or native acceptance.
+
 ## 2026-11-10 — Issue 210 Extensions reference pack
 
 Moved App's 39 reporters and four concrete Filter/Palette/Tool/General examples

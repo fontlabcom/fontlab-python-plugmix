@@ -1,6 +1,6 @@
 # this_file: src_docs/mkdocs.yml
 site_name: Plugmix for FontLab
-site_description: App menu scripts and the retained compatibility plugins.
+site_description: App Extensions and the retained compatibility plugins.
 site_url: https://fontlabcom.github.io/fontlab-python-plugmix/
 repo_url: https://github.com/fontlabcom/fontlab-python-plugmix
 repo_name: fontlabcom/fontlab-python-plugmix
@@ -27,7 +27,7 @@ markdown_extensions:
 nav:
   - Overview: index.md
   - Installation: installation.md
-  - App menu scripts: app-menu-scripts.md
+  - App Extensions: app-menu-scripts.md
   - Compatibility package: compatibility-package.md
   - Development and limits: development-and-limits.md
   - Licence: licence.md

@@ -73,16 +73,17 @@ class SiteTests(unittest.TestCase):
         search = json.loads((SITE / 'search/search_index.json').read_text())
         locations = {row['location'].split('#')[0] for row in search['docs']}
         self.assertEqual(locations, {'', 'installation/', 'app-menu-scripts/', 'development-and-limits/', 'licence/', 'compatibility-package/'})
-        text = ' '.join(row['text'] for row in search['docs'])
-        for term in ('Stem Thickness', 'Smart Select', 'fontlabapp.plugmix', 'Extensions'):
+        text = ' '.join(' '.join(Page(row['text']).text) for row in search['docs'])
+        for term in ('Stem Thickness', 'Smart Select', 'fontlabapp.plugmix', 'fontlabapp.plugins', 'Extensions', 'plugin.json', 'Show Reporters.py', 'View > Reporters'):
             self.assertIn(term, text)
 
     def test_attribution_downloads_are_exact_and_no_private_payload_is_published(self):
         for name in ('LICENSE', 'NOTICE'):
+            self.assertEqual((ROOT / name).read_bytes(), (ROOT / 'src_docs/md/assets' / name).read_bytes())
             self.assertEqual((ROOT / name).read_bytes(), (SITE / 'assets' / name).read_bytes())
         self.assertTrue((SITE / '.nojekyll').is_file())
         private_markers = (b'/Users/', b'/Volumes/', b'/private/', b'ghp_', b'github_pat_', b'-----BEGIN PRIVATE KEY-----')
-        sources = [path.read_bytes() for folder in ('src', 'Scripts', 'glyphs', 'examples') if (ROOT / folder).is_dir() for path in (ROOT / folder).rglob('*.py')]
+        sources = [path.read_bytes() for folder in ('src', 'Scripts', 'Extensions', 'glyphs', 'examples') if (ROOT / folder).is_dir() for path in (ROOT / folder).rglob('*.py')]
         for path in SITE.rglob('*'):
             if path.is_file():
                 self.assertNotIn('.DS_Store', path.parts)
@@ -127,13 +128,23 @@ class SiteTests(unittest.TestCase):
                 self.assertNotIn('request-pages.sh', commands)
                 self.assertNotIn('/pages/builds', commands)
 
-    def test_both_complete_reporter_catalogues_and_menu_installer_are_present(self):
+    def test_both_complete_reporter_catalogues_and_show_reporters_action_are_present(self):
         app = ' '.join(Page((SITE / 'app-menu-scripts/index.html').read_text()).text)
-        launchers = sorted((ROOT / 'Scripts/Reports').glob('*.py'))
-        self.assertEqual(len(launchers), 39)
-        for launcher in launchers:
-            self.assertIn(launcher.name, app)
-        self.assertIn('Scripts/Plugmix/Install Plugmix Menu.py', app)
+        bundles = sorted((ROOT / 'Extensions/reporters').glob('*.fontlabReporter'))
+        self.assertEqual(len(bundles), 39)
+        for bundle in bundles:
+            with self.subTest(bundle=bundle.name):
+                manifest_path = bundle / 'plugin.json'
+                self.assertTrue(manifest_path.is_file())
+                manifest = json.loads(manifest_path.read_text())
+                self.assertEqual(manifest['kind'], 'reporter')
+                self.assertIn(bundle.name, app)
+                self.assertIn(manifest['name'], app)
+        action = 'Scripts/Plugmix/Show Reporters.py'
+        self.assertTrue((ROOT / action).is_file())
+        self.assertIn(action, app)
+        for term in ('plugin.json', 'fontlabapp.plugins', 'Reporters palette', 'View > Reporters'):
+            self.assertIn(term, app)
         self.assertIn('up to 32 other', app)
         compat = ' '.join(Page((SITE / 'compatibility-package/index.html').read_text()).text)
         table = (ROOT / 'README.md').read_text().split('### Compatibility reporters', 1)[1].split('Anchor Cloud shows', 1)[0]

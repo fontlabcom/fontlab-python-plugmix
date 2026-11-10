@@ -52,3 +52,121 @@ Task 16 General: Zoom to Selection is an original behavioural port inspired by
 `zoom-to-selection`, authored by TzuYuan Yin (@yintzuyuan), MIT:
 https://github.com/yintzuyuan/zoom-to-selection
 The upstream README and LICENSE were read; no source code was copied.
+
+
+Issue 210 Extensions provenance (retained from App NOTICE)
+Plugmix reporter, filter, palette, tool and General provenance
+==============================================================
+
+src/fontlabapp/plugmix/ was moved from fontlabcom/fontlab-python-plugmix
+(source commit ba4a45a). Every plugin listed below is an original behavioural
+reimplementation inspired by the named upstream Glyphs plugin; no source code
+is copied. The licence named is the upstream's own; nothing here relicenses
+an upstream work.
+
+Duplicate Anchor Rings independently reimplements
+ShowAnchorsWithDuplicateCoordinates by mekkablue (Rainer Erich Scheichelbauer),
+Apache-2.0: https://github.com/mekkablue/ShowAnchorsWithDuplicateCoordinates.
+No upstream source code is copied; see the first reporter attribution section
+in this NOTICE.
+
+Reporters by mekkablue (Rainer Erich Scheichelbauer), Apache-2.0:
+- Node Indexes: https://github.com/mekkablue/ShowNodeIndexes
+- Selected Node Coordinates: https://github.com/mekkablue/ShowCoordinatesOfSelectedNodes
+- Two Point Distance: https://github.com/mekkablue/ShowDistanceBetweenTwoPoints
+- Off-curve Handles Outside Bounds: https://github.com/mekkablue/ShowNodesOutsidePaths
+  (inspiration only; Plugmix uses a different bounds test)
+- Center Lines: https://github.com/mekkablue/ShowCenterLines
+- Vertical Metrics: https://github.com/mekkablue/ShowVerticalMetrics
+- Angled Handles: https://github.com/mekkablue/ShowAngledHandles
+- Crosshair: https://github.com/mekkablue/ShowCrosshair
+- Tops and Bottoms: https://github.com/mekkablue/ShowTopsAndBottoms
+- Segment Length: https://github.com/mekkablue/SegmentLength
+- Glyph Focus: https://github.com/mekkablue/ShowGlyphFocus
+- Emphasise Selected Handles: https://github.com/mekkablue/ShowOnlySelectedHandles
+
+Other reporters:
+- Anchor Cloud: Simon Cozens (Corvel Software), ShowAnchorCloud, Apache-2.0:
+  https://github.com/simoncozens/ShowAnchorCloud
+- RSB Line: Fadhl Haqq (akufadhl), RSBline, Apache-2.0:
+  https://github.com/akufadhl/RSBline
+- Unitizer: Pablo Impallari, with contributions by Simon Cozens and based on
+  sample code by Rainer Erich Scheichelbauer (mekkablue), Apache-2.0:
+  https://github.com/schriftgestalt/Unitizer
+- Nodes Close to Zones: Olli Meier, NodesCloseToZones-Glyphs, MIT:
+  https://github.com/ollimeier/NodesCloseToZones-Glyphs
+- Imprecise Italic Angle: michaelrafailyk, HighlightImpreciseItalicAngle,
+  Apache-2.0: https://github.com/michaelrafailyk/HighlightImpreciseItalicAngle
+- Smooth Node Angles: Henrique Beier (harbortype),
+  ShowSmoothNodeAngleAndProportion, Apache-2.0:
+  https://github.com/harbortype/ShowSmoothNodeAngleAndProportion
+- Node Count: Mark Frömberg (@Mark2Mark), Show-Node-Count, Apache-2.0 per
+  README; no LICENSE file in repo: https://github.com/Mark2Mark/Show-Node-Count
+- Smart Plumblines: Mark Frömberg (@Mark2Mark), Show-Smart-Plumblines,
+  Apache-2.0 per README; no LICENSE file in repo:
+  https://github.com/Mark2Mark/Show-Smart-Plumblines
+- Show Stems: Mark Frömberg (@Mark2Mark), Show-Stems, Apache-2.0 per README;
+  no LICENSE file in repo: https://github.com/Mark2Mark/Show-Stems
+- Show Rotated: Mark Frömberg (@Mark2Mark), Show-Rotated, Apache-2.0 per
+  README; no LICENSE file in repo: https://github.com/Mark2Mark/Show-Rotated
+- All Angles: Nic Schumann / Occupant Fonts / Morisawa USA, Inc., AllAngles,
+  Apache-2.0: https://github.com/morisawausa/AllAngles
+- Speed Punk: Yanone (Jan Gerner), speedpunk, Apache-2.0:
+  https://github.com/yanone/speedpunk
+- Blindfold: Mark Frömberg (@Mark2Mark), Blindfold, Apache-2.0 per README; no
+  LICENSE file in repo: https://github.com/Mark2Mark/Blindfold
+- Show Label Color: Mark Frömberg (@Mark2Mark), Show-Label-Color, Apache-2.0
+  per README; no LICENSE file in repo:
+  https://github.com/Mark2Mark/Show-Label-Color
+- Show Glyphs In Label Color: Rainer Erich Scheichelbauer (mekkablue),
+  ShowGlyphsInLabelColor, Apache-2.0:
+  https://github.com/mekkablue/ShowGlyphsInLabelColor
+- Show Character: Rainer Erich Scheichelbauer (mekkablue), ShowCharacter,
+  Apache-2.0: https://github.com/mekkablue/ShowCharacter
+- Rekha Viewer: Rainer Erich Scheichelbauer (mekkablue), Rekha (RekhaViewer),
+  Apache-2.0: https://github.com/mekkablue/Rekha
+- Show Export Status: Rainer Erich Scheichelbauer (mekkablue),
+  ShowExportStatus, Apache-2.0: https://github.com/mekkablue/ShowExportStatus
+- Show Background: Mark Monroy (@markmonroy), Copyright 2019,
+  FillBackgroundPath, based on sample code by Georg Seifert and Rainer Erich
+  Scheichelbauer, Apache-2.0 (colour only):
+  https://github.com/schriftgestalt/FillBackgroundPath
+- Color Toner: Rainer Erich Scheichelbauer (mekkablue), based on template
+  code by Georg Seifert and Jan Gerner, ColorToner, Apache-2.0:
+  https://github.com/mekkablue/ColorToner
+- Show Global Glyph: mekkablue (Rainer Erich Scheichelbauer, repository
+  owner; the README names no author or year, only "Made possible with the
+  GlyphsSDK by Georg Seifert (@schriftgestalt) and Rainer Erich
+  Scheichelbauer (@mekkablue)"),
+  Show-Global-Glyph, Apache-2.0 per README:
+  https://github.com/mekkablue/Show-Global-Glyph
+- Show Siblings: Copyright 2015 Mark Frömberg (@Mark2Mark), Show-Siblings,
+  made possible with the GlyphsSDK by Georg Seifert and Rainer Erich
+  Scheichelbauer, Apache-2.0 per README:
+  https://github.com/Mark2Mark/Show-Siblings
+- Show Kerning Group Reference: Copyright 2015 Mark Frömberg (@Mark2Mark),
+  Show-Kerning-Group-Reference, made possible with the GlyphsSDK by Georg
+  Seifert and Rainer Erich Scheichelbauer, Apache-2.0 per README:
+  https://github.com/Mark2Mark/Show-Kerning-Group-Reference
+- Kern Indicator: Copyright 2018 Rainer Erich Scheichelbauer (@mekkablue),
+  KernIndicator (repository KerningValues), based on sample code by Georg
+  Seifert and Jan Gerner, Apache-2.0: https://github.com/mekkablue/KerningValues
+- Show Interpolation, a reduced behavioural port of Show Interpolations:
+  Copyright 2014-2024 Rainer Erich Scheichelbauer (@mekkablue), based on
+  sample code by Georg Seifert (@schriftgestalt) and Jan Gerner (@yanone),
+  ShowInterpolations, Apache-2.0: https://github.com/mekkablue/ShowInterpolations
+- Stem Thickness: Copyright 2015 Rafał Buchner (@rafalbuchner), with code
+  samples by Georg Seifert (@schriftgestalt), Rainer Scheichelbauer
+  (@mekkablue) and Mark Frömberg (@Mark2Mark), StemThickness, Apache-2.0:
+  https://github.com/RafalBuchner/StemThickness
+
+Filter, palette, tool and General plugin:
+- Delete Small Paths filter: mekkablue (Rainer Erich Scheichelbauer),
+  DeleteSmallPaths, Apache-2.0: https://github.com/mekkablue/DeleteSmallPaths
+- Step and Repeat palette: mekkablue (Rainer Erich Scheichelbauer), based on
+  sample code by Georg Seifert and Jan Gerner, StepAndRepeat, Apache-2.0:
+  https://github.com/mekkablue/StepAndRepeat
+- Smart Select tool (selection-only port): But Ko (@buttaiwan),
+  SmartSelectTool, Apache-2.0: https://github.com/ButTaiwan/SmartSelectTool
+- Zoom to Selection General plugin: TzuYuan Yin (@yintzuyuan),
+  zoom-to-selection, MIT: https://github.com/yintzuyuan/zoom-to-selection

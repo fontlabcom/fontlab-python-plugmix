@@ -7,7 +7,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="App menu scripts and the retained compatibility plugins.">
+        <meta name="description" content="App Extensions and the retained compatibility plugins.">
       
       
       
@@ -320,7 +320,7 @@
   <span class="md-ellipsis">
     
   
-    App menu scripts
+    App Extensions
   
 
     
@@ -427,10 +427,10 @@
     <ul class="md-nav__list" data-md-component="toc">
       
         <li class="md-nav__item">
-  <a href="#remaining-architecture-and-acceptance" class="md-nav__link">
+  <a href="#remaining-acceptance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Remaining architecture and acceptance
+        Remaining acceptance
       
     </span>
   </a>
@@ -510,10 +510,10 @@
     <ul class="md-nav__list" data-md-component="toc">
       
         <li class="md-nav__item">
-  <a href="#remaining-architecture-and-acceptance" class="md-nav__link">
+  <a href="#remaining-acceptance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Remaining architecture and acceptance
+        Remaining acceptance
       
     </span>
   </a>
@@ -553,30 +553,32 @@
 <p>Use arm64 Python 3.11 and an owned App source. The exact full recipe is:</p>
 <div class="highlight"><pre><span></span><code><span class="nv">UV_PYTHON_PREFERENCE</span><span class="o">=</span>only-system<span class="w"> </span><span class="nv">PLUGMIX_FONTLABAPP_SOURCE</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/../fontlab-fontlabapp"</span><span class="w"> </span>sh<span class="w"> </span>test.sh
 </code></pre></div>
-<p>The existing runner-layout test also requires that sibling App source directory.
-The no-selector run executes all tests and checks every compatibility production
-module for at least 80% line coverage. Arguments skip that checker. To measure
-the complete recovered script surface with branches as well, run the full suite:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">UV_PYTHON_PREFERENCE</span><span class="o">=</span>only-system<span class="w"> </span><span class="nv">PLUGMIX_FONTLABAPP_SOURCE</span><span class="o">=</span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/../fontlab-fontlabapp"</span><span class="w"> </span>sh<span class="w"> </span>test.sh<span class="w"> </span>--cov<span class="o">=</span>Scripts<span class="w"> </span>--cov-branch<span class="w"> </span>--cov-report<span class="o">=</span>json:coverage.json
-</code></pre></div>
-<p>Recovery tests use real App discovery/boot/registry with existing fake host owners
-and temporary preferences. They execute all forty files, repeat installation,
-toggle reporters through menus and check rollback on a preference-save failure.
-These ordinary checks do not establish native rendering, owner installation,
-installed artifact contents or publication. Keep the ordinary installed pre-push
-gate active; its current selector alone does not measure Plugmix's <code>Scripts</code>.</p>
-<h2 id="remaining-architecture-and-acceptance">Remaining architecture and acceptance</h2>
-<p>Issue 210's future <code>fontlabapp.plugins</code> framework and <code>Extensions</code> bundles are
-not implemented by this recovery. Specify the bundle/manifest contract first,
-then qualify discovery, all four plugin kinds, duplicate registration, reload,
-callbacks, ownership teardown and preservation-safe startup fixtures. Replace
-reporter-per-script activation only after self-registration qualifies. Issue 211's
-nine native probes and four minor fixes remain open. Issue 123 remains paused.
-Further removal of the compatibility surface requires a full consumer,
-distribution, source-recovery and licence audit. Website work is a later milestone.</p>
+<p>The runner-layout test requires the sibling App source directory. The
+no-selector run executes the complete suite and the compatibility package's
+coverage gate, plus at least 80% line coverage and 80% branch coverage separately
+for every Extensions and Scripts module. Arguments skip the checker; after a
+selected run, use the full suite before invoking
+<code>python3 tests/check_coverage.py coverage.json</code>.</p>
+<p>Tests exercise real App bundle discovery, boot, registry and menus with fake host
+owners and temporary preferences. Reporter behavior assertions are retained with
+imports redirected to bundle modules. Registration tests cover repeated enable,
+menu disable, unknown preferences and failed-save rollback. These offline checks
+do not establish native rendering, owner installation, installed artifact
+contents or publication. Keep the ordinary installed pre-push gate active.</p>
+<h2 id="remaining-acceptance">Remaining acceptance</h2>
+<p>Issue 210's source split is implemented: App's <code>fontlabapp.plugins</code> core owns
+scaffolding, discovery, registration and lifecycle; Plugmix supplies 43 manifest
+bundles under <code>Extensions/</code> and one Show Reporters action. The deprecated
+<code>fontlabapp.plugmix</code> import shim and the separate <code>fontlab_plugmix</code> compatibility
+package remain distinct.</p>
+<p>Qualify native Reporters palette/View &gt; Reporters synchronization, toolbar and
+Tools &gt; Tool, Window &gt; Panels, startup, teardown, drawing and writer history on
+the exact installed tuple. Issue 211's nine native probes and four minor fixes
+remain separate. Issue 123 remains paused. Removing the compatibility package
+still requires a full consumer, distribution, source-recovery and licence audit.</p>
 <h2 id="website-checks">Website checks</h2>
 <p>Use a separate Python 3.13 environment and uv 0.13.7, installing the exact hash-locked <code>src_docs/requirements.txt</code>. Run <code>sh src_docs/build.sh</code> and <code>python -m unittest discover -s tests_docs -v</code>. These checks build complete catalogue pages without importing App or Plugmix. The build captures the source commit's timestamp once and both main-triggered jobs use it. A generated output child must be a direct docs-only child of the source SHA with identical non-doc source. The read-only second job checks the actual immutable output and requires full tracked and untracked parity.</p>
-<p>The existing 166-test recovery result and retained 68 compatibility/recovery source contracts remain separate historical source qualification. No product code, fixtures, startup script, recovery hash pin or licence is changed by this site. Publication, owner installation and native FontLab rendering remain separate. Private Pages configuration, permissions and requests stay owner-held.</p>
+<p>Earlier recovery test results remain historical source qualification and do not qualify the current Extensions tuple. No product code, fixtures, startup script, recovery hash pin or licence is changed by this site. Publication, owner installation and native FontLab rendering remain separate. Private Pages configuration, permissions and requests stay owner-held.</p>
 
 
 
