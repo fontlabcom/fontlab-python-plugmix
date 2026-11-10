@@ -26,6 +26,11 @@ installation, canonical migration or remote-delivery result is claimed.
 <!-- this_file: CHANGELOG.md -->
 # Changelog
 
+## 2026-11-10 — Issue 250 documentation round
+
+- AGENTS.md describes the delegation, integration and release workflow.
+- WORK.md reset to the current round; the earlier bytes are archived on the owner's workspace data volume, not public.
+
 ## Unreleased
 
 - Refuse Step and Repeat on a displayed non-master layer and when the contour
