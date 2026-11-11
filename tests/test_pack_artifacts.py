@@ -62,6 +62,7 @@ def test_pytest_when_extensions_folder_missing_then_usage_error_names_the_pack(t
     result = subprocess.run(
         [sys.executable, "-m", "pytest", "-p", "no:cacheprovider", "-q", "tests/test_extension_manifest.py"],
         cwd=tmp_path, capture_output=True, text=True,
+        env={**os.environ, "PYTHONPATH": os.pathsep.join(str(Path(p).resolve()) for p in sys.path if p)},
     )
     output = result.stdout + result.stderr
     assert result.returncode != 0
