@@ -9,6 +9,10 @@ five filters, four tools, one palette and one General plugin. Concrete plugins l
 in `Extensions/`; the core owns discovery, preferences, callbacks and native UI.
 The separate `fontlab_plugmix` compatibility package remains intact.
 
+The pack ships as `fontlab-python-plugmix-extensions.zip`, built by
+`python tools/build_pack.py [OUT_DIR]` (Extensions, `Scripts/Plugmix`, this README).
+The wheel is the compatibility package only and contains no Extensions.
+
 ## Extensions and action scripts
 
 See [Extensions/README.md](Extensions/README.md) for the bundle layout and manifest.

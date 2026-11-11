@@ -12,6 +12,14 @@ from fontlabapp.plugins import bundles, registry
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_reference_pack_when_extensions_folder_missing_then_failure_names_the_pack():
+    assert (ROOT / "Extensions").is_dir(), (
+        "Extensions/ pack not found beside tests/. The pack ships as "
+        "fontlab-python-plugmix-extensions.zip (tools/build_pack.py), not in the wheel; "
+        "run these tests from a source checkout or sdist."
+    )
+
+
 def test_reference_pack_when_discovered_twice_then_all_five_kinds_keep_identity():
     rows = json.loads((ROOT / "tests/bundle-map.json").read_text())
     errors = []

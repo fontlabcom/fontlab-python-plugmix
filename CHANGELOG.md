@@ -2,6 +2,12 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-11 — ordinary pack artifact: Extensions zip, wheel stays compatibility-only (Issue 250)
+
+- `tools/build_pack.py` builds `fontlab-python-plugmix-extensions.zip` (Extensions/, `Scripts/Plugmix`, README.md; no bytecode). `tests/test_pack_artifacts.py` (5 tests) pins that the zip holds exactly the 50 `plugin.json` files of `tests/bundle-map.json`, that an extracted copy discovers all 50 through `registry.discover`, that a missing `Extensions/` raises an error naming the pack, and that the built wheel has `fontlab_plugmix/` and no Extensions, Scripts or `plugin.json`.
+- `tests/test_extension_manifest.py` gains a first test whose message names the pack when `Extensions/` is absent (wheel-only runs formerly ended in an INTERNALERROR FileNotFoundError). README says the wheel is the compatibility package only. `--cov=tools` joins the pytest addopts; `tools/build_pack.py` covers 92%.
+- Suite: 405 passed (App and Pens main siblings). TODO row "Qualify ordinary pack artifacts" removed. Install of the pack stays copy-into-user-data; native checks stay open.
+
 ## 2026-11-11 — Delete Small Paths declares App 1.2.9; coordinate filter floors stay open (Issue 250)
 
 - Delete Small Paths `min_app_version` 1.0.0 → 1.2.9. App v1.2.9 (b321f2e) is the first tag with the plugin core 81978fa (v1.2.8 lacks `plugins/filter.py`); its deletion-only filter host covers this filter. Its four `tests/test_filter.py` delete tests pass against an App v1.2.9 checkout.
