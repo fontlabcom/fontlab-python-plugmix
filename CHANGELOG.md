@@ -2,6 +2,11 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-11 — Consumer audit page (Issue 250)
+
+- Closed the TODO row "Audit all consumers, entry-point groups, startup/preferences, distribution membership and licences": the audit is published as `src_docs/md/consumer-audit.md` (site page `consumer-audit/`, nav entry added; generated `docs/` rebuilt). It lists the two entry-point groups, the deprecated `fontlabapp.plugmix` shim, preferences file and startup snippets, lock-file membership, Apache-2.0 licences and every consumer found in the maintained repositories; machine paths are stripped.
+- The removal gate stays open. Its next check is now an outside-consumer search or a deprecation period, because third-party publishers and owner-installed copies cannot be known from the workspace.
+
 ## 2026-11-11 — Step and Repeat verified live (A2 live report 21, Issue 250)
 
 - Step and Repeat (87fc0ec) with the active-glyph lookup stubbed: count 2, dy 50 adds two contour copies to Regular only (2 to 4 contours), one "Step and Repeat" row, exact Undo and Redo, save and reopen identical with clean history. The real Glyph-window lookup is owner-run and stays in TODO.

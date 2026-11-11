@@ -37,6 +37,7 @@ nav:
       - Node Probe: plugins/node-probe.md
       - Contour Picker: plugins/contour-picker.md
   - Compatibility package: compatibility-package.md
+  - Consumer audit: consumer-audit.md
   - Development and limits: development-and-limits.md
   - Licence: licence.md
 extra_css:

@@ -11,7 +11,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / 'docs'
 PREFIX = '/fontlab-python-plugmix/'
-PAGES = ['index.html', 'installation/index.html', 'app-menu-scripts/index.html', 'compatibility-package/index.html', 'development-and-limits/index.html', 'licence/index.html']
+PAGES = ['index.html', 'installation/index.html', 'app-menu-scripts/index.html', 'compatibility-package/index.html', 'consumer-audit/index.html', 'development-and-limits/index.html', 'licence/index.html']
 
 
 NEW_PLUGINS = {

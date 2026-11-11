@@ -13,10 +13,10 @@ this_file: TODO.md
 - [ ] Qualify ordinary pack artifacts before delivery; paired App/Plugmix source review is complete.
 
 - [ ] Complete Issue 211 nine native probes and four minor fixes on the exact integrated tuple under the separate native gates.
-- [ ] Audit all consumers, entry-point groups, startup/preferences, distribution membership and licences before any compatibility-package removal.
+- [ ] Compatibility-package and `fontlabapp.plugmix` shim removal gate: the workspace audit is done (see the Consumer audit page); next check is an outside-consumer search or a deprecation period, because third-party entry-point publishers and owner-installed copies cannot be known from the workspace.
 - [ ] Qualify native App-based script activation/rendering on the exact recovered tuple under the separate native gates.
 - [ ] Obtain independent review of the additive recovery, qualify its ordinary gates, verify the remote SHA and integrate into `main`.
-- [ ] After qualified integration and recovery, remove only proven obsolete items without unique or attached owner work.
+- [ ] After qualified integration and recovery, remove only proven obsolete items without unique or attached owner work. Compatibility-package removal also needs the outside-consumer search or deprecation period above.
 
 - [ ] Independently review the complete Issue 233 site and qualify exact-SHA main Actions, changed-output bot-child and code-only triggers; private Pages stays owner-held.
 
