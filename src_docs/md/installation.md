@@ -15,7 +15,8 @@ folder. Use FontLab's reported folder rather than assuming a platform path.
 
 Copy the contents of this repository's `Extensions/` into that folder, preserving
 `reporters`, `filters`, `general`, `palettes` and `tools` and their bundle folders.
-The pack contains 39 reporter bundles and one of each other kind. Each bundle
+The pack contains 50 bundles: 39 reporters, five filters, four tools, one palette
+and one General plugin. Each bundle
 includes `plugin.json` and Python source; the bundles need no package install.
 Restart FontLab for startup discovery and after changing bundle source.
 
@@ -33,6 +34,17 @@ launchers and Install Plugmix Menu script are no longer used. Duplicate Anchor
 Rings retains `set_handle_size(5|8|12)`, with a default of 8. Reporters do not
 edit font geometry. Startup, teardown, drawing and writer history remain native
 acceptance checks; these instructions do not claim those checks have passed.
+
+## Coordinate-filter App requirement
+
+The four coordinate filters require the coordinated App coordinate-writer
+change. Older App versions with the deletion-only Filter writer cannot apply
+them. No released App version has yet been assigned to this requirement; use
+the reviewed paired App/Plugmix source tuple, not the manifest minimum alone.
+
+A partial native write follows App's existing `PartialWriteError` recovery:
+use **Edit > Undo** as directed by the error. It does not automatically roll
+back completed writes. Native Undo/Redo recovery remains unverified.
 
 ## Compatibility package
 

@@ -7,11 +7,11 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-
 from fontlabapp.plugins import boot, registry
 from plugmix_examples.duplicate_anchors import DuplicateAnchors
-from fontlab_plugmix import boot as compatibility_boot
 from test_registry_boot_menu import Action, Menus, Painters
+
+from fontlab_plugmix import boot as compatibility_boot
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -43,6 +43,16 @@ class AppMenus(Menus):
         return self.menus[token]
 
     def add_action(self, section, title, callback, *, checkable=False):
+        if section == "Glyph":
+            assert title in {
+                "Plugmix: Delete Small Paths…", "Plugmix: Move Outlines…",
+                "Plugmix: Round Outline to Grid…", "Plugmix: Scale Outlines…",
+                "Plugmix: Slant Outlines…",
+            }
+            assert not checkable
+            token = len(self.actions) + 1
+            self.actions[token] = (Action(), callback)
+            return token
         if not isinstance(section, Submenu):
             return super().add_action(section, title, callback, checkable=checkable)
         if (section.parent, section.title) == ("Window", "Panels"):
@@ -162,7 +172,7 @@ def test_bundle_boot_when_run_twice_then_installs_all_reporter_actions(app_runti
     boot.install()
     assert boot._state is state
     assert len(registry.available("reporter")) == 39
-    assert len(state.menus.actions) == 43  # reporters, Hide All, Filter, Palette, core panel
+    assert len(state.menus.actions) == 47  # reporters, Hide All, five Filters, Palette, core panel
     submenu, = [value for value in state.menus.menus.values()
                 if (value.parent, value.title) == ("View", "Reporters")]
     assert (submenu.parent, submenu.title) == ("View", "Reporters")

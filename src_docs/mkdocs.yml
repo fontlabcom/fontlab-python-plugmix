@@ -28,6 +28,14 @@ nav:
   - Overview: index.md
   - Installation: installation.md
   - App Extensions: app-menu-scripts.md
+  - Filters and tools:
+      - Round Outline to Grid: plugins/round-outline-to-grid.md
+      - Move Outlines: plugins/move-outlines.md
+      - Scale Outlines: plugins/scale-outlines.md
+      - Slant Outlines: plugins/slant-outlines.md
+      - Measurement Ruler: plugins/measurement-ruler.md
+      - Node Probe: plugins/node-probe.md
+      - Contour Picker: plugins/contour-picker.md
   - Compatibility package: compatibility-package.md
   - Development and limits: development-and-limits.md
   - Licence: licence.md

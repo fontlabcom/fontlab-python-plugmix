@@ -17,9 +17,9 @@ def test_reference_pack_when_discovered_twice_then_all_five_kinds_keep_identity(
     second = registry.discover(lambda *args: errors.append(args), ROOT / "Extensions")
     assert errors == []
     assert set(first) == {row["id"] for row in rows}
-    assert len(first) == 43
+    assert len(first) == 50
     assert Counter(cls.kind for cls in first.values()) == {
-        "reporter": 39, "filter": 1, "palette": 1, "tool": 1, "general": 1
+        "reporter": 39, "filter": 5, "palette": 1, "tool": 4, "general": 1
     }
     for row in rows:
         path = ROOT / row["bundle"]

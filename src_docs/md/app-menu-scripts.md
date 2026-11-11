@@ -69,6 +69,21 @@ Select respectively. App owns their host operations; filters and palettes use
 its guarded writer APIs. Native Undo/Redo and saved/reopened behavior remain
 unverified for this installed tuple.
 
+
+## New filters and tools
+
+- [Round Outline to Grid](plugins/round-outline-to-grid.md) snaps own outline nodes to a grid.
+- [Move Outlines](plugins/move-outlines.md) translates outlines without changing advance widths.
+- [Scale Outlines](plugins/scale-outlines.md) scales outlines about a chosen pivot.
+- [Slant Outlines](plugins/slant-outlines.md) applies geometric shear.
+- [Measurement Ruler](plugins/measurement-ruler.md) measures a dragged span.
+- [Node Probe](plugins/node-probe.md) inspects nearby outline nodes.
+- [Contour Picker](plugins/contour-picker.md) selects a contour by a nearby node.
+
+The four coordinate filters preserve components, anchors, advance widths and
+native curve types. Tools do not change geometry. Their pages describe scope,
+parameters and interaction limits; native verification remains open.
+
 ## Painting and acceptance limits
 
 Center Lines, Vertical Metrics, Crosshair, Tops and Bottoms, RSB Line, Unitizer, Node Count, Smart Plumblines, Show Stems, Speed Punk, Show Rotated,

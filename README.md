@@ -4,8 +4,8 @@ this_file: README.md
 
 # fontlab-python-plugmix
 
-Reference Extensions pack for App's `fontlabapp.plugins` core: 39 reporters,
-one filter, one tool, one palette and one General plugin. Concrete plugins live
+Reference Extensions pack for App's `fontlabapp.plugins` core: 50 plugins: 39 reporters,
+five filters, four tools, one palette and one General plugin. Concrete plugins live
 in `Extensions/`; the core owns discovery, preferences, callbacks and native UI.
 The separate `fontlab_plugmix` compatibility package remains intact.
 
@@ -187,3 +187,17 @@ configuration, deployment or automatic publication request is enabled.
 Source/generated review, actual Actions, owner installation and native acceptance
 remain separate. Do not change runtime dependencies, startup or recovery pins for
 a site build.
+
+## Practical outline workflows
+
+- [Round Outline to Grid](src_docs/md/plugins/round-outline-to-grid.md) snaps own outline nodes to a grid.
+- [Move Outlines](src_docs/md/plugins/move-outlines.md) translates outlines without changing advance widths.
+- [Scale Outlines](src_docs/md/plugins/scale-outlines.md) scales outlines about a chosen pivot.
+- [Slant Outlines](src_docs/md/plugins/slant-outlines.md) applies geometric shear.
+- [Measurement Ruler](src_docs/md/plugins/measurement-ruler.md) measures a dragged span.
+- [Node Probe](src_docs/md/plugins/node-probe.md) inspects nearby outline nodes.
+- [Contour Picker](src_docs/md/plugins/contour-picker.md) selects a contour by a nearby node.
+
+The four coordinate filters preserve components, anchors, advance widths and
+native curve types. Tools do not change geometry. Their pages describe scope,
+parameters and interaction limits; native verification remains open.

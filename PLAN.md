@@ -10,7 +10,7 @@ separate reviewed product milestone.
 
 ## Issue 210 remaining acceptance
 
-The reference pack now contains 43 manifest bundles under Extensions and a
+The reference pack now contains 50 manifest bundles under Extensions and a
 single action script that opens App's Reporters palette. The original plugin
 behavior is retained; framework and host operations remain in App. The bundle
 format is documented in Extensions/README.md. Qualify the exact paired artifacts
@@ -36,7 +36,7 @@ Use an arm64 Python 3.11 process and the owned sibling App source:
 PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
-Requalify all 43 bundle modules and the remaining action script against the actual
+Requalify all 50 bundle modules and the remaining action script against the actual
 App dependency with the full suite and its configured line/branch coverage.
 The pack gate requires at least 80% line and 80% branch coverage per module;
 the retained compatibility package gate also remains active. Keep the sibling App source needed
@@ -64,3 +64,16 @@ Obtain independent review of the complete source and generated site, preserve
 current source bytes, then qualify exact-SHA main Actions through the ordinary
 reviewed delivery process. Exercise changed-output bot-child and code-only live
 triggers separately. Private Pages publication remains owner-held.
+
+## Issue 234 part 1 — C8 remaining acceptance
+
+Qualify the four coordinate-only outline filters and three interactive tools in
+FontLab 9 using the coordinated App writer. Verify dialogs, toolbar registration,
+modifiers, zoom hit testing, local/component scope, current-master safeguards,
+Undo/Redo and saved/reopened results. Preserve native curve kinds; no snapshot
+reconstruction or implicit component decomposition is part of this milestone.
+
+Assign the four filter manifests the actual first compatible App release before
+distribution. Their current 1.0.0 minimum follows the pack convention but cannot
+distinguish the older deletion-only writer. Installation, release and native
+acceptance remain orchestrator work; this lane must not commit or publish.

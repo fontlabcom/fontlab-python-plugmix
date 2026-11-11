@@ -342,5 +342,54 @@
     "class": "ZoomToSelection",
     "id": "zoom_to_selection",
     "kind": "general"
+  },
+  {
+    "bundle": "Extensions/filters/MoveOutlines.fontlabFilter",
+    "module": "move_outlines",
+    "class": "MoveOutlines",
+    "id": "move_outlines",
+    "kind": "filter"
+  },
+  {
+    "bundle": "Extensions/filters/RoundOutlineToGrid.fontlabFilter",
+    "module": "round_outline_to_grid",
+    "class": "RoundOutlineToGrid",
+    "id": "round_outline_to_grid",
+    "kind": "filter"
+  },
+  {
+    "bundle": "Extensions/filters/ScaleOutlines.fontlabFilter",
+    "module": "scale_outlines",
+    "class": "ScaleOutlines",
+    "id": "scale_outlines",
+    "kind": "filter"
+  },
+  {
+    "bundle": "Extensions/filters/SlantOutlines.fontlabFilter",
+    "module": "slant_outlines",
+    "class": "SlantOutlines",
+    "id": "slant_outlines",
+    "kind": "filter"
+  },
+  {
+    "bundle": "Extensions/tools/ContourPicker.fontlabTool",
+    "module": "contour_picker",
+    "class": "ContourPicker",
+    "id": "contour_picker",
+    "kind": "tool"
+  },
+  {
+    "bundle": "Extensions/tools/MeasurementRuler.fontlabTool",
+    "module": "measurement_ruler",
+    "class": "MeasurementRuler",
+    "id": "measurement_ruler",
+    "kind": "tool"
+  },
+  {
+    "bundle": "Extensions/tools/NodeProbe.fontlabTool",
+    "module": "node_probe",
+    "class": "NodeProbe",
+    "id": "node_probe",
+    "kind": "tool"
   }
 ]

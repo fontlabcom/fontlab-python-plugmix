@@ -4,7 +4,8 @@ this_file: Extensions/README.md
 
 # FontLab Extensions
 
-This pack supplies 39 reporters and one Filter, Tool, Palette and General plugin.
+This pack supplies 50 plugins: 39 reporters, five Filters, four Tools, one Palette
+and one General plugin.
 App's `fontlabapp.plugins` owns discovery, registration and native UI. These
 bundles need no `__init__.py`, package install or individual launcher script.
 
@@ -57,3 +58,17 @@ Rings retains `set_handle_size(5|8|12)` and its default of 8.
 Offline fake-host checks do not establish native painting, toolbar/menu
 placement, PythonQt lifetime, Undo/Redo or saved/reopened behavior. Open native
 checks remain in the repository TODO. Original notices are retained in NOTICE.
+
+## Practical outline workflows
+
+- [Round Outline to Grid](../src_docs/md/plugins/round-outline-to-grid.md) snaps own outline nodes to a grid.
+- [Move Outlines](../src_docs/md/plugins/move-outlines.md) translates outlines without changing advance widths.
+- [Scale Outlines](../src_docs/md/plugins/scale-outlines.md) scales outlines about a chosen pivot.
+- [Slant Outlines](../src_docs/md/plugins/slant-outlines.md) applies geometric shear.
+- [Measurement Ruler](../src_docs/md/plugins/measurement-ruler.md) measures a dragged span.
+- [Node Probe](../src_docs/md/plugins/node-probe.md) inspects nearby outline nodes.
+- [Contour Picker](../src_docs/md/plugins/contour-picker.md) selects a contour by a nearby node.
+
+The four coordinate filters preserve components, anchors, advance widths and
+native curve types. Tools do not change geometry. Their pages describe scope,
+parameters and interaction limits; native verification remains open.

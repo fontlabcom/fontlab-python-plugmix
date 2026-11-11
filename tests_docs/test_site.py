@@ -14,6 +14,18 @@ PREFIX = '/fontlab-python-plugmix/'
 PAGES = ['index.html', 'installation/index.html', 'app-menu-scripts/index.html', 'compatibility-package/index.html', 'development-and-limits/index.html', 'licence/index.html']
 
 
+NEW_PLUGINS = {
+    'round-outline-to-grid': ('filters/RoundOutlineToGrid.fontlabFilter', 'Round Outline to Grid'),
+    'move-outlines': ('filters/MoveOutlines.fontlabFilter', 'Move Outlines'),
+    'scale-outlines': ('filters/ScaleOutlines.fontlabFilter', 'Scale Outlines'),
+    'slant-outlines': ('filters/SlantOutlines.fontlabFilter', 'Slant Outlines'),
+    'measurement-ruler': ('tools/MeasurementRuler.fontlabTool', 'Measurement Ruler'),
+    'node-probe': ('tools/NodeProbe.fontlabTool', 'Node Probe'),
+    'contour-picker': ('tools/ContourPicker.fontlabTool', 'Contour Picker'),
+}
+PAGES += [f'plugins/{slug}/index.html' for slug in NEW_PLUGINS]
+
+
 class Page(HTMLParser):
     def __init__(self, text):
         super().__init__()
@@ -72,7 +84,7 @@ class SiteTests(unittest.TestCase):
     def test_search_indexes_every_authored_page(self):
         search = json.loads((SITE / 'search/search_index.json').read_text())
         locations = {row['location'].split('#')[0] for row in search['docs']}
-        self.assertEqual(locations, {'', 'installation/', 'app-menu-scripts/', 'development-and-limits/', 'licence/', 'compatibility-package/'})
+        self.assertEqual(locations, {route.removesuffix('index.html') for route in PAGES})
         text = ' '.join(' '.join(Page(row['text']).text) for row in search['docs'])
         for term in ('Stem Thickness', 'Smart Select', 'fontlabapp.plugmix', 'fontlabapp.plugins', 'Extensions', 'plugin.json', 'Show Reporters.py', 'View > Reporters'):
             self.assertIn(term, text)
@@ -154,3 +166,25 @@ class SiteTests(unittest.TestCase):
             self.assertIn(name, compat)
         for term in ('Delete Small Paths', 'Step and Repeat', 'Smart Select', 'Zoom to Selection', 'fontlab_plugmix.plugins', 'fontlabapp.plugmix'):
             self.assertIn(term, compat)
+
+    def test_new_plugin_pages_match_manifests_and_keep_scope_limits(self):
+        search = json.loads((SITE / 'search/search_index.json').read_text())
+        bundles = list((ROOT / 'Extensions').glob('*/*/plugin.json'))
+        self.assertEqual(len(bundles), 50)
+        self.assertEqual(sum(json.loads(p.read_text())['kind'] == 'filter' for p in bundles), 5)
+        self.assertEqual(sum(json.loads(p.read_text())['kind'] == 'tool' for p in bundles), 4)
+        for slug, (bundle, title) in NEW_PLUGINS.items():
+            with self.subTest(plugin=slug):
+                manifest = json.loads((ROOT / 'Extensions' / bundle / 'plugin.json').read_text())
+                self.assertEqual(manifest['name'], title)
+                text = ' '.join(Page((SITE / f'plugins/{slug}/index.html').read_text()).text)
+                for term in (title, bundle, manifest['id'], 'unverified'):
+                    self.assertIn(term, text)
+                rows = [row for row in search['docs'] if row['location'].split('#')[0] == f'plugins/{slug}/']
+                self.assertTrue(rows)
+                self.assertTrue(any(title in row['title'] for row in rows))
+                if bundle.startswith('filters/'):
+                    for term in ('components', 'anchors', 'advance', 'native curve types', 'Undo/Redo'):
+                        self.assertIn(term, text)
+                elif slug != 'measurement-ruler':
+                    self.assertIn('12 view pixels', text)

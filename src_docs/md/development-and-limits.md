@@ -28,7 +28,7 @@ contents or publication. Keep the ordinary installed pre-push gate active.
 ## Remaining acceptance
 
 Issue 210's source split is implemented: App's `fontlabapp.plugins` core owns
-scaffolding, discovery, registration and lifecycle; Plugmix supplies 43 manifest
+scaffolding, discovery, registration and lifecycle; Plugmix supplies 50 manifest
 bundles under `Extensions/` and one Show Reporters action. The deprecated
 `fontlabapp.plugmix` import shim and the separate `fontlab_plugmix` compatibility
 package remain distinct.

@@ -1,0 +1,8 @@
+{
+  "id": "slant_outlines",
+  "name": "Slant Outlines",
+  "kind": "filter",
+  "version": "1.0.0",
+  "entry": "slant_outlines:SlantOutlines",
+  "min_app_version": "1.0.0"
+}

@@ -2,6 +2,27 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-10 — Issue 234 practical filters and tools (Lane C8)
+
+Added Round Outline to Grid, Move Outlines, Scale Outlines and Slant Outlines
+filters, plus Measurement Ruler, Node Probe and Contour Picker tools. All seven
+are self-contained manifest bundles with pure geometry and explicit scope. The
+existing 43 bundles remain; the pack now has 50. Added seven documentation pages
+and rebuilt the site, preserving the reporter catalogue and licence assets.
+
+The coordinated App Filter writer now supports guarded topology-preserving node
+coordinate edits, required by these filters; native curve kinds are preserved
+rather than reconstructed. Components, anchors and advance widths remain fixed.
+Native dialogs, drawing, Undo/Redo and saved reopen remain open in TODO, as does
+assigning a compatible minimum App release before distribution.
+
+Verified Plugmix: 397 tests, all per-module coverage gates, full changed-file
+Ruff and 37 documentation tests pass. The full paired App recipe passes 12,358
+tests with 22 retained skips. All seven new bundle modules and the App
+writer reach 100% line and branch coverage. Independent bundle and writer
+reviews approved after regression fixes. See C8-REPORT.md for exact commands,
+paired App gate results, files and acceptance limits. Landed after App main 277a001 (coordinate-edit writer); merged-tree Plugmix gate 397 passed, 37 documentation tests OK, graph risk medium (3 flows, all inside the new Measurement Ruler/Node Probe/Contour Picker bundles).
+
 ## 2026-11-10 — live font editing rule (Issue 250, D44)
 
 - AGENTS.md: agents test and edit the font open in FontLab 9, starting from the Desktop VFJs, and may save them.

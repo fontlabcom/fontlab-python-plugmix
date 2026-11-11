@@ -30,3 +30,23 @@ A new external Python 3.12 venv was created, but its `uv pip install
 (353 tests, existing Python 3.11 environment). No runtime source changed.
 Generated HTML retains the theme's whitespace-only lines. Native checks,
 installation and remote delivery were excluded from this round.
+
+## C8 current round
+
+Implemented seven practical bundles, manifest/discovery fixtures and dedicated
+documentation. Full Plugmix direct-source suite, no-selector test.sh and the
+exact metaswarm recipe pass 397 tests; strict docs build and 37 docs tests pass.
+All changed Plugmix Python files pass full Ruff; all new modules have 100% line
+and branch coverage. Independent Plugmix and App writer reviews approved after
+fixing secondary-button release and valid coordinate-collision regressions.
+
+The App change is necessary because Filter LayerEdit contours were accepted by
+the public contract but rejected by the deletion-only writer. Only that writer
+and affected test fixtures changed. Focused App tests pass 53 cases with 100% line
+and branch coverage. The full App gate passes 12,358 tests with 22 retained skips and 107 warnings
+after updating catalogue fixtures and using the prescribed local-source
+installation for isolated subprocess origin checks. Exact commands and results
+are in C8-REPORT.md. Native and installed-pair checks remain open in TODO.
+
+No commits, pushes, branch changes or native operations. All remaining work is
+acceptance/release qualification, not placeholder implementation.
