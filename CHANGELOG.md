@@ -2,6 +2,10 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-11 — Step and Repeat verified live (A2 live report 21, Issue 250)
+
+- Step and Repeat (87fc0ec) with the active-glyph lookup stubbed: count 2, dy 50 adds two contour copies to Regular only (2 to 4 contours), one "Step and Repeat" row, exact Undo and Redo, save and reopen identical with clean history. The real Glyph-window lookup is owner-run and stays in TODO.
+
 ## 2026-11-11 — Delete Small Paths verified live (A2 live report 18, Issue 250)
 
 - Delete Small Paths passes live on FontLab 9 (origin/main 87fc0ec): one Undo row, exact Undo/Redo, saved reopen clean. Step and Repeat stays open in TODO.

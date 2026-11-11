@@ -9,7 +9,7 @@ this_file: TODO.md
 - [ ] native: verify Window > Panels registration, show/close and PythonQt lifetime in FontLab 9.
 - [ ] native: verify Extensions startup discovery and marked-hook install/removal on the exact installed tuple in FontLab 9.
 - [ ] native: verify all reporter drawing modes, callback failure containment and teardown in FontLab 9.
-- [ ] native: verify Delete Small Paths and Step and Repeat Undo/Redo and saved reopen in FontLab 9. Delete Small Paths passed live (A2 report 18 W8, one Undo row, exact Undo/Redo, reopen); Step and Repeat is still open.
+- [ ] native (owner-run): Step and Repeat from a real Glyph window. `snapshot.active_glyph` needs a Glyph-window canvas, so without a stub `repeat_selected` refuses "No active glyph." (nothing written); the rest was verified with the lookup stubbed (A2 report 21).
 - [ ] Qualify ordinary pack artifacts before delivery; paired App/Plugmix source review is complete.
 
 - [ ] Complete Issue 211 nine native probes and four minor fixes on the exact integrated tuple under the separate native gates.
