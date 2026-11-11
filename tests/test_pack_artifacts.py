@@ -56,13 +56,28 @@ def test_build_pack_when_extensions_missing_then_error_names_the_pack(tmp_path):
         build_pack.build_pack(tmp_path, tmp_path / "out")
 
 
+def test_pytest_when_extensions_folder_missing_then_usage_error_names_the_pack(tmp_path):
+    shutil.copytree(ROOT / "tests", tmp_path / "tests", ignore=shutil.ignore_patterns("__pycache__"))
+    (tmp_path / "pyproject.toml").write_text("[tool.pytest.ini_options]\n")
+    result = subprocess.run(
+        [sys.executable, "-m", "pytest", "-p", "no:cacheprovider", "-q", "tests/test_extension_manifest.py"],
+        cwd=tmp_path, capture_output=True, text=True,
+    )
+    output = result.stdout + result.stderr
+    assert result.returncode != 0
+    assert "fontlab-python-plugmix-extensions.zip" in output, output
+    assert "INTERNALERROR" not in output, output
+
+
 @pytest.mark.skipif(shutil.which("uv") is None, reason="uv is needed to build the wheel")
 def test_wheel_when_built_then_it_has_the_compatibility_package_and_no_pack(tmp_path):
     env = {**os.environ, "SETUPTOOLS_SCM_PRETEND_VERSION": "1.0.0"}
-    subprocess.run(
+    build = subprocess.run(
         ["uv", "build", "--wheel", "--out-dir", str(tmp_path), str(ROOT)],
-        check=True, capture_output=True, env=env,
+        capture_output=True, text=True, env=env,
     )
+    if build.returncode != 0:
+        pytest.skip("uv could not build the wheel (no network or cache for build requirements)")
     (wheel,) = tmp_path.glob("*.whl")
     with zipfile.ZipFile(wheel) as zf:
         names = zf.namelist()

@@ -42,6 +42,12 @@ def pytest_configure():
     from fontlabapp.plugins.bundles import load_bundle
 
     root = Path(__file__).resolve().parents[1]
+    if not (root / "Extensions").is_dir():
+        raise pytest.UsageError(
+            "Extensions/ pack not found beside tests/. The pack ships as "
+            "fontlab-python-plugmix-extensions.zip (tools/build_pack.py), not in the wheel; "
+            "run these tests from a source checkout or sdist."
+        )
     package = ModuleType("plugmix_examples")
     package.__path__ = []
     sys.modules[package.__name__] = package
