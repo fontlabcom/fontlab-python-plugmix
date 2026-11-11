@@ -7,6 +7,12 @@ this_file: CHANGELOG.md
 - Closed the TODO row "Audit all consumers, entry-point groups, startup/preferences, distribution membership and licences": the audit is published as `src_docs/md/consumer-audit.md` (site page `consumer-audit/`, nav entry added; generated `docs/` rebuilt). It lists the two entry-point groups, the deprecated `fontlabapp.plugmix` shim, preferences file and startup snippets, lock-file membership, Apache-2.0 licences and every consumer found in the maintained repositories; machine paths are stripped.
 - The removal gate stays open. Its next check is now an outside-consumer search or a deprecation period, because third-party publishers and owner-installed copies cannot be known from the workspace.
 
+## 2026-11-11 — Delete Small Paths declares App 1.2.9; coordinate filter floors stay open (Issue 250)
+
+- Delete Small Paths `min_app_version` 1.0.0 → 1.2.9. App v1.2.9 (b321f2e) is the first tag with the plugin core 81978fa (v1.2.8 lacks `plugins/filter.py`); its deletion-only filter host covers this filter. Its four `tests/test_filter.py` delete tests pass against an App v1.2.9 checkout.
+- Move Outlines, Round Outline to Grid, Scale Outlines and Slant Outlines keep the 1.0.0 placeholder: they build coordinate LayerEdits, and no App tag contains the coordinate writer 277a001 (dated after v1.2.9). The TODO row stays open with the next check.
+- `tests/test_extension_manifest.py` pins the floors and, with the sibling App checkout, checks that v1.2.9 contains 81978fa, v1.2.8 does not, v1.2.9 lacks 277a001, and any raised coordinate floor's tag contains 277a001. Mutants: Delete Small Paths back to 1.0.0 fails 1; Move Outlines at 1.2.9 fails 2; Move Outlines at untagged 1.2.10 fails 1.
+
 ## 2026-11-11 — Step and Repeat verified live (A2 live report 21, Issue 250)
 
 - Step and Repeat (87fc0ec) with the active-glyph lookup stubbed: count 2, dy 50 adds two contour copies to Regular only (2 to 4 contours), one "Step and Repeat" row, exact Undo and Redo, save and reopen identical with clean history. The real Glyph-window lookup is owner-run and stays in TODO.
