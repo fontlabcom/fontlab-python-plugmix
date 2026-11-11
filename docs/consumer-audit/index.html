@@ -1036,7 +1036,7 @@
 </tbody>
 </table>
 <h2 id="inside-this-package">Inside this package</h2>
-<p>The bundled <code>Extensions</code> already import the canonical <code>fontlabapp.plugins</code> (52 files: 5 filters, 1 general, 1 palette, 41 reporters, 4 tools), as do <code>Scripts/Plugmix/Show Reporters.py</code> and 17 tests. The legacy <code>src/fontlab_plugmix</code> tree (32 files) keeps its own parallel modules and the old entry-point group; 11 tests import it. No file here imports the deprecated shim.</p>
+<p>The bundled <code>Extensions</code> already import the canonical <code>fontlabapp.plugins</code> (50 tracked Python files: 5 filters, 1 general, 1 palette, 39 reporters, 4 tools; counted with <code>git grep -l "fontlabapp.plugins" -- 'Extensions/*.py'</code> and grouped by directory), as do <code>Scripts/Plugmix/Show Reporters.py</code> and 17 tests. The legacy <code>src/fontlab_plugmix</code> tree (51 tracked Python files, counted with <code>git ls-files 'src/fontlab_plugmix/*.py'</code>) keeps its own parallel modules and the old entry-point group; 11 tests import it. No file here imports the deprecated shim.</p>
 <h2 id="lock-file-membership">Lock-file membership</h2>
 <p>No maintained lock file pins <code>fontlab-python-plugmix</code>. Fontport and Glyport pin <code>fontlab-fontlabapp</code> as an editable sibling. Seven repositories have no lock file; six others lock neither package.</p>
 <h2 id="not-knowable-from-the-workspace">Not knowable from the workspace</h2>

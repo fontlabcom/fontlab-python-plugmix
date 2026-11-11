@@ -37,7 +37,7 @@ This page records who uses the compatibility package, its entry-point groups and
 
 ## Inside this package
 
-The bundled `Extensions` already import the canonical `fontlabapp.plugins` (52 files: 5 filters, 1 general, 1 palette, 41 reporters, 4 tools), as do `Scripts/Plugmix/Show Reporters.py` and 17 tests. The legacy `src/fontlab_plugmix` tree (32 files) keeps its own parallel modules and the old entry-point group; 11 tests import it. No file here imports the deprecated shim.
+The bundled `Extensions` already import the canonical `fontlabapp.plugins` (50 tracked Python files: 5 filters, 1 general, 1 palette, 39 reporters, 4 tools; counted with `git grep -l "fontlabapp.plugins" -- 'Extensions/*.py'` and grouped by directory), as do `Scripts/Plugmix/Show Reporters.py` and 17 tests. The legacy `src/fontlab_plugmix` tree (51 tracked Python files, counted with `git ls-files 'src/fontlab_plugmix/*.py'`) keeps its own parallel modules and the old entry-point group; 11 tests import it. No file here imports the deprecated shim.
 
 ## Lock-file membership
 
