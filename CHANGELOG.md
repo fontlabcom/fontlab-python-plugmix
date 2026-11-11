@@ -2,6 +2,10 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-11 — Delete Small Paths verified live (A2 live report 18, Issue 250)
+
+- Delete Small Paths passes live on FontLab 9 (origin/main 87fc0ec): one Undo row, exact Undo/Redo, saved reopen clean. Step and Repeat stays open in TODO.
+
 ## 2026-11-10 — Issue 234 practical filters and tools (Lane C8)
 
 Added Round Outline to Grid, Move Outlines, Scale Outlines and Slant Outlines
