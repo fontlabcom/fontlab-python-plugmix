@@ -963,8 +963,8 @@
 </tr>
 <tr>
 <td>Distribution, legacy</td>
-<td><code>fontlab-python-plugmix</code>: wheel package <code>src/fontlab_plugmix</code>, depends on <code>fontlab-fontlabapp</code>; ships <code>Extensions/{filters,general,palettes,reporters,tools}</code> and Scripts</td>
-<td><code>pyproject.toml</code></td>
+<td><code>fontlab-python-plugmix</code>: wheel package <code>src/fontlab_plugmix</code>, depends on <code>fontlab-fontlabapp</code>; the wheel contains only that package. <code>Extensions/{filters,general,palettes,reporters,tools}</code> and <code>Scripts/Plugmix</code> ship in the separate pack zip built by <code>tools/build_pack.py</code></td>
+<td><code>pyproject.toml</code>, <code>tools/build_pack.py</code></td>
 </tr>
 <tr>
 <td>Distribution, App</td>
