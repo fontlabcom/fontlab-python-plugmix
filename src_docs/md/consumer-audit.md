@@ -17,7 +17,7 @@ This page records who uses the compatibility package, its entry-point groups and
 | Preferences | `~/Library/Application Support/FontLab/FontLab 9/Data/fontlab-plugmix.json` (name kept) | `plugins/registry.py:20` |
 | Startup, legacy | `from fontlab_plugmix import install; install()` | `initScript-snippet.py` |
 | Startup, App docs | `from fontlabapp.plugmix import install; install()` (documents the shim path) | `fontlab-fontlabapp/src_docs/md/plugmix.md:19` |
-| Distribution, legacy | `fontlab-python-plugmix`: wheel package `src/fontlab_plugmix`, depends on `fontlab-fontlabapp`; ships `Extensions/{filters,general,palettes,reporters,tools}` and Scripts | `pyproject.toml` |
+| Distribution, legacy | `fontlab-python-plugmix`: wheel package `src/fontlab_plugmix`, depends on `fontlab-fontlabapp`; the wheel contains only that package. `Extensions/{filters,general,palettes,reporters,tools}` and `Scripts/Plugmix` ship in the separate pack zip built by `tools/build_pack.py` | `pyproject.toml`, `tools/build_pack.py` |
 | Distribution, App | `fontlab-fontlabapp` contains `fontlabapp.plugins` and the shim | `fontlab-fontlabapp/src/fontlabapp` |
 | Licence | Apache-2.0 in both; `NOTICE:61` records the move of `fontlabapp/plugmix` out of this package | `LICENSE`, `NOTICE` |
 | Guards | In-App consumers are guarded by `tests/test_plugmix_shim_consumers.py` in `fontlab-fontlabapp` | |

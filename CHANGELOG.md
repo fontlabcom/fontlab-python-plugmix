@@ -5,7 +5,14 @@ this_file: CHANGELOG.md
 ## 2026-11-11 — Consumer audit page (Issue 250)
 
 - Closed the TODO row "Audit all consumers, entry-point groups, startup/preferences, distribution membership and licences": the audit is published as `src_docs/md/consumer-audit.md` (site page `consumer-audit/`, nav entry added; generated `docs/` rebuilt). It lists the two entry-point groups, the deprecated `fontlabapp.plugmix` shim, preferences file and startup snippets, lock-file membership, Apache-2.0 licences and every consumer found in the maintained repositories; machine paths are stripped.
+- Corrected the distribution row after merging the pack zip (`cd02988`): the wheel holds only `src/fontlab_plugmix`; Extensions and `Scripts/Plugmix` ship in the pack zip.
 - The removal gate stays open. Its next check is now an outside-consumer search or a deprecation period, because third-party publishers and owner-installed copies cannot be known from the workspace.
+
+## 2026-11-11 — ordinary pack artifact: Extensions zip, wheel stays compatibility-only (Issue 250)
+
+- `tools/build_pack.py` builds `fontlab-python-plugmix-extensions.zip` (Extensions/, `Scripts/Plugmix`, README.md; no bytecode). `tests/test_pack_artifacts.py` (6 tests) pins that the zip holds exactly the 50 `plugin.json` files of `tests/bundle-map.json`, that an extracted copy discovers all 50 through `registry.discover`, that a missing `Extensions/` raises an error naming the pack, and that the built wheel has `fontlab_plugmix/` and no Extensions, Scripts or `plugin.json`.
+- `tests/conftest.py` `pytest_configure` raises `pytest.UsageError` naming the pack when `Extensions/` is absent (wheel-only runs formerly ended in an INTERNALERROR FileNotFoundError); a subprocess test pins that message. The wheel test skips with a reason when `uv build` cannot run offline. README says the wheel is the compatibility package only. `--cov=tools` joins the pytest addopts; `tools/build_pack.py` covers 92%.
+- This builds and tests the zip locally only; no CI step builds or attaches it yet (open TODO row). Suite: 405 passed (App and Pens main siblings). TODO row "Qualify ordinary pack artifacts" removed. Install of the pack stays copy-into-user-data; native checks stay open.
 
 ## 2026-11-11 — Delete Small Paths declares App 1.2.9; coordinate filter floors stay open (Issue 250)
 

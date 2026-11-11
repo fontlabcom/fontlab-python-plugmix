@@ -10,7 +10,6 @@ this_file: TODO.md
 - [ ] native: verify Extensions startup discovery and marked-hook install/removal on the exact installed tuple in FontLab 9.
 - [ ] native: verify all reporter drawing modes, callback failure containment and teardown in FontLab 9.
 - [ ] native (owner-run): Step and Repeat from a real Glyph window. `snapshot.active_glyph` needs a Glyph-window canvas, so without a stub `repeat_selected` refuses "No active glyph." (nothing written); the rest was verified with the lookup stubbed (A2 report 21).
-- [ ] Qualify ordinary pack artifacts before delivery; paired App/Plugmix source review is complete.
 
 - [ ] Complete Issue 211 nine native probes and four minor fixes on the exact integrated tuple under the separate native gates.
 - [ ] Compatibility-package and `fontlabapp.plugmix` shim removal gate: the workspace audit is done (see the Consumer audit page); next check is an outside-consumer search or a deprecation period, because third-party entry-point publishers and owner-installed copies cannot be known from the workspace.
@@ -25,3 +24,4 @@ this_file: TODO.md
 - [ ] native: verify Node Probe local/component labels and 12-pixel hit radius at multiple zoom levels in FontLab 9.
 - [ ] native: verify Contour Picker whole-contour selection and Shift toggle on open/cubic/quadratic outlines, with components unchanged, in FontLab 9.
 - [ ] Qualify the paired App coordinate-writer release and assign the four coordinate filter manifests (Move Outlines, Round Outline to Grid, Scale Outlines, Slant Outlines) their actual minimum App version before distribution. They keep the `min_app_version` 1.0.0 placeholder because no App tag contains the coordinate writer 277a001 yet (v1.2.9 = b321f2e predates it; its `plugins/filters/apply.py` is deletion-only). Delete Small Paths is deletion-only and now declares 1.2.9, the first tag with the plugin core 81978fa. Next check: after the next App release, set the four floors to the first tag containing 277a001; `tests/test_extension_manifest.py` then verifies that tag against the sibling App checkout.
+- [ ] Build the Extensions pack zip (tools/build_pack.py) in CI or the release job and attach it to releases; the local build and tests exist, but no workflow runs them.
