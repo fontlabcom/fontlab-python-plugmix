@@ -1,0 +1,39 @@
+# this_file: .github/workflows/pack.yml
+name: Pack
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78 # v7.6.0
+        with:
+          version: '0.13.7'
+          python-version: '3.13'
+          enable-cache: false
+      # Only the App-free tests run here; the rest of the suite needs the private App checkout (see TODO.md).
+      - name: Build the Extensions pack
+        run: |
+          set -eo pipefail
+          uv run --no-project python tools/build_pack.py dist
+          uv run --no-project python tools/check_pack.py dist/fontlab-python-plugmix-extensions.zip
+      - name: Run the App-free tests
+        run: |
+          set -eo pipefail
+          uv run --no-project --with pytest==8.4.2 python -m pytest -q -p no:cacheprovider -rs --noconftest -o addopts= \
+            tests/test_pack_workflow.py tests/test_extension_coverage_gate.py | tee pytest.log
+          if grep -q "SKIPPED" pytest.log; then echo "Unexpected skip"; exit 1; fi
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: fontlab-python-plugmix-extensions
+          path: dist/fontlab-python-plugmix-extensions.zip
+          if-no-files-found: error
