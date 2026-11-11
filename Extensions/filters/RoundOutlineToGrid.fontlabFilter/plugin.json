@@ -4,5 +4,5 @@
   "kind": "filter",
   "version": "1.0.0",
   "entry": "round_outline_to_grid:RoundOutlineToGrid",
-  "min_app_version": "1.0.0"
+  "min_app_version": "1.2.10"
 }

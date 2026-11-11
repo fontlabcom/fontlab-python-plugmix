@@ -40,19 +40,16 @@ def test_reference_pack_when_discovered_twice_then_all_five_kinds_keep_identity(
 
 # App release floors for the five filter bundles (Plugmix TODO "coordinate-writer release").
 # App v1.2.9 is the first tag shipping ``fontlabapp.plugins`` (81978fa); its filter host is
-# deletion-only. The coordinate writer (App 277a001) is in no release yet, so the four
-# coordinate filters keep the 1.0.0 placeholder until the first tag containing it.
+# deletion-only. The coordinate writer (App 277a001) first shipped in v1.2.10, which is
+# therefore the floor of the four coordinate filters.
 PLUGIN_CORE_COMMIT = "81978fa"
 COORDINATE_WRITER_COMMIT = "277a001"
 DELETION_ONLY_FLOOR = "1.2.9"
 DELETION_ONLY_FILTERS = {"DeleteSmallPaths"}
 COORDINATE_FILTERS = {"MoveOutlines", "RoundOutlineToGrid", "ScaleOutlines", "SlantOutlines"}
 PLACEHOLDER_FLOOR = "1.0.0"
+COORDINATE_FLOOR = "1.2.10"
 APP_CHECKOUT = ROOT.parent / "fontlab-fontlabapp"
-
-
-def _version(text):
-    return tuple(int(part) for part in text.split("."))
 
 
 def _filter_floors():
@@ -79,12 +76,8 @@ def test_filter_floors_when_loaded_then_match_the_app_writer_they_need():
         assert floors[name] == DELETION_ONLY_FLOOR, f"{name} needs the App plugin core first shipped in v1.2.9"
     for name in COORDINATE_FILTERS:
         floor = floors[name]
-        assert floor == PLACEHOLDER_FLOOR or _version(floor) > _version(DELETION_ONLY_FLOOR), (
-            f"{name} builds coordinate edits; v1.2.9 and older reject them"
-        )
-    todo = (ROOT / "TODO.md").read_text()
-    if PLACEHOLDER_FLOOR in {floors[name] for name in COORDINATE_FILTERS}:
-        assert "- [ ] Qualify the paired App coordinate-writer release" in todo
+        assert floor == COORDINATE_FLOOR, f"{name} builds coordinate edits; only v1.2.10+ ships the writer"
+    assert PLACEHOLDER_FLOOR not in floors.values()
 
 
 def test_filter_floors_when_app_tags_available_then_floor_tags_contain_the_needed_writer():
@@ -94,5 +87,5 @@ def test_filter_floors_when_app_tags_available_then_floor_tags_contain_the_neede
     assert _tag_contains(DELETION_ONLY_FLOOR, PLUGIN_CORE_COMMIT)
     assert not _tag_contains("1.2.8", PLUGIN_CORE_COMMIT)
     assert not _tag_contains(DELETION_ONLY_FLOOR, COORDINATE_WRITER_COMMIT)
-    for name in COORDINATE_FILTERS - {n for n in COORDINATE_FILTERS if floors[n] == PLACEHOLDER_FLOOR}:
+    for name in COORDINATE_FILTERS:
         assert _tag_contains(floors[name], COORDINATE_WRITER_COMMIT), name

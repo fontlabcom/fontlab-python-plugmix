@@ -2,6 +2,13 @@
 this_file: CHANGELOG.md
 ---
 
+
+## 2026-11-12 — Coordinate filters require App 1.2.10 (Issue 250)
+
+- `min_app_version` of Move Outlines, Round Outline to Grid, Scale Outlines and Slant Outlines is now `1.2.10`, the first App tag containing the coordinate writer 277a001. Evidence: the remote tag `v1.2.10` peels to f05d87b (`git ls-remote --tags` on the App remote), and `git merge-base --is-ancestor 277a001 f05d87b` succeeds; v1.2.9 does not contain it. Delete Small Paths stays at 1.2.9.
+- `tests/test_extension_manifest.py` now requires exactly 1.2.10 for the four filters and no 1.0.0 placeholder, and still checks tag-contains-commit against the sibling App checkout. Mutants: a floor of 1.2.9 or 1.0.0 on one filter fails the test.
+- Closes the TODO row "Qualify the paired App coordinate-writer release". The native dialog checks for these filters stay open in their own TODO row.
+
 ## 2026-11-11 — Consumer audit page (Issue 250)
 
 - Closed the TODO row "Audit all consumers, entry-point groups, startup/preferences, distribution membership and licences": the audit is published as `src_docs/md/consumer-audit.md` (site page `consumer-audit/`, nav entry added; generated `docs/` rebuilt). It lists the two entry-point groups, the deprecated `fontlabapp.plugmix` shim, preferences file and startup snippets, lock-file membership, Apache-2.0 licences and every consumer found in the maintained repositories; machine paths are stripped.
