@@ -8,6 +8,10 @@ this_file: CHANGELOG.md
 - `.github/workflows/pack.yml` (`contents: read`, pinned action SHAs, no secrets, one job) runs `tools/build_pack.py` and the new stdlib `tools/check_pack.py` (exactly the 50 mapped `plugin.json`, `README.md`, `Scripts/Plugmix`, no bytecode, no stray top-level entries) and uploads `fontlab-python-plugmix-extensions.zip` as an artifact. `tests/test_pack_workflow.py` pins the permissions and pinned SHAs, that no App import is needed, and that the check reports missing/extra entries.
 - Only the App-free tests run in CI (`--noconftest`: `tests/test_pack_workflow.py`, `tests/test_extension_coverage_gate.py`; any skip fails the job). The rest of the suite stays out because `tests/conftest.py:42` and `tests/extensions/conftest.py` import `fontlabapp`, which is private: an owner-gated TODO row. Attaching the zip to releases also stays open.
 
+## 2026-11-12 — Pack artifact verified on main (Issue 250)
+
+- First main run of `pack.yml` on 9b6a287: Pack run 43123920993 succeeded ("pack ok"; App-free tests 8 passed, no skips) and its artifact `fontlab-python-plugmix-extensions.zip`, downloaded and listed, holds 50 `plugin.json`. Documentation run 43123921012 also succeeded. This closes "build and attach the pack as a CI artifact"; attaching to releases and the owner-gated full CI suite stay open in TODO.md.
+
 ## 2026-11-12 — Coordinate filters require App 1.2.10 (Issue 250)
 
 - `min_app_version` of Move Outlines, Round Outline to Grid, Scale Outlines and Slant Outlines is now `1.2.10`, the first App tag containing the coordinate writer 277a001. Evidence: the remote tag `v1.2.10` peels to f05d87b (`git ls-remote --tags` on the App remote), and `git merge-base --is-ancestor 277a001 f05d87b` succeeds; v1.2.9 does not contain it. Delete Small Paths stays at 1.2.9.
