@@ -161,6 +161,10 @@ repeated enable, menu disable, unknown preferences and failed-save rollback.
 No offline result establishes native rendering, owner installation, published
 artifacts or FontLab menu/toolbar insertion.
 
+## Releasing the pack
+
+Push the `v*` tag, then within 10 minutes create the release with notes (`gh release create <tag> --verify-tag --notes-file ...`). The Pack workflow's `release` job waits for the release and attaches `fontlab-python-plugmix-extensions.zip`; it never creates releases. If it timed out, create the release and re-run the job, then check `gh release view <tag> --json assets`.
+
 ## Remaining acceptance
 
 Issue 210's source split is implemented in this paired candidate. Qualify native

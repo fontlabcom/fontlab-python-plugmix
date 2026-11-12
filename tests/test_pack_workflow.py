@@ -61,6 +61,12 @@ def test_workflow_when_tag_pushed_then_release_attaches_the_checked_zip():
         "download-artifact" in job and "name: fontlab-python-plugmix-extensions" in job
     )
     assert "gh release upload" in job and "--clobber" in job
+    assert (
+        not re.search(r"(^|[|&;]\s*|\|\| )\s*gh release create", job, re.M)
+        and "--generate-notes" not in job
+    )
+    assert "seq 1 20" in job and "sleep 30" in job and "gh release view" in job
+    assert "release not created by lander within 10 min" in job
     assert "dist/fontlab-python-plugmix-extensions.zip" in job and "test -s" in job
     assert "GH_TOKEN: ${{ github.token }}" in job
     assert "checkout" not in job and '--repo "$GITHUB_REPOSITORY"' in job
