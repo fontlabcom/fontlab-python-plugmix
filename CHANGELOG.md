@@ -3,6 +3,13 @@ this_file: CHANGELOG.md
 ---
 
 
+## 2026-11-12 — Pack workflow attaches the zip to tag releases (Issue 250)
+
+- `.github/workflows/pack.yml` gains a `release` job: `needs: pack`, `if: startsWith(github.ref, 'refs/tags/v')`, job-level `permissions: contents: write` (the workflow default stays `contents: read`; no Pages, `id-token` or other write scope, no secrets beyond `github.token`). It downloads the checked `fontlab-python-plugmix-extensions` artifact, creates the release if the tag has none (`--verify-tag --generate-notes`) and uploads the zip with `--clobber`. The workflow now also triggers on `v*` tag pushes; the `pack` job runs there unchanged.
+- No App install, PyPI or deploy key was added; the App-free `--noconftest` test subset is unchanged. `actions/download-artifact` is pinned to v5.0.0 (`634f93cb2916e3fdff6788551b99b062d0335ce0`, matching the pinned upload-artifact v5).
+- `tests/test_pack_workflow.py` pins the job set, the single job-level `contents: write`, the absence of pages/id-token/other write scopes, the tag trigger and condition, and the upload command; the old single-job test was split. Three mutants (extra `pages: write`, removed `if`, removed `--clobber`) each fail the suite. 10 passed in the App-free subset; ruff 0.14.10 and actionlint clean.
+- Not yet observed: a real tag run (TODO row kept for the first `v*` push).
+
 ## 2026-11-12 — Pack workflow builds, checks and uploads the Extensions zip (Issue 250)
 
 - `.github/workflows/pack.yml` (`contents: read`, pinned action SHAs, no secrets, one job) runs `tools/build_pack.py` and the new stdlib `tools/check_pack.py` (exactly the 50 mapped `plugin.json`, `README.md`, `Scripts/Plugmix`, no bytecode, no stray top-level entries) and uploads `fontlab-python-plugmix-extensions.zip` as an artifact. `tests/test_pack_workflow.py` pins the permissions and pinned SHAs, that no App import is needed, and that the check reports missing/extra entries.

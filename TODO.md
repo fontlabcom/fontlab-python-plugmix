@@ -23,5 +23,5 @@ this_file: TODO.md
 - [ ] native: verify Measurement Ruler left drag, Shift constraint, Escape, secondary-button release, glyph switching and teardown in FontLab 9.
 - [ ] native: verify Node Probe local/component labels and 12-pixel hit radius at multiple zoom levels in FontLab 9.
 - [ ] native: verify Contour Picker whole-contour selection and Shift toggle on open/cubic/quadratic outlines, with components unchanged, in FontLab 9.
-- [ ] Attach the Extensions pack zip to releases: `.github/workflows/pack.yml` builds, checks and uploads it as a run artifact on every main push, but no release job attaches it yet.
+- [ ] Confirm the first `v*` tag push runs the `release` job in `.github/workflows/pack.yml` and attaches `fontlab-python-plugmix-extensions.zip` to that release (the job exists and its workflow shape is tested, but no tag has been pushed since it was added; actionlint-clean only).
 - [ ] CI test suite: the full suite needs a read-only App/Pens checkout in CI (tag-floor and bundle tests), owner-gated (credential: deploy key, PAT or App visibility). `tests/conftest.py:42` (`pytest_configure` imports `fontlabapp.plugins.bundles`) and `tests/extensions/conftest.py` block every module under it; `pack.yml` runs only the App-free subset with `--noconftest` (`tests/test_pack_workflow.py`, `tests/test_extension_coverage_gate.py`).
