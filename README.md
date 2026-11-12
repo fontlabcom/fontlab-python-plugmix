@@ -16,8 +16,11 @@ The wheel is the compatibility package only and contains no Extensions.
 ## Extensions and action scripts
 
 See [Extensions/README.md](Extensions/README.md) for the bundle layout and manifest.
-Copy the Extensions contents into the FontLab user-data `Extensions/` folder;
-App's startup hook discovers them. Each bundle is self-contained Python source
+Run `install.vfpy` from FontLab's Scripts panel (or copy the Extensions contents
+into the FontLab user-data `Extensions/` folder by hand): it links the 50 bundles
+into `Extensions/<kind>/` and installs `Scripts/Plugmix`. It needs the
+`fontlab-fontlabapp` checkout beside this one (the Output says so if it is missing)
+and never replaces a bundle you placed yourself. App's startup hook discovers them. Each bundle is self-contained Python source
 with a `plugin.json`; it needs no package install or reporter launcher.
 
 Use the Reporters palette or View > Reporters to enable reporters. The only
@@ -27,8 +30,8 @@ Rings retains its 5, 8 or 12 handle-size API, with the default of 8.
 
 App and the retained compatibility runtime both use `fontlab-plugmix.json`.
 Choose one runtime per FontLab session; do not combine their startup installers.
-Cross-runtime preference migration remains unqualified. No script here installs
-packages or edits FontLab's startup file.
+Cross-runtime preference migration remains unqualified. The installer adds no
+packages and does not edit FontLab's startup file.
 
 ## Retained compatibility package
 

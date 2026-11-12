@@ -4,6 +4,7 @@ this_file: TODO.md
 
 # Open tasks
 
+- [ ] native (owner, optional): run Plugmix install.vfpy in FontLab 9, restart, and confirm Plugmix Demo lists the 50 bundles; then uninstall and confirm the links go
 - [ ] native: verify Reporters palette toggles and View > Reporters synchronization in FontLab 9.
 - [ ] native: verify toolbar and Tools > Tool registration, selection and teardown in FontLab 9.
 - [ ] native: verify Window > Panels registration, show/close and PythonQt lifetime in FontLab 9.
