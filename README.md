@@ -22,7 +22,7 @@ into `Extensions/<kind>/` and installs `Scripts/Plugmix`. It needs the
 `fontlab-fontlabapp` checkout beside this one (the Output says so if it is missing)
 and never replaces a bundle you placed yourself.
 Run App's `install.vfpy` first, and run it again after updating App: it records
-the App version FontLab reports, and some bundles (the filters) need 1.2.10 or newer. App's startup hook discovers them. Each bundle is self-contained Python source
+the App version FontLab reports, and four of the five filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need 1.2.10 or newer; an older recorded version rejects those four. App's startup hook discovers the bundles. Each bundle is self-contained Python source
 with a `plugin.json`; it needs no package install or reporter launcher.
 
 Use the Reporters palette or View > Reporters to enable reporters. The only

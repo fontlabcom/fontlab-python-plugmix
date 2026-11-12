@@ -2,10 +2,14 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-12 — README names which filters need App 1.2.10
+
+- The install note said "some bundles (the filters)" and left "them" ambiguous. It now says four of the five filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need App 1.2.10 or newer, that an older recorded version rejects those four, and that App's startup hook discovers the bundles. Documentation only.
+
 ## 2026-11-12 — install.vfpy installs the 50 bundles (Issue 254)
 
 - Plugmix Demo showed no plugins because nothing put the `Extensions/<kind>/*.fontlab*` bundles where FontLab looks. `install.vfpy` (byte-identical to App's) with the new `[tool.fontlab-install]` table (`extensions = "Extensions"`, `packages = []`) links all 50 (39 reporters, 5 filters, 4 tools, 1 palette, 1 general) and copies `Scripts/Plugmix`; a non-Git folder installs a copy under `Extensions/<id>/bundles/<kind>/`.
-- Install order: run App's `install.vfpy` before this one and again after updating App; it refreshes the recorded App version, which four filters (Scale, Move, Round Outline To Grid, Slant Outlines) need at 1.2.10 or newer.
+- Install order: run App's `install.vfpy` before this one and again after updating App; it refreshes the recorded App version, which four filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need at 1.2.10 or newer.
 - Without the App checkout beside it the Output says so plainly. Uninstall removes only our links; a bundle you replaced stays.
 - `tests/test_install_bundles.py` runs the real installer into a temporary data folder and asks App's `registry.discover` for the plugins (50 expected), plus rerun, uninstall, replaced-link and non-Git copy cases.
 
