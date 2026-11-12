@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 # this_file: Extensions/general/ZoomToSelection.fontlabGeneral/zoom_to_selection.py
 """Fit selected nodes in the active Glyph canvas without changing font data.
 

@@ -170,3 +170,59 @@ Filter, palette, tool and General plugin:
   SmartSelectTool, Apache-2.0: https://github.com/ButTaiwan/SmartSelectTool
 - Zoom to Selection General plugin: TzuYuan Yin (@yintzuyuan),
   zoom-to-selection, MIT: https://github.com/yintzuyuan/zoom-to-selection
+
+Retained third-party MIT notices
+================================
+The Plugmix files for Nodes Close to Zones and Zoom to Selection are FontLab Apache-2.0
+reimplementations (no upstream code copied); the upstream MIT notices are kept verbatim here
+as attribution. Each LICENSE was read anonymously at the stated upstream commit.
+
+Nodes Close to Zones — https://github.com/ollimeier/NodesCloseToZones-Glyphs
+commit e5adac6c4b4841151cd1ed97e013dfed3364083c, LICENSE SHA-256 65c39e327abf6e6c6d4eae2e5810f005df7181450712b37c1a980f7d74127cfe
+
+MIT License
+
+Copyright (c) 2019 Olli Meier
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Zoom to Selection — https://github.com/yintzuyuan/zoom-to-selection
+commit 04c1521b1fe83ebe198083855d8ff77c820902de, LICENSE SHA-256 a3ea5e32aeaec47f9d890d208fe80e522631a0fea89ec4aefb9e2c8fd6b2d671
+
+MIT License
+
+Copyright (c) 2026 TzuYuan Yin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

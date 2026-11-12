@@ -2,6 +2,11 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-12 — Everything Apache-2.0 (Issue 250, owner Q5)
+
+- The four MIT SPDX headers (Nodes Close to Zones and Zoom to Selection, in `src/` and the `Extensions/` bundles) now read `Apache-2.0`; both are FontLab reimplementations with no upstream code copied.
+- `NOTICE` retains the verbatim upstream MIT notices (Olli Meier 2019, TzuYuan Yin 2026) with repository commit and LICENSE SHA-256; `tests/test_licence_notices.py` guards them.
+
 
 ## 2026-11-12 — Pack workflow attaches the zip to tag releases (Issue 250)
 

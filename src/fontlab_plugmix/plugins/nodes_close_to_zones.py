@@ -1,5 +1,5 @@
 # this_file: src/fontlab_plugmix/plugins/nodes_close_to_zones.py
-# SPDX-License-Identifier: MIT
+# SPDX-License-Identifier: Apache-2.0
 """Mark on-curves near, but not exactly on, master zones or metric levels."""
 
 from fontlab_plugmix.reporter import Mark, Reporter
