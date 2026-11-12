@@ -2,6 +2,12 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-12 — D46 documentation pass (Issue 250)
+
+- Landed this session, all on `main`: Apache-2.0 headers for the two reimplemented plugins (`874cce3`), `install.vfpy` linking the 50 Extensions bundles (`f3799c2`), App-first install order (`701b2cb`), the README note on App 1.2.10 filters (`78ea025`).
+- TODO's Plugmix Demo row now lists the bundle counts and the filter, history and restart checks. PLAN says the bundles install through `install.vfpy`. WORK.md is a short status note; its previous bytes (2,969 bytes, sha256 `9394b88f870b035b10ca4a6786631c684e650783900df95717561ddc9dc6a61a`) are archived on the owner's data volume.
+- No code changed.
+
 ## 2026-11-12 — README names which filters need App 1.2.10
 
 - The install note said "some bundles (the filters)" and left "them" ambiguous. It now says four of the five filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need App 1.2.10 or newer, that an older recorded version rejects those four, and that App's startup hook discovers the bundles. Documentation only.

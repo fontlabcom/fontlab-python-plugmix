@@ -15,7 +15,7 @@ single action script that opens App's Reporters palette. The original plugin
 behavior is retained; framework and host operations remain in App. The bundle
 format is documented in Extensions/README.md. Qualify the exact paired artifacts
 and native UI, startup, drawing, callbacks, teardown and writer history after
-independent source review. No FontLab process was started for this candidate.
+independent source review. The 50 bundles install through `install.vfpy` (Issue 254); native acceptance is still open and tracked in TODO.
 
 Issue 211's nine native probes and four minor fixes remain follow-up work.
 The README's dated native observations do not close those integrated checks.
