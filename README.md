@@ -20,7 +20,9 @@ Run `install.vfpy` from FontLab's Scripts panel (or copy the Extensions contents
 into the FontLab user-data `Extensions/` folder by hand): it links the 50 bundles
 into `Extensions/<kind>/` and installs `Scripts/Plugmix`. It needs the
 `fontlab-fontlabapp` checkout beside this one (the Output says so if it is missing)
-and never replaces a bundle you placed yourself. App's startup hook discovers them. Each bundle is self-contained Python source
+and never replaces a bundle you placed yourself.
+Run App's `install.vfpy` first, and run it again after updating App: it records
+the App version FontLab reports, and some bundles (the filters) need 1.2.10 or newer. App's startup hook discovers them. Each bundle is self-contained Python source
 with a `plugin.json`; it needs no package install or reporter launcher.
 
 Use the Reporters palette or View > Reporters to enable reporters. The only
