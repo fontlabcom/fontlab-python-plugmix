@@ -81,9 +81,10 @@ acceptance remain orchestrator work; this lane must not commit or publish.
 
 ## Issue 255 remaining qualification
 
-Complete ordinary main integration through the retained pre-push gates, verify the
-actual remote SHA and configured CI after delivery, and reconcile any new upstream
-changes before pushing. Independent specification/quality review, full source and
+The Fly consumer source milestone is delivered at 05176d30 with successful CI.
+Independently review and deliver the bounded sdist selection repair through the
+retained main/pre-push/CI gates, preserving earlier local tags and artifacts; verify
+new remote delivery separately. Independent specification/quality review, full source and
 coverage gates, scoped graph analysis and locked docs build/tests are complete for
 the reviewed candidate; they do not establish remote delivery.
 

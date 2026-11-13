@@ -376,3 +376,20 @@ and runner tests. Ruff 0.16.7 with `--select I001` passes those files; the earli
 comparison retains existing StepAndRepeat I001, ShowStems/SpeedPunk RUF007,
 startup BLE001, coverage-test I001 and installer FURB192 findings. Bounded tests
 pass 14 cases; the full source suite passes 437 tests and all coverage gates.
+
+
+## 2026-11-13 — Issue 255 source-distribution selection repair
+
+The prior Fly consumer source milestone reached 05176d30 with successful CI.
+Fresh artifact qualification then found operational session data and a compiled
+installer carrying local paths in Hatch's default source distribution. Exclude
+only root `.omc` and `install.vfpyc` from sdists; keep both checkout sources intact
+and leave wheel, Extensions pack, runtime dependencies and shared installers exact.
+
+A real uv sdist regression reproduces the failure and now verifies those payloads
+are absent while intended library, userpack, documentation, test, legal and source
+installer members retain exact bytes. All 7 packaging tests and the full 438-test
+source suite pass with the retained coverage gates. Ruff 0.16.7 I001 passes the
+changed test file; baseline lint findings remain disclosed. This records local
+source/artifact-selection evidence before review and delivery of the repair;
+release, installed-tuple and native acceptance remain separate.

@@ -27,5 +27,5 @@ this_file: TODO.md
 - [ ] Confirm the first `v*` tag push runs the `release` job in `.github/workflows/pack.yml` and attaches `fontlab-python-plugmix-extensions.zip` to that release (the job exists and its workflow shape is tested, but no tag has been pushed since it was added; actionlint-clean only).
 - [ ] CI test suite: the full suite needs a read-only App/Pens checkout in CI (tag-floor and bundle tests), owner-gated (credential: deploy key, PAT or App visibility). `tests/conftest.py:42` (`pytest_configure` imports `fontlabapp.plugins.bundles`) and `tests/extensions/conftest.py` block every module under it; `pack.yml` runs only the App-free subset with `--noconftest` (`tests/test_pack_workflow.py`, `tests/test_extension_coverage_gate.py`).
 
-- [ ] Issue 255: complete ordinary main/pre-push integration and verify actual remote SHA plus configured CI; reconcile and repeat affected gates if upstream advances.
+- [ ] Issue 255: independently review and deliver the bounded sdist selection repair through ordinary main/pre-push/CI gates; retain prior local tags/artifacts and verify its remote SHA.
 - [ ] Issue 255: qualify genuine pack/wheel/sdist installation with Fly >=1.3.0 and the reviewed provider cohort; separately verify App startup and plugin behavior in FontLab under the serialized native gate.

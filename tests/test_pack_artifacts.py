@@ -6,6 +6,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tarfile
 import zipfile
 from pathlib import Path
 
@@ -84,3 +85,28 @@ def test_wheel_when_built_then_it_has_the_compatibility_package_and_no_pack(tmp_
         names = zf.namelist()
     assert any(n.startswith("fontlab_plugmix/") for n in names)
     assert not [n for n in names if n.startswith(("Extensions/", "Scripts/")) or n.endswith("plugin.json")]
+
+
+def test_sdist_when_built_then_omits_operational_and_compiled_payload_but_keeps_sources(tmp_path):
+    build = subprocess.run(
+        ["uv", "build", "--sdist", "--out-dir", str(tmp_path), str(ROOT)],
+        capture_output=True, text=True, env=os.environ.copy(), check=False,
+    )
+    assert build.returncode == 0, build.stdout + build.stderr
+    (archive,) = tmp_path.glob("*.tar.gz")
+    with tarfile.open(archive) as source:
+        members = {member.name.split("/", 1)[1]: member for member in source.getmembers()
+                   if "/" in member.name}
+        assert not any(path == ".omc" or path.startswith(".omc/") for path in members)
+        assert "install.vfpyc" not in members
+        for path in (
+            "src/fontlab_plugmix/__init__.py", "README.md", "LICENSE", "NOTICE",
+            "install.vfpy", "initScript-snippet.py", "pyproject.toml", "test.sh",
+            "Extensions/reporters/NodeCount.fontlabReporter/plugin.json",
+            "Extensions/reporters/NodeCount.fontlabReporter/node_count.py",
+            "Scripts/Plugmix/Show Reporters.py", "tests/test_pack_artifacts.py",
+            "src_docs/md/installation.md", "docs/installation/index.html",
+            "tests_docs/test_site.py",
+        ):
+            assert path in members, path
+            assert source.extractfile(members[path]).read() == (ROOT / path).read_bytes(), path
