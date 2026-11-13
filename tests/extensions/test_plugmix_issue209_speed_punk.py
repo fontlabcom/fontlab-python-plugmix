@@ -5,9 +5,8 @@ from dataclasses import replace
 from math import hypot
 
 import pytest
-
-from plugmix_examples.speed_punk import SpeedPunk, _ramp
 from fontlabapp.plugins.snapshot import Contour, Node
+from plugmix_examples.speed_punk import SpeedPunk, _ramp, _sample
 
 K = 0.5523 * 100
 
@@ -111,3 +110,11 @@ def test_speed_punk_ramp_endpoints_and_midpoint_exact():
     assert _ramp(0.5) == (242, 148, 0)
     assert _ramp(1.0) == (227, 0, 79)
     assert _ramp(0.25) == (round((139 + 242) / 2), round((147 + 148) / 2), 78)
+
+
+def test_speed_punk_when_sampling_then_adjacent_derivatives_keep_order():
+    cubic = ((0, 0), (2, 0), (4, 2), (6, 0))
+    assert _sample(cubic, 0.5) == ((3, 0.75), (6, 1.5), (0, -6))
+    assert _sample(cubic, 0.0) == ((0, 0), (6, 0), (0, 12))
+    assert _sample(cubic, 1.0) == ((6, 0), (6, -6), (0, -24))
+    assert _ramp(1.1) == (227, 0, 79)

@@ -4,10 +4,9 @@
 from dataclasses import replace
 
 import pytest
-
+from fontlabapp.plugins.snapshot import Contour, MasterOutline, Node, ViewState
 from plugmix_examples.show_interpolation import ShowInterpolation
 from plugmix_examples.stem_thickness import StemThickness
-from fontlabapp.plugins.snapshot import Contour, MasterOutline, Node, ViewState
 
 
 def box(x0, y0, x1, y1, closed=True, selected=False):

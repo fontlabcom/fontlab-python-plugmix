@@ -4,6 +4,23 @@ this_file: PLAN.md
 
 # Forward plan
 
+## Combined ZIP, documentation and lint fixes: remaining qualification
+
+Obtain independent whole-change specification and quality review of the combined
+ZIP legal-file/preflight, documentation content oracle and 45 lint repairs.
+Controller qualification must retain all original cases/assertions, complete
+seven-module coverage and the 105-member/50-manifest artifact contract. Retain
+both older approved inputs, original failure receipts and the failed owned-index
+interval; do not restore earlier raw bytes or infer a writer.
+
+Refresh actual upstream main, reconcile concurrent changes through ordinary
+hooks and verify remote SHA and exact-source CI. Then qualify a new release and
+download containing exact legal files; the old published ZIP remains unchanged.
+Keep provider-cohort admission (P04), unresolved graph/dynamic/budget coverage
+(P05), root installation and native acceptance separate. Source lint and docs
+checks now pass locally; independent combined review and delivery remain open.
+Issue 123 remains paused and private Pages remains held.
+
 Issue 123 remains paused. The additive recovery retains App-based scripts and
 the remote compatibility package together. Further consolidation remains a
 separate reviewed product milestone.

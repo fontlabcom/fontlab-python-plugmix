@@ -2,6 +2,73 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-13 — Combined local ZIP, documentation and Ruff qualification
+
+Compose the independently reviewed ZIP legal/preflight and documentation oracle
+repairs on current main. Repair all 45 remaining Ruff findings without changing
+configuration, ignores, dependencies, public APIs or source oracles. Preserve the
+startup catch, explicit print text, continuation and normal non-DEBUG output
+with named DEBUG exception records; preserve the exact
+README example through a temporary UTF-8 runpy harness. Keep the ProperDocs
+side-effect import and RGB/three-point numerical operations.
+
+All 462 source cases, unchanged complete coverage checkers, 38 locked docs
+cases, strict build, full-tree Ruff 0.16.7, App-free CI and pack build/check pass.
+All original 456 source and 38 docs IDs/assertions/decorators remain, with six
+new meaningful regressions and no new skips/exclusions. Seven complete changed
+production modules exceed the unchanged 80% statement, branch and combined
+floor; the docs hook has 100% statements and branches. Controlled builds retain
+102 unaffected ZIP members' exact bytes and metadata, all 105 names and 50
+manifests; repeated same-input ZIP bytes match. Exact legal files and prior-output
+preservation regressions remain.
+
+The owned source index gained UNTR before the final gates (33,984 to 34,250
+bytes); writer unknown, preservation interval failed, no old bytes restored.
+Later source/peer captures are exact. The final graph maps three affected
+compute flows at MEDIUM risk; overflow, UNKNOWN callers and budget limits remain. Named DEBUG uses existing configuration; enabled handlers may emit a traceback
+to their configured destination (including stdout) or raise. getLogger may
+register its name; no root logger configuration, level or handler is changed.
+The caplog regressions qualify only their tested named-logger configuration. runpy executes in-process, without a sandbox claim.
+
+This records local source/artifact checks only. Independent whole-change review,
+controller delivery/hooks/CI, release/download, provider admission, root install,
+GUI/native acceptance and private Pages remain separate. The historical local
+candidate results below describe their earlier trees and are superseded by this
+combined gate result only at the stated scope.
+
+## 2026-11-13 — Documentation content comparison (local candidate)
+
+The cross-date rebuild test now compares worktree content and mode against the
+index with an explicit Git patch, with external diffs and text conversion off.
+The five-state real-Git regression preserves raw index bytes and mode, ignores
+timestamp-only changes, detects content/deletion/executable changes, and keeps
+the staged-only baseline. All original output hashes, 58-file count, epochs,
+lineage and generated-output parity checks remain.
+
+Local checks: 438 source tests, unchanged complete coverage checkers, 38 locked
+documentation tests and the strict build pass. The changed test has no Ruff
+findings; the full-tree baseline and candidate retain the same 47 findings.
+The owned source index gained an UNTR extension during the gate interval;
+the writer is unknown, that preservation interval failed and no bytes were
+restored. Three owned peer indexes and all regression fixture indexes stayed
+exact. Independent review, main delivery and CI remain open. ZIP legal files,
+provider admission, release, installation and native acceptance are separate.
+
+
+## 2026-11-13 — Local ZIP required-input preservation correction
+
+- Preflight README, LICENSE and NOTICE as readable regular files before creating the output directory or opening the archive. Missing-file and permission exceptions retain their native path; invalid file types raise a clear path-bearing ValueError. This closes the local R01 truncation defect without adding an atomic-publishing framework.
+- Twelve required-input regression cases fail against the reviewed candidate. The corrected candidate passes 31 focused tests and all 456 source tests with the unchanged coverage checker. Both complete changed tools meet the existing 80% statement, branch and combined floor. Existing output bytes/mode survive missing, directory and unreadable inputs; absent output stays absent on missing input.
+- Successful ZIP bytes are identical before/after this correction under identical source inputs: 105 members, 50 manifests and unchanged metadata. Expanded Ruff still fails with the same 45 diagnostics. The unchanged docs 36-pass/one-failure result, provider/graph limits and installation/native/delivery holds remain open.
+- Independent review of the R01 correction is pending. The earlier sealed candidate and its failed required-input behavior are retained; no commit, push, release, owner installation or native acceptance is established here.
+
+## 2026-11-13 — Local Extensions ZIP legal-file repair
+
+- The pack builder adds the exact root LICENSE and NOTICE bytes after the existing payload. The existing pack checker requires and allows those two names; all bundle and exclusion checks remain.
+- Eight new real-ZIP regression cases fail before the fix. The repaired source passes 446 tests and the unchanged per-module coverage checker; both complete tool modules meet the 80% statement and branch floor. All 103 original ZIP members retain their bytes, ordering and metadata; the archive now has 105 members and the same 50 manifests. Repeated same-input builds match.
+- Strict docs build passes. The two touched tools are executable and Ruff-clean. Expanded Ruff remains failed with 45 diagnostics (only the two existing tool EXE001 findings removed), and docs discovery remains failed with 36 passing tests and the existing Git comparison failure. These findings are not waived.
+- This is an uncommitted local candidate. Independent review, integration, release/download and installed/native acceptance remain open; the published v1.1.14 asset is unchanged.
+
 ## 2026-11-13 — Issue 255 verified release qualification
 
 - [fontlab-python-plugmix v1.1.14](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.14) is released at `13e7d9182b39417378bfcd07e7e46e9707e64e39`. Reviewed main/tag delivery, applicable CI and actual downloads match the qualified artifacts.

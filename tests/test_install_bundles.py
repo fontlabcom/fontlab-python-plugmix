@@ -117,7 +117,7 @@ def test_install_when_copied_from_a_non_git_folder_then_bundles_still_load(tmp_p
     plain.mod.main()
     plugins, errors = found(plain.data)
     assert errors == [] and len(plugins) == 50
-    assert os.readlink(str(plain.data / "Extensions/tools" / sorted(os.listdir(str(plain.data / "Extensions/tools")))[0])).startswith(
+    assert os.readlink(str(plain.data / "Extensions/tools" / min(os.listdir(str(plain.data / "Extensions/tools"))))).startswith(
         str(plain.data / "Extensions" / "com.fontlab.python-plugmix" / "bundles"))
 
 

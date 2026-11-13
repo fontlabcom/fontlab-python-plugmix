@@ -4,8 +4,8 @@
 from dataclasses import replace
 from types import SimpleNamespace as NS
 
+import plugmix_examples.step_and_repeat as repeat_module
 import pytest
-
 from fontlabapp.plugins.snapshot import Contour, Node
 from fontlabapp.plugins.tool import ToolEvent
 from plugmix_examples.delete_small_paths import DeleteSmallPaths, _small
@@ -14,7 +14,6 @@ from plugmix_examples.only_selected_handles import OnlySelectedHandles
 from plugmix_examples.smart_select import SmartSelect, touched_contours
 from plugmix_examples.step_and_repeat import StepAndRepeat
 from plugmix_examples.zoom_to_selection import ZoomToSelection
-import plugmix_examples.step_and_repeat as repeat_module
 
 
 def test_filter_preserves_open_and_threshold_paths_and_removes_small_closed(glyph):

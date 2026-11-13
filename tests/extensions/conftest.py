@@ -2,7 +2,6 @@
 """Python-only snapshot fixtures for every built-in reporter."""
 
 import pytest
-
 from fontlabapp.plugins import snapshot
 from fontlabapp.plugins.snapshot import Anchor, Contour, GlyphSnapshot, Metrics, Node
 

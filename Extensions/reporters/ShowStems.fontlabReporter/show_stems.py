@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Measure horizontal stem and counter widths along a mid-height scan line."""
 
+from itertools import pairwise
 from math import radians, tan
 
 from fly.ap.plugins.geometry import point_at, segments
@@ -33,7 +34,7 @@ class ShowStems(Reporter):
                     points = [
                         point_at(seg, i / CURVE_STEPS) for i in range(CURVE_STEPS + 1)
                     ]
-                yield from zip(points, points[1:], strict=False)
+                yield from pairwise(points)
 
     def _crossings(self, snapshot: GlyphSnapshot, y: float) -> list[float]:
         """Sorted x of edges crossing y; the half-open test counts vertices once."""
@@ -63,7 +64,7 @@ class ShowStems(Reporter):
             )
         ]
         marks += [Mark("ring", ((x, y),), CROSSING_COLOR, diameter_px=5) for x in xs]
-        for i, (left, right) in enumerate(zip(xs, xs[1:], strict=False)):
+        for i, (left, right) in enumerate(pairwise(xs)):
             middle = (left + right) / 2
             label = (middle, y + 0.015 * metrics.upm)
             marks.append(

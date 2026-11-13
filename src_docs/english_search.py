@@ -2,8 +2,8 @@
 """Omit only the hash-bound unused language helpers from English documentation."""
 import hashlib
 import json
-from pathlib import Path
 import re
+from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
 

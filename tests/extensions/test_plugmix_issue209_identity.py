@@ -5,23 +5,21 @@ from dataclasses import replace
 from math import radians, tan
 
 import pytest
-
 from fontlabapp.glyphs.identity import Identity
 from fontlabapp.plugins.geometry import fill_points, flatten, shear
+from fontlabapp.plugins.snapshot import (
+    Anchor,
+    Component,
+    Contour,
+    Node,
+    ViewState,
+)
 from plugmix_examples.blindfold import Blindfold
 from plugmix_examples.export_status import ExportStatus
 from plugmix_examples.glyphs_in_label_color import GlyphsInLabelColor
 from plugmix_examples.label_color import LabelColor
 from plugmix_examples.rekha import Rekha
 from plugmix_examples.show_character import ShowCharacter
-from fontlabapp.plugins.snapshot import (
-    Anchor,
-    Component,
-    Contour,
-    Metrics,
-    Node,
-    ViewState,
-)
 
 RED = (200, 30, 10)
 
@@ -32,7 +30,7 @@ def square(x0, y0, x1, y1, closed=True):
 
 
 def ident(**kw):
-    base = dict(name="a", unicodes=(0x61,), mark=1, mark_rgb=RED, exported=True)
+    base = {"name": "a", "unicodes": (0x61,), "mark": 1, "mark_rgb": RED, "exported": True}
     return Identity(**{**base, **kw})
 
 

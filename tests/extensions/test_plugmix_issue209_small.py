@@ -5,11 +5,10 @@ from dataclasses import replace
 from math import radians, tan
 
 import pytest
-
+from fontlabapp.plugins.snapshot import Contour, Node
 from plugmix_examples.all_angles import AllAngles
 from plugmix_examples.node_count import NodeCount
 from plugmix_examples.smart_plumblines import SmartPlumblines
-from fontlabapp.plugins.snapshot import Contour, Node
 
 
 def line(*points, closed=False):

@@ -6,9 +6,9 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from pathlib import Path
 
 import yaml
-from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 GIT = shutil.which('git')
@@ -134,7 +134,7 @@ class PublishTests(unittest.TestCase):
         step = next(s for s in workflow['jobs']['qualify-generated-output']['steps'] if s.get('name') == name)
         env = dict(self.env, SOURCE_SHA=self.sha, OUTPUT_SHA=self.git('rev-parse', 'HEAD').strip(), SOURCE_DATE_EPOCH=self.git('show', '-s', '--format=%ct', self.sha).strip())
         env.update(updates)
-        return subprocess.run(['sh', '-eu', '-c', step['run']], cwd=self.repo, env=env, text=True, capture_output=True)
+        return subprocess.run(['sh', '-eu', '-c', step['run']], cwd=self.repo, env=env, text=True, capture_output=True, check=False)
 
     def test_immutable_lineage_accepts_source_and_direct_docs_only_child(self):
         self.assertEqual(self.run_workflow_check('Verify immutable output lineage').returncode, 0)

@@ -4,9 +4,8 @@
 from dataclasses import replace
 
 import pytest
-
-from plugmix_examples.show_rotated import ShowRotated
 from fontlabapp.plugins.snapshot import Contour, Node
+from plugmix_examples.show_rotated import ShowRotated
 
 GREEN = (0, 128, 77)
 

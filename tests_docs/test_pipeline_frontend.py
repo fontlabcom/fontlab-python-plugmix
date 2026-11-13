@@ -2,12 +2,13 @@
 """Verify the actual English browser notices, source maps and output boundary."""
 import hashlib
 import json
-from pathlib import Path
+import re
 import unittest
 from html.parser import HTMLParser
+from pathlib import Path
 from urllib.parse import unquote
+
 import material
-import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -99,7 +100,7 @@ class FrontendPayloadTests(unittest.TestCase):
         for path in (ROOT / 'docs').rglob('*.html'):
             observed.update(icon_paths(path.read_text()))
         css = '\n'.join(path.read_text() for path in (ROOT / 'docs/assets/stylesheets').glob('*.css'))
-        for svg in re.findall(r'<svg\b.*?</svg>', unquote(css), re.S):
+        for svg in re.findall(r'<svg\b.*?</svg>', unquote(css), re.DOTALL):
             observed.update(icon_paths(svg))
         self.assertTrue(observed)
         self.assertEqual(len(observed), scope['observed'])
@@ -119,7 +120,7 @@ class FrontendPayloadTests(unittest.TestCase):
         values = re.findall(r"--md-version-icon:url\('data:image/svg\+xml;charset=utf-8,(.*?)'\)", css)
         self.assertEqual(len(values), 1)
         svg = unquote(values[0])
-        header = re.search(r'<!--!.*?-->', svg, re.S).group(0)
+        header = re.search(r'<!--!.*?-->', svg, re.DOTALL).group(0)
         self.assertEqual(caret['header'], header)
         self.assertIn('Font Awesome Free 7.1.0', header)
         self.assertIn('Copyright 2025 Fonticons, Inc.', header)

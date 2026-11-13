@@ -4,6 +4,12 @@ this_file: TODO.md
 
 # Open tasks
 
+- [ ] Independently review the combined P01/R01 ZIP legal-file/preflight, P03 docs content-oracle and P02 lint repairs; retain the failed owned-index interval and original regression evidence.
+- [ ] Controller: reconcile the reviewed combined candidate with fresh actual main, run ordinary required hooks, and verify remote SHA and exact-source CI.
+- [ ] P01 release: verify a new released/downloaded ZIP has all 105 reviewed members, 50 manifests and exact LICENSE/NOTICE bytes; preserve old published assets.
+- [ ] P04: qualify the permitted provider cohort separately, retaining excluded-repository restrictions and incomplete dependency closure.
+- [ ] P05: qualify unresolved graph paths, overflow, budget cuts and untraced entries; zero mapped processes does not prove absent callers.
+
 - [ ] Issue 255: After explicit D43 recovery and admission, qualify App startup, palette and all original plugin behaviors on the released installed Fly/provider tuple; keep legacy compatibility and native lifecycle/history acceptance separate.
 
 - [ ] native (owner, Issue 254): install the App `install.vfpy` (main at or after 5cac0d6), then this repository's `install.vfpy`, restart FontLab 9 and confirm Plugmix Demo lists 50 bundles (39 reporters, 5 filters, 4 tools, 1 palette, 1 general). Run one filter on an owned copy, check one history row, Undo/Redo, and that the install persists across a restart. Then uninstall and confirm the links go.

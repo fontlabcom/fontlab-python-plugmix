@@ -4,10 +4,9 @@
 from dataclasses import replace
 
 import pytest
-
+from fontlabapp.plugins.snapshot import Component, Contour, Node
 from plugmix_examples.color_toner import ColorToner
 from plugmix_examples.show_background import ShowBackground
-from fontlabapp.plugins.snapshot import Component, Contour, Node
 
 
 def square(x0, y0, x1, y1):

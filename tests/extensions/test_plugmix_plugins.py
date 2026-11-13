@@ -4,7 +4,7 @@
 from dataclasses import replace
 
 import pytest
-
+from fontlabapp.plugins.snapshot import Anchor, Contour, Node
 from plugmix_examples.center_lines import CenterLines
 from plugmix_examples.duplicate_anchors import DuplicateAnchors
 from plugmix_examples.node_indexes import NodeIndexes
@@ -12,7 +12,6 @@ from plugmix_examples.offcurve_outside_bounds import OffcurveOutsideBounds
 from plugmix_examples.selected_coordinates import SelectedCoordinates
 from plugmix_examples.two_point_distance import TwoPointDistance
 from plugmix_examples.vertical_metrics import VerticalMetrics
-from fontlabapp.plugins.snapshot import Anchor, Contour, Node
 
 
 def test_existing_reporters_handle_empty_contours(glyph):

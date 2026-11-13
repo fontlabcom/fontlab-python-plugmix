@@ -2,6 +2,7 @@
 """Public bundles keep canonical App identity through the Fly namespace."""
 
 import ast
+import logging
 import os
 import runpy
 import subprocess
@@ -29,6 +30,7 @@ def test_public_consumers_when_parsed_then_use_fly_without_direct_app_imports():
 @pytest.mark.parametrize("fails", [False, True])
 def test_startup_when_run_then_calls_app_once_and_contains_failure(monkeypatch, capsys, fails):
     from fly.ap import plugins
+
     from fontlab_plugmix import boot as legacy_boot
 
     calls = []
@@ -47,11 +49,13 @@ def test_startup_when_run_then_calls_app_once_and_contains_failure(monkeypatch, 
 
 def test_readme_reporter_when_discovered_then_uses_app_group_and_exact_base(monkeypatch, tmp_path):
     from fly.ap.plugins import Mark, Reporter, registry
+
     from fontlab_plugmix import Reporter as LegacyReporter
 
     snippet = (ROOT / "README.md").read_text().split("```python\n", 1)[1].split("```", 1)[0]
-    scope = {}
-    exec(snippet, scope)
+    example = tmp_path / "readme_reporter.py"
+    example.write_text(snippet, encoding="utf-8")
+    scope = runpy.run_path(str(example))
     origin = scope["Origin"]
     assert origin.__bases__ == (Reporter,)
     assert Reporter is not LegacyReporter
@@ -90,3 +94,32 @@ assert not {'fontlab', 'PythonQt'} & sys.modules.keys()
     result = subprocess.run([sys.executable, "-I", "-c", code, str(fly), str(app), str(pens)],
                             capture_output=True, text=True, check=False)
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+@pytest.mark.parametrize("debug", [False, True])
+@pytest.mark.parametrize("fails", [False, True])
+def test_startup_when_debug_configured_then_preserves_stdout_and_exception(
+    monkeypatch, capsys, caplog, debug, fails
+):
+    from fly.ap import plugins
+
+    failure = RuntimeError("startup debug fixture")
+
+    def install():
+        if fails:
+            raise failure
+
+    monkeypatch.setattr(plugins, "install", install)
+    caplog.set_level(logging.DEBUG if debug else logging.WARNING, logger="<run_path>")
+    scope = runpy.run_path(str(ROOT / "initScript-snippet.py"))
+    assert scope["install"] is install
+    captured = capsys.readouterr()
+    assert captured.out == ("Plugmix startup: startup debug fixture\n" if fails else "")
+    assert captured.err == ""
+    records = [record for record in caplog.records if record.name == "<run_path>"]
+    assert len(records) == int(debug and fails)
+    if records:
+        assert records[0].levelno == logging.DEBUG
+        assert records[0].exc_info[0] is RuntimeError
+        assert records[0].exc_info[1] is failure
+        assert records[0].exc_info[2] is not None

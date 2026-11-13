@@ -24,11 +24,11 @@ def check_pack(zip_path: Path, root: Path = ROOT) -> list[str]:
         problems.append(f"bundle-map lists {len(wanted)} bundles, expected {EXPECTED_BUNDLES}")
     if sorted(n for n in names if n.endswith("/plugin.json")) != wanted:
         problems.append("zip plugin.json files differ from tests/bundle-map.json")
-    for required in ("README.md", "Scripts/Plugmix/Show Reporters.py"):
+    for required in ("README.md", "LICENSE", "NOTICE", "Scripts/Plugmix/Show Reporters.py"):
         if required not in names:
             problems.append(f"missing {required}")
     problems += [f"bytecode in zip: {n}" for n in names if "__pycache__" in n or n.endswith(".pyc")]
-    problems += [f"unexpected top-level entry: {n}" for n in names if not n.startswith(("Extensions/", "Scripts/")) and n != "README.md"]
+    problems += [f"unexpected top-level entry: {n}" for n in names if not n.startswith(("Extensions/", "Scripts/")) and n not in {"README.md", "LICENSE", "NOTICE"}]
     return problems
 
 

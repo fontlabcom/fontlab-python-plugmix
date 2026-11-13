@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Draw a colour-ramped curvature comb along every curve segment."""
 
+from itertools import pairwise
 from math import hypot
 
 from fly.ap.plugins.geometry import segments
@@ -24,7 +25,7 @@ MIN_STEPS = 4
 
 def _ramp(p: float) -> tuple[int, int, int]:
     """Interpolate the grey-orange-red ramp at p in [0, 1]."""
-    for (p0, c0), (p1, c1) in zip(RAMP, RAMP[1:], strict=False):
+    for (p0, c0), (p1, c1) in pairwise(RAMP):
         if p <= p1:
             f = (p - p0) / (p1 - p0)
             r, g, b = (round(a + (z - a) * f) for a, z in zip(c0, c1, strict=True))
@@ -64,7 +65,7 @@ def _sample(cubic: Cubic, t: float) -> tuple[Point, Point, Point]:
     """Return point, first and second derivative of a cubic at t."""
     u = 1 - t
     point = _combine((u**3, 3 * u * u * t, 3 * u * t * t, t**3), list(cubic))
-    first = [(b[0] - a[0], b[1] - a[1]) for a, b in zip(cubic, cubic[1:], strict=False)]
+    first = [(b[0] - a[0], b[1] - a[1]) for a, b in pairwise(cubic)]
     second = [
         (c[0] - 2 * b[0] + a[0], c[1] - 2 * b[1] + a[1])
         for a, b, c in zip(cubic, cubic[1:], cubic[2:], strict=False)
@@ -114,7 +115,7 @@ class SpeedPunk(Reporter):
             return []
         marks = []
         for run in runs:
-            for a, b in zip(run, run[1:], strict=False):
+            for a, b in pairwise(run):
                 if a is None or b is None:
                     continue
                 p = min(max(((a[2] + b[2]) / 2 - low) / (high - low), 0.0), 1.0)

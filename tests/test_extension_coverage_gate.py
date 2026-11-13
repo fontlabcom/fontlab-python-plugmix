@@ -7,7 +7,6 @@ import sys
 from pathlib import Path
 
 import pytest
-
 from check_coverage import main
 
 

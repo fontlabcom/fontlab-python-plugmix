@@ -2,12 +2,12 @@
 """Pure checks for the Show Stems reporter."""
 
 from dataclasses import replace
+from itertools import pairwise
 from math import radians, tan
 
 import pytest
-
-from plugmix_examples.show_stems import ShowStems
 from fontlabapp.plugins.snapshot import Contour, Node
+from plugmix_examples.show_stems import ShowStems
 
 RING = (60, 60, 110)
 INSIDE = (0, 191, 51)
@@ -120,3 +120,17 @@ def test_show_stems_when_degenerate_geometry_then_only_base_line(glyph):
     dot = Contour((Node(5, 5, True, False),), False)
     marks = run(glyph, flat, dot)
     assert len(marks) == 1 and marks[0].kind == "line"
+
+
+def test_show_stems_when_flattening_then_adjacent_edges_keep_order(glyph):
+    reporter = ShowStems()
+    empty = replace(glyph, contours=(Contour(()),))
+    assert list(reporter._edges(empty)) == []
+    line = Contour((Node(1, 2, True, False), Node(3, 4, True, False)), False)
+    assert list(reporter._edges(replace(glyph, contours=(line,)))) == [((1, 2), (3, 4))]
+    curve = Contour((Node(0, 0, True, False), Node(0, 24, False, False),
+                     Node(24, 24, False, False), Node(24, 0, True, False)), False)
+    edges = list(reporter._edges(replace(glyph, contours=(curve,))))
+    assert len(edges) == 24
+    assert edges[0][0] == (0, 0) and edges[-1][1] == (24, 0)
+    assert all(left[1] == right[0] for left, right in pairwise(edges))

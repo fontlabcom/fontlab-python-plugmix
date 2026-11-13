@@ -5,12 +5,7 @@ from dataclasses import replace
 from types import MappingProxyType
 
 import pytest
-
 from fontlabapp.glyphs.identity import Identity
-from plugmix_examples.global_glyph import GlobalGlyph
-from plugmix_examples.kern_indicator import KernIndicator
-from plugmix_examples.kerning_group_reference import KerningGroupReference
-from plugmix_examples.siblings import Siblings
 from fontlabapp.plugins.snapshot import (
     Contour,
     KerningGroups,
@@ -18,6 +13,10 @@ from fontlabapp.plugins.snapshot import (
     Node,
     ViewState,
 )
+from plugmix_examples.global_glyph import GlobalGlyph
+from plugmix_examples.kern_indicator import KernIndicator
+from plugmix_examples.kerning_group_reference import KerningGroupReference
+from plugmix_examples.siblings import Siblings
 
 
 def square(x0, y0, x1, y1, closed=True):

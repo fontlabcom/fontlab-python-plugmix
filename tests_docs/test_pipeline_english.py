@@ -2,10 +2,10 @@
 """English-only output must reject configuration, reference and vendor drift."""
 import importlib.metadata
 import json
-from pathlib import Path
 import tempfile
-from types import SimpleNamespace
 import unittest
+from pathlib import Path
+from types import SimpleNamespace
 
 from src_docs import english_search
 
@@ -95,8 +95,9 @@ class EnglishSearchTests(unittest.TestCase):
         self.assertFalse((self.site / 'assets/javascripts/lunr/wordcut.js').exists())
 
     def test_real_properdocs_materialx_configuration_uses_the_expected_search_plugin(self):
-        import properdocs.replacement
+        import properdocs.replacement as _properdocs_replacement
         from properdocs.config import load_config
+        self.assertEqual(_properdocs_replacement.__name__, 'properdocs.replacement')
         config = load_config(str(ROOT / 'src_docs/mkdocs.yml'))
         self.assertIs(english_search.on_config(config), config)
         self.assertEqual(config['plugins']['materialx/search'].config['lang'], ['en'])

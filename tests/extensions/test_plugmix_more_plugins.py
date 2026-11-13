@@ -5,8 +5,8 @@ from dataclasses import replace
 from math import radians, tan
 
 import pytest
-
 from fontlabapp.plugins.geometry import length, neighbours, point_at, segments
+from fontlabapp.plugins.snapshot import Contour, Node, Zone
 from plugmix_examples.anchor_cloud import AnchorCloud
 from plugmix_examples.angled_handles import AngledHandles
 from plugmix_examples.crosshair import Crosshair
@@ -19,7 +19,6 @@ from plugmix_examples.segment_length import SegmentLength
 from plugmix_examples.smooth_node_angles import SmoothNodeAngles
 from plugmix_examples.tops_and_bottoms import TopsAndBottoms
 from plugmix_examples.unitizer import Unitizer
-from fontlabapp.plugins.snapshot import Contour, Node, Zone
 
 
 def test_angled_handles_ignores_italic_and_axis_aligned_handles(glyph):

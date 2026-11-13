@@ -11,22 +11,22 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
-import build_pack  # noqa: E402
-import check_pack  # noqa: E402
+import build_pack
+import check_pack
 
 WORKFLOW = (ROOT / ".github/workflows/pack.yml").read_text(encoding="utf-8")
 
 
 def _job(name: str) -> str:
     """Return the text of one top-level job block."""
-    m = re.search(rf"^  {name}:\n(.*?)(?=^  \w[\w-]*:\n|\Z)", WORKFLOW, re.S | re.M)
+    m = re.search(rf"^  {name}:\n(.*?)(?=^  \w[\w-]*:\n|\Z)", WORKFLOW, re.DOTALL | re.MULTILINE)
     assert m, name
     return m.group(1)
 
 
 def test_workflow_when_read_then_pinned_without_secrets_and_default_read_only():
     top = WORKFLOW.split("jobs:")[0]
-    assert re.search(r"^permissions:\n  contents: read\n", top, re.M)
+    assert re.search(r"^permissions:\n  contents: read\n", top, re.MULTILINE)
     assert "matrix" not in WORKFLOW and "secrets." not in WORKFLOW
     assert "set -eo pipefail" in WORKFLOW and "if-no-files-found: error" in WORKFLOW
     uses = re.findall(r"uses: (\S+)", WORKFLOW)
@@ -35,7 +35,7 @@ def test_workflow_when_read_then_pinned_without_secrets_and_default_read_only():
 
 
 def test_workflow_when_read_then_only_release_job_can_write_and_only_contents():
-    assert re.findall(r"^  (\w[\w-]*):\n", WORKFLOW.split("jobs:")[1], re.M) == [
+    assert re.findall(r"^  (\w[\w-]*):\n", WORKFLOW.split("jobs:")[1], re.MULTILINE) == [
         "pack",
         "release",
     ]
@@ -62,7 +62,7 @@ def test_workflow_when_tag_pushed_then_release_attaches_the_checked_zip():
     )
     assert "gh release upload" in job and "--clobber" in job
     assert (
-        not re.search(r"(^|[|&;]\s*|\|\| )\s*gh release create", job, re.M)
+        not re.search(r"(^|[|&;]\s*|\|\| )\s*gh release create", job, re.MULTILINE)
         and "--generate-notes" not in job
     )
     assert "seq 1 20" in job and "sleep 30" in job and "gh release view" in job
@@ -118,3 +118,16 @@ def test_check_pack_when_entry_removed_or_added_then_reports_it(pack, tmp_path):
     assert "missing README.md" in problems
     assert "bytecode in zip" in problems
     assert "unexpected top-level entry: stray.txt" in problems
+
+
+@pytest.mark.parametrize("missing", [None, "LICENSE", "NOTICE"])
+def test_check_pack_when_legal_members_present_or_missing_then_checks_required_names(pack, tmp_path, missing):
+    candidate = tmp_path / "legal.zip"
+    with zipfile.ZipFile(pack) as src, zipfile.ZipFile(candidate, "w") as dst:
+        for info in src.infolist():
+            if info.filename not in {"LICENSE", "NOTICE"}:
+                dst.writestr(info, src.read(info))
+        for name in ("LICENSE", "NOTICE"):
+            if name != missing:
+                dst.writestr(name, (ROOT / name).read_bytes())
+    assert check_pack.check_pack(candidate) == ([f"missing {missing}"] if missing else [])
