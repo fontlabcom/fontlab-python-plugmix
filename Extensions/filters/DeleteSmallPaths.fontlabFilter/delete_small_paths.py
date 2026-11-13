@@ -6,9 +6,9 @@ from collections.abc import Mapping
 from itertools import pairwise
 from typing import Any
 
-from fontlabapp.plugins.filter import Filter, LayerEdit, Param
-from fontlabapp.plugins.geometry import point_at, segments
-from fontlabapp.plugins.snapshot import Contour, GlyphSnapshot
+from fly.ap.plugins.filter import Filter, LayerEdit, Param
+from fly.ap.plugins.geometry import point_at, segments
+from fly.ap.plugins.snapshot import Contour, GlyphSnapshot
 
 FLATTEN_STEPS = 25
 

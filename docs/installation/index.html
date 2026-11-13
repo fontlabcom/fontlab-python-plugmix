@@ -873,9 +873,15 @@
 <h1 id="installation-and-startup">Installation and startup</h1>
 <h2 id="app-extensions">App Extensions</h2>
 <p>Install the reviewed <code>fontlab-fontlabapp</code> package in FontLab's Python 3.11 arm64
-environment using App's <code>install.vfpy</code>. App's installer adds its marked startup
+environment using App's <code>install.vfpy</code>. Install <code>fontlab-fly&gt;=1.3.0</code> and its
+providers before using this pack's bundles, action or optional startup snippet.
+The pack's <code>install.vfpy</code> requests Fly &gt;=1.3.0 and App from its consumer dependency
+table. Manual copying requires preparing these dependencies separately; the
+legacy compatibility library keeps its App-only dependency. App's installer adds its marked startup
 block to <code>initScript.py</code>, preserving existing contents; the block calls
-<code>fontlabapp.plugins.install()</code> at launch. The App core discovers the user-data
+App's core at launch. The optional <code>initScript-snippet.py</code> uses
+<code>from fly.ap.plugins import install</code> followed by <code>install()</code> to reach the same
+canonical App installer; it does not edit the startup file itself. The App core discovers the user-data
 folder from <code>fontlab.flPreferences().dataPathDefault</code> and scans its <code>Extensions/</code>
 folder. Use FontLab's reported folder rather than assuming a platform path.</p>
 <p>Copy the contents of this repository's <code>Extensions/</code> into that folder, preserving
@@ -891,7 +897,7 @@ saved choices are restored at startup. Without saved enabled reporter choices,
 reporters remain disabled. The source places tools in the toolbar and Tools &gt;
 Tool, and palettes in Window &gt; Panels. Native placement and synchronization
 still require verification on the exact installed tuple.</p>
-<p>The Show Reporters action calls <code>fontlabapp.plugins.show_reporters()</code>; it does
+<p>The Show Reporters action calls <code>fly.ap.plugins.show_reporters()</code>; it does
 not install packages or change the startup file. The retired per-reporter
 launchers and Install Plugmix Menu script are no longer used. Duplicate Anchor
 Rings retains <code>set_handle_size(5|8|12)</code>, with a default of 8. Reporters do not
@@ -907,7 +913,11 @@ use <strong>Edit &gt; Undo</strong> as directed by the error. It does not automa
 back completed writes. Native Undo/Redo recovery remains unverified.</p>
 <h2 id="compatibility-package">Compatibility package</h2>
 <p>From an authorized checkout, install the compatibility package and its App dependency in the owner-managed FontLab Python 3.11 arm64 environment. In an isolated ordinary development environment, the package can be installed with <code>uv pip install .</code> once the required App distribution is available. Use native MeVisLab PythonQt inside FontLab, without another Qt binding.</p>
-<p><code>initScript-snippet.py</code> is an optional compatibility startup snippet: it calls <code>fontlab_plugmix.install()</code> once per session. It does not target App's <code>fontlabapp.plugins</code> runtime and does not modify an installation. No documentation build installs into FontLab's user folder.</p>
+<p>Start the retained compatibility runtime explicitly with
+<code>fontlab_plugmix.install()</code> once per session. The optional
+<code>initScript-snippet.py</code> now targets App through <code>fly.ap.plugins.install()</code> and
+must not be combined with that legacy installer. No documentation build
+installs into FontLab's user folder.</p>
 <h2 id="runtime-and-preference-ownership">Runtime and preference ownership</h2>
 <p>Choose one runtime per session. Do not combine their startup installers or assume a preference migration guarantee. The shared filename is <code>fontlab-plugmix.json</code> in FontLab's Data directory. <code>install(config_dir=...)</code> selects an owned test directory. Runtime uninstall removes its owned actions, overlays and panels while retaining saved choices. Unknown preference keys survive; failed preference saves roll back activation. Preserve failed-teardown recovery rather than treating a partial teardown as success.</p>
 <p>Filter, Tool and General choices default on until explicitly changed; palettes start hidden. Saved choices retain <code>enabled</code>, <code>enabled_filters</code>, <code>enabled_palettes</code>, <code>enabled_tools</code>, <code>enabled_general</code> and last-used <code>params</code>. The compatibility rename from <code>nodes_outside_paths</code> to <code>offcurve_outside_bounds</code> is an internal migration only.</p>

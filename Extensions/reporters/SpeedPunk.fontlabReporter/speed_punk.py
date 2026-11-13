@@ -4,9 +4,9 @@
 
 from math import hypot
 
-from fontlabapp.plugins.geometry import segments
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.geometry import segments
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 Point = tuple[float, float]
 Cubic = tuple[Point, Point, Point, Point]

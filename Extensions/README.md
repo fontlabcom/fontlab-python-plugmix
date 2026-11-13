@@ -7,7 +7,8 @@ this_file: Extensions/README.md
 This pack supplies 50 plugins: 39 reporters, five Filters, four Tools, one Palette
 and one General plugin.
 App's `fontlabapp.plugins` owns discovery, registration and native UI. These
-bundles need no `__init__.py`, package install or individual launcher script.
+bundles require `fontlab-fly>=1.3.0` and its providers in the host environment,
+but need no `__init__.py`, bundle package install or individual launcher script.
 
 Place this folder's contents in `<FontLab user data>/Extensions/`. App's startup
 hook discovers them on launch. `Scripts/Plugmix/Show Reporters.py` is an optional
@@ -37,7 +38,7 @@ Extensions/reporters/NodeIndexes.fontlabReporter/
 The manifest's `id`, `name` and `kind` must match the class's `name`, `title` and
 `kind`. IDs are unique across kinds. Versions are three-part release versions;
 `min_app_version` is the minimum App version. Entry modules must be inside the
-bundle. Core imports use `fontlabapp.plugins`; bundle-local helpers can use
+bundle. Core API imports use `fly.ap.plugins` (Fly >=1.3.0); bundle-local helpers can use
 relative imports. Bundle code runs as trusted Python code, with the same access
 as a FontLab script. Invalid manifests/imports are logged and skipped.
 

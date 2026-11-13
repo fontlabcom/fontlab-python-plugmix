@@ -4,9 +4,9 @@
 
 from math import atan2, degrees, hypot
 
-from fontlabapp.plugins.geometry import segments
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot, Node
+from fly.ap.plugins.geometry import segments
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot, Node
 
 SEGMENT_COLOR = (56, 217, 137)
 HANDLE_COLOR = (217, 56, 107)

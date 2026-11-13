@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Superimpose look-alike Latin letters behind the glyph to compare construction."""
 
-from fontlabapp.glyphs.identity import Identity
-from fontlabapp.plugins.reporter import Mark, Reporter, fill_mark
-from fontlabapp.plugins.snapshot import GlyphSnapshot, KerningGroups
+from fly.ap.glyphs.identity import Identity
+from fly.ap.plugins.reporter import Mark, Reporter, fill_mark
+from fly.ap.plugins.snapshot import GlyphSnapshot, KerningGroups
 
 
 class Siblings(Reporter):

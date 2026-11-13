@@ -672,10 +672,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#write-a-compatibility-reporter" class="md-nav__link">
+  <a href="#reporter-contracts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Write a compatibility reporter
+        Reporter contracts
       
     </span>
   </a>
@@ -820,10 +820,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#write-a-compatibility-reporter" class="md-nav__link">
+  <a href="#reporter-contracts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Write a compatibility reporter
+        Reporter contracts
       
     </span>
   </a>
@@ -851,12 +851,12 @@
 <h1 id="compatibility-package">Compatibility package</h1>
 <p><code>src/fontlab_plugmix/</code> remains a separate installable package with 19 reporters,
 an undoable Filter, a dockable Palette, a native Tool and a General menu command.
-Its code, tests, dependencies, startup snippet and legal attribution are retained.</p>
+Its code, tests, dependencies and legal attribution are retained.</p>
 <p>For this runtime, install the package and <code>fontlab-fontlabapp</code> in FontLab's
-Python 3.11 environment. The optional <code>initScript-snippet.py</code> calls
-<code>fontlab_plugmix.install()</code> once per session; it remains the compatibility startup
-snippet; the separate Show Reporters action targets App. Neither file modifies
-an installation. Use native MeVisLab PythonQt inside FontLab, without another Qt
+Python 3.11 environment and explicitly call <code>fontlab_plugmix.install()</code> once per
+session. The optional <code>initScript-snippet.py</code> now targets App through
+<code>fly.ap.plugins.install()</code> and must not be combined with the compatibility
+installer. Use native MeVisLab PythonQt inside FontLab, without another Qt
 binding. Native per-canvas painters are preferred, with App's <code>EditorPainters</code>
 fallback on older builds.</p>
 <p>The compatibility View menu has 19 <code>Plugmix: Show …</code> actions and Zoom to Selection.
@@ -987,12 +987,14 @@ shortcut and keyboard cursor mapping changes still need an in-app recheck.</p>
   viewport adjustment and a shortcut. General font events use stable <code>fgId</code>
   identities and share the palette host's refresh timer.</li>
 </ul>
-<h3 id="write-a-compatibility-reporter">Write a compatibility reporter</h3>
+<h3 id="reporter-contracts">Reporter contracts</h3>
 <p><code>compute()</code> receives immutable Python data and returns marks in font units.
-Native reads and writes belong in the host layer. Pure imports do not need FontLab:</p>
+Native reads and writes belong in the host layer. Pure imports do not need FontLab. Current App examples import <code>Mark</code> and
+<code>Reporter</code> from <code>fly.ap.plugins</code> (Fly &gt;=1.3.0); those are App's exact classes,
+not the distinct <code>fontlab_plugmix.Reporter</code> base.</p>
 <p><code>Reporter.compute(snapshot)</code> receives immutable data and returns <code>Mark</code> objects. Keep this callback pure; no implementation bodies are rendered on this site.</p>
-<p>Publish compatibility classes through <code>fontlab_plugmix.plugins</code> entry points.
-App retains the separate <code>fontlabapp.plugmix</code> entry-point group alongside
+<p>Publish classes derived from <code>fontlab_plugmix.Reporter</code> through <code>fontlab_plugmix.plugins</code> entry points.
+App classes imported through Fly use the separate <code>fontlabapp.plugmix</code> entry-point group alongside
 Extensions discovery in <code>fontlabapp.plugins</code>. Names must be unique and titles
 human-readable. Marks support ring, line, polyline, polygon and text; polygon
 fill is RGBA, coordinates are font units, and stroke/text/diameter values are

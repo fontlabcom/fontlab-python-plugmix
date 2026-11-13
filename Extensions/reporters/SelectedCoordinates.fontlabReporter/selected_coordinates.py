@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Show x and y beside selected native nodes."""
 
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 
 class SelectedCoordinates(Reporter):

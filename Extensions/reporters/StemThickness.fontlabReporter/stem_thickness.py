@@ -5,9 +5,9 @@
 from itertools import pairwise
 from math import hypot
 
-from fontlabapp.plugins.geometry import flatten
-from fontlabapp.plugins.reporter import Mark, Point, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.geometry import flatten
+from fly.ap.plugins.reporter import Mark, Point, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 _Edge = tuple[Point, Point]
 #: Slack when testing whether a crossing lies on an edge along the ray.

@@ -4,9 +4,9 @@
 
 from math import acos, degrees, hypot
 
-from fontlabapp.plugins.geometry import neighbours
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot, Node
+from fly.ap.plugins.geometry import neighbours
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot, Node
 
 
 def _label(node: Node, before: Node, after: Node) -> str | None:

@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Mark on-curves near, but not exactly on, master zones or metric levels."""
 
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 
 class NodesCloseToZones(Reporter):

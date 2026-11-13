@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Draw a bar in the glyph's label colour under the glyph."""
 
-from fontlabapp.plugins.geometry import shear
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.geometry import shear
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 
 class LabelColor(Reporter):

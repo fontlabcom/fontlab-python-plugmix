@@ -873,7 +873,8 @@
 <h1 id="app-extensions-catalogue">App Extensions catalogue</h1>
 <p>All 39 reporter bundles below live in <code>Extensions/reporters/</code>. Each has its own
 <code>plugin.json</code> and Python source; no package install or individual launcher is
-needed for a bundle. App's <code>fontlabapp.plugins</code> core owns discovery, painter
+needed for a bundle. Bundles and the action require <code>fontlab-fly&gt;=1.3.0</code>
+and its providers; their API imports use <code>fly.ap</code>, preserving canonical App identity. App's <code>fontlabapp.plugins</code> core owns discovery, painter
 registration, preferences, rollback and teardown. <code>fontlabapp.plugmix</code> remains
 a deprecated import shim, separate from the retained <code>fontlab_plugmix</code> runtime.</p>
 <p>App's startup hook discovers the Extensions folder. Enable or disable reporters
@@ -1085,7 +1086,7 @@ Color Toner, Show Global Glyph, Show Siblings, Show Kerning Group Reference,
 Kern Indicator, Show Interpolation and Stem Thickness have offline test coverage
 only.</p>
 <h2 id="app-reporter-contract">App reporter contract</h2>
-<p>Write a reporter by subclassing <code>fontlabapp.plugins.Reporter</code> with a unique
+<p>Write a reporter by subclassing <code>fly.ap.plugins.Reporter</code> with a unique
 <code>name</code>, a <code>title</code> and a pure <code>compute(snapshot)</code> that returns <code>Mark</code> objects
 (<code>ring</code>, <code>line</code>, <code>polyline</code>, <code>polygon</code>, <code>text</code>) in glyph units; pixel sizes are
 view pixels. Set <code>layer = "background"</code> to paint under the glyph layer.

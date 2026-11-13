@@ -5,8 +5,10 @@ import importlib.machinery
 import importlib.util
 import os
 import shutil
+import tomllib
 from collections import Counter
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from fontlabapp.plugins import registry
@@ -117,3 +119,28 @@ def test_install_when_copied_from_a_non_git_folder_then_bundles_still_load(tmp_p
     assert errors == [] and len(plugins) == 50
     assert os.readlink(str(plain.data / "Extensions/tools" / sorted(os.listdir(str(plain.data / "Extensions/tools")))[0])).startswith(
         str(plain.data / "Extensions" / "com.fontlab.python-plugmix" / "bundles"))
+
+
+def test_pack_installer_when_dependencies_missing_then_requests_fly_without_library_cycle(
+    installed, monkeypatch
+):
+    project = tomllib.loads((installed.project / "pyproject.toml").read_text())
+    assert project["project"]["dependencies"] == ["fontlab-fontlabapp"]
+    assert project["tool"]["fontlab-install"]["dependencies"] == [
+        "fontlab-fontlabapp", "fontlab-fly>=1.3.0"
+    ]
+    monkeypatch.delenv("PYTHONPATH", raising=False)
+    monkeypatch.setattr(installed.mod, "find_uv", lambda: "uv-fixture")
+    monkeypatch.setattr(installed.mod, "ensure_venv", lambda *args: None)
+    monkeypatch.setattr(installed.mod, "install_siblings", lambda requires: list(requires))
+    commands = []
+
+    def run(command):
+        commands.append(command)
+        return SimpleNamespace(returncode=0, stdout="installed fixture dependencies")
+
+    monkeypatch.setattr(installed.mod, "run", run)
+    installed.mod.main()
+    assert len(commands) == 1
+    assert commands[0][:3] == ["uv-fixture", "pip", "install"]
+    assert commands[0][-2:] == ["fontlab-fontlabapp", "fontlab-fly>=1.3.0"]

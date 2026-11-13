@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Fill the halfway blend between the shown layer and each other master behind it."""
 
-from fontlabapp.plugins.reporter import Mark, Reporter, fill_mark
-from fontlabapp.plugins.snapshot import Contour, GlyphSnapshot, Node
+from fly.ap.plugins.reporter import Mark, Reporter, fill_mark
+from fly.ap.plugins.snapshot import Contour, GlyphSnapshot, Node
 
 
 def _coords(contours: tuple[Contour, ...]) -> list[list[tuple[float, float, bool]]]:

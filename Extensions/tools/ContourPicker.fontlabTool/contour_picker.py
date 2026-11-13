@@ -8,8 +8,8 @@ contours. Both on- and off-curve nodes of open and closed contours are pickable.
 
 from math import hypot, isfinite
 
-from fontlabapp.plugins.snapshot import GlyphSnapshot
-from fontlabapp.plugins.tool import Tool, ToolContext, ToolEvent
+from fly.ap.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.tool import Tool, ToolContext, ToolEvent
 
 RADIUS_PX = 12
 

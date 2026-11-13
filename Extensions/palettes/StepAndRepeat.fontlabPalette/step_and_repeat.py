@@ -4,10 +4,10 @@
 
 from typing import Any
 
-from fontlabapp.plugins.palette import Palette
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.palette import Palette
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
-from fontlabapp.plugins.palettes.apply import repeat_selected, selected_indices
+from fly.ap.plugins.palettes.apply import repeat_selected, selected_indices
 
 
 class StepAndRepeat(Palette):

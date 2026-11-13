@@ -324,3 +324,55 @@ owner installation, product release or private Pages operation is claimed.
 ## 2026-11-10 — integration-round guidance
 
 Require independent verification, fresh upstream/team reconciliation and normal nonforce integration after important rounds. Move only verified solved TODO scope into cumulative history, update remaining plans and continue authorized work; existing preservation and admission holds remain unchanged.
+
+
+## 2026-11-13 — Issue 255 Fly consumer source candidate
+
+Route 121 App imports in all 50 Extensions and Show Reporters through `fly.ap`,
+preserving exact App module/class identity and original import placement. The
+optional startup snippet now calls App's installer through `fly.ap.plugins`;
+README's reporter example uses App's `Mark`/`Reporter` and its actual
+`fontlabapp.plugmix` entry-point group. Retained compatibility classes and their
+`fontlab_plugmix.plugins` group remain distinct and supported.
+
+Document Fly >=1.3.0 as the public pack prerequisite without adding a compatibility
+library dependency. The source test runner explicitly selects owned Fly and Pens
+sources and arm64 Python 3.11. Full no-selector recipe passes 437 tests and every
+original coverage gate, plus the startup snippet; all 53 complete changed Python
+production/checker modules exceed 80% statements and branches with no exclusions.
+Startup and the changed checker each measure 100% statements/branches. Tests
+exercise real App discovery and registration with fake hosts, isolated exact-source
+Fly identity, README entry-point discovery and startup failure containment.
+No native behavior, release or installed artifact is qualified by these source
+checks. Compatibility source, manifests, licences, frozen audit and shared
+installers remain unchanged. The controller rebuilt generated documentation;
+strict build and 37 documentation tests pass with the exact locked environment.
+Independent specification and quality review pass after the bounded fixes.
+Ordinary integration and remote delivery remain pending.
+
+
+Issue 255 review follow-up: declare Fly >=1.3.0 in the pack installer's consumer
+dependency table while preserving the App-only compatibility-library dependency
+and shared installer bytes. The actual installer regression verifies forwarding
+to uv without inherited Fly PYTHONPATH. Bundle coverage failure cases now keep
+startup evidence healthy, independently testing both module families. Bounded
+checks pass 25 tests; the full source recipe passes 437 tests and all gates.
+
+
+Controller verification confirms 437 tests and all 53 complete changed-module
+gates (minimum statements 93.1034%, branches 81.25%, zero exclusions).
+Fresh origin/main is unchanged at d58fd0a with zero divergence. Scoped graph
+analysis reports 73 files, 23 symbols, zero affected processes and LOW risk;
+source comparisons and tests corroborate the truncated symbol list. This records
+reviewed source and rebuilt-documentation acceptance only, before main/pre-push/CI
+integration, genuine artifact qualification and separate native acceptance.
+
+The documentation requirements lock SHA-256 is `961b3ec6b8ffde319473d3c17325d1699915c236a657a91baef77b5527215070`.
+
+
+Final review corrected only the two new I001 import-order findings in installer
+and runner tests. Ruff 0.16.7 with `--select I001` passes those files; the earlier
+0.14.10 default-selector pass does not establish broad lint acceptance. Controller
+comparison retains existing StepAndRepeat I001, ShowStems/SpeedPunk RUF007,
+startup BLE001, coverage-test I001 and installer FURB192 findings. Bounded tests
+pass 14 cases; the full source suite passes 437 tests and all coverage gates.

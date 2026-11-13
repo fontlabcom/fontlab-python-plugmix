@@ -21,8 +21,9 @@ def main(path: str) -> int:
         print(f"{name}: {rate:.1f}%")
         if rate < 80:
             failures.append(name)
-    for root in ("Extensions", "Scripts"):
-        for source in sorted(Path(root).rglob("*.py")):
+    for sources in (Path("Extensions").rglob("*.py"), Path("Scripts").rglob("*.py"),
+                    [Path("initScript-snippet.py")]):
+        for source in sorted(sources):
             name = source.as_posix()
             record = data["files"].get(name)
             if record is None:

@@ -7,13 +7,13 @@ this_file: src_docs/md/compatibility-package.md
 
 `src/fontlab_plugmix/` remains a separate installable package with 19 reporters,
 an undoable Filter, a dockable Palette, a native Tool and a General menu command.
-Its code, tests, dependencies, startup snippet and legal attribution are retained.
+Its code, tests, dependencies and legal attribution are retained.
 
 For this runtime, install the package and `fontlab-fontlabapp` in FontLab's
-Python 3.11 environment. The optional `initScript-snippet.py` calls
-`fontlab_plugmix.install()` once per session; it remains the compatibility startup
-snippet; the separate Show Reporters action targets App. Neither file modifies
-an installation. Use native MeVisLab PythonQt inside FontLab, without another Qt
+Python 3.11 environment and explicitly call `fontlab_plugmix.install()` once per
+session. The optional `initScript-snippet.py` now targets App through
+`fly.ap.plugins.install()` and must not be combined with the compatibility
+installer. Use native MeVisLab PythonQt inside FontLab, without another Qt
 binding. Native per-canvas painters are preferred, with App's `EditorPainters`
 fallback on older builds.
 
@@ -87,15 +87,17 @@ shortcut and keyboard cursor mapping changes still need an in-app recheck.
   viewport adjustment and a shortcut. General font events use stable `fgId`
   identities and share the palette host's refresh timer.
 
-### Write a compatibility reporter
+### Reporter contracts
 
 `compute()` receives immutable Python data and returns marks in font units.
-Native reads and writes belong in the host layer. Pure imports do not need FontLab:
+Native reads and writes belong in the host layer. Pure imports do not need FontLab. Current App examples import `Mark` and
+`Reporter` from `fly.ap.plugins` (Fly >=1.3.0); those are App's exact classes,
+not the distinct `fontlab_plugmix.Reporter` base.
 
 `Reporter.compute(snapshot)` receives immutable data and returns `Mark` objects. Keep this callback pure; no implementation bodies are rendered on this site.
 
-Publish compatibility classes through `fontlab_plugmix.plugins` entry points.
-App retains the separate `fontlabapp.plugmix` entry-point group alongside
+Publish classes derived from `fontlab_plugmix.Reporter` through `fontlab_plugmix.plugins` entry points.
+App classes imported through Fly use the separate `fontlabapp.plugmix` entry-point group alongside
 Extensions discovery in `fontlabapp.plugins`. Names must be unique and titles
 human-readable. Marks support ring, line, polyline, polygon and text; polygon
 fill is RGBA, coordinates are font units, and stroke/text/diameter values are

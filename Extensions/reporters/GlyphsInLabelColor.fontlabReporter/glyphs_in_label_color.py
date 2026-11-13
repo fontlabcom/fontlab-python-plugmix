@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Fill the glyph, components included, in its label colour."""
 
-from fontlabapp.plugins.reporter import Mark, Reporter, fill_mark
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.reporter import Mark, Reporter, fill_mark
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 
 class GlyphsInLabelColor(Reporter):

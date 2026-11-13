@@ -5,8 +5,8 @@
 Unlike mekkablue's ShowNodesOutsidePaths, this does not test path containment.
 """
 
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 
 class OffcurveOutsideBounds(Reporter):

@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Shade every component in translucent black so composed parts stand out."""
 
-from fontlabapp.plugins.reporter import Mark, Reporter, fill_mark
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.reporter import Mark, Reporter, fill_mark
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 
 class ColorToner(Reporter):

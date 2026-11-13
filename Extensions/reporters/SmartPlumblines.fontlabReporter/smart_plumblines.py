@@ -4,8 +4,8 @@
 
 from math import radians, tan
 
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot, Node
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot, Node
 
 CONTOUR_COLOR = (200, 60, 90)
 SELECTION_COLOR = (0, 150, 145)

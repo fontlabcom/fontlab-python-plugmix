@@ -6,9 +6,9 @@ Selection-only cut from But Ko's Smart Select Tool: no double-click contour
 containment, no native node movement and no geometry edits.
 """
 
-from fontlabapp.plugins.reporter import Mark
-from fontlabapp.plugins.snapshot import GlyphSnapshot
-from fontlabapp.plugins.tool import Tool, ToolContext, ToolEvent
+from fly.ap.plugins.reporter import Mark
+from fly.ap.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.tool import Tool, ToolContext, ToolEvent
 
 
 def touched_contours(

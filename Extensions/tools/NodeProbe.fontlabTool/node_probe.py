@@ -4,9 +4,9 @@
 
 from math import hypot, isfinite
 
-from fontlabapp.plugins.reporter import Mark
-from fontlabapp.plugins.snapshot import GlyphSnapshot, Node
-from fontlabapp.plugins.tool import Tool, ToolContext, ToolEvent
+from fly.ap.plugins.reporter import Mark
+from fly.ap.plugins.snapshot import GlyphSnapshot, Node
+from fly.ap.plugins.tool import Tool, ToolContext, ToolEvent
 
 RADIUS_PX = 12
 

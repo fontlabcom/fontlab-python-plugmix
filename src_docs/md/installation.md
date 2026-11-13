@@ -7,9 +7,15 @@ this_file: src_docs/md/installation.md
 ## App Extensions
 
 Install the reviewed `fontlab-fontlabapp` package in FontLab's Python 3.11 arm64
-environment using App's `install.vfpy`. App's installer adds its marked startup
+environment using App's `install.vfpy`. Install `fontlab-fly>=1.3.0` and its
+providers before using this pack's bundles, action or optional startup snippet.
+The pack's `install.vfpy` requests Fly >=1.3.0 and App from its consumer dependency
+table. Manual copying requires preparing these dependencies separately; the
+legacy compatibility library keeps its App-only dependency. App's installer adds its marked startup
 block to `initScript.py`, preserving existing contents; the block calls
-`fontlabapp.plugins.install()` at launch. The App core discovers the user-data
+App's core at launch. The optional `initScript-snippet.py` uses
+`from fly.ap.plugins import install` followed by `install()` to reach the same
+canonical App installer; it does not edit the startup file itself. The App core discovers the user-data
 folder from `fontlab.flPreferences().dataPathDefault` and scans its `Extensions/`
 folder. Use FontLab's reported folder rather than assuming a platform path.
 
@@ -28,7 +34,7 @@ reporters remain disabled. The source places tools in the toolbar and Tools >
 Tool, and palettes in Window > Panels. Native placement and synchronization
 still require verification on the exact installed tuple.
 
-The Show Reporters action calls `fontlabapp.plugins.show_reporters()`; it does
+The Show Reporters action calls `fly.ap.plugins.show_reporters()`; it does
 not install packages or change the startup file. The retired per-reporter
 launchers and Install Plugmix Menu script are no longer used. Duplicate Anchor
 Rings retains `set_handle_size(5|8|12)`, with a default of 8. Reporters do not
@@ -50,7 +56,11 @@ back completed writes. Native Undo/Redo recovery remains unverified.
 
 From an authorized checkout, install the compatibility package and its App dependency in the owner-managed FontLab Python 3.11 arm64 environment. In an isolated ordinary development environment, the package can be installed with `uv pip install .` once the required App distribution is available. Use native MeVisLab PythonQt inside FontLab, without another Qt binding.
 
-`initScript-snippet.py` is an optional compatibility startup snippet: it calls `fontlab_plugmix.install()` once per session. It does not target App's `fontlabapp.plugins` runtime and does not modify an installation. No documentation build installs into FontLab's user folder.
+Start the retained compatibility runtime explicitly with
+`fontlab_plugmix.install()` once per session. The optional
+`initScript-snippet.py` now targets App through `fly.ap.plugins.install()` and
+must not be combined with that legacy installer. No documentation build
+installs into FontLab's user folder.
 
 ## Runtime and preference ownership
 

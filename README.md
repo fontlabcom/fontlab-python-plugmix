@@ -15,6 +15,13 @@ The wheel is the compatibility package only and contains no Extensions.
 
 ## Extensions and action scripts
 
+Install `fontlab-fly>=1.3.0` with its canonical providers in FontLab's Python
+3.11 arm64 environment before using the bundles, action or startup snippet.
+Their API imports use `fly.ap`; Fly preserves App module and class identity.
+The pack installer declares and requests Fly >=1.3.0 alongside App; hand-copy
+installation must prepare those packages first. The legacy compatibility library
+keeps its App-only dependency.
+
 See [Extensions/README.md](Extensions/README.md) for the bundle layout and manifest.
 Run `install.vfpy` from FontLab's Scripts panel (or copy the Extensions contents
 into the FontLab user-data `Extensions/` folder by hand): it links the 50 bundles
@@ -39,15 +46,14 @@ packages and does not edit FontLab's startup file.
 
 `src/fontlab_plugmix/` remains a separate installable package with 19 reporters,
 an undoable Filter, a dockable Palette, a native Tool and a General menu command.
-Its code, tests, dependencies, startup snippet and legal attribution are retained.
+Its code, tests, dependencies and legal attribution are retained.
 
 For this runtime, install the package and `fontlab-fontlabapp` in FontLab's
-Python 3.11 environment. The optional `initScript-snippet.py` calls
-`fontlab_plugmix.install()` once per session; it remains the compatibility startup
-snippet, whereas the menu scripts above now target App. Neither file modifies an
-installation. Use native MeVisLab PythonQt inside FontLab, without another Qt
-binding. Native per-canvas painters are preferred, with App's `EditorPainters`
-fallback on older builds.
+Python 3.11 environment and explicitly call `fontlab_plugmix.install()` once per
+session. The optional `initScript-snippet.py` now starts App through
+`fly.ap.plugins.install()`; use it only with the App runtime. Use native MeVisLab
+PythonQt inside FontLab, without another Qt binding. Native per-canvas painters
+are preferred, with App's `EditorPainters` fallback on older builds.
 
 The compatibility View menu has 19 `Plugmix: Show …` actions and Zoom to Selection.
 Glyph has Delete Small Paths; Window has Step and Repeat Panel and Tool Smart
@@ -119,13 +125,13 @@ shortcut and keyboard cursor mapping changes still need an in-app recheck.
   viewport adjustment and a shortcut. General font events use stable `fgId`
   identities and share the palette host's refresh timer.
 
-### Write a compatibility reporter
+### Write an App reporter through Fly
 
 `compute()` receives immutable Python data and returns marks in font units.
 Native reads and writes belong in the host layer. Pure imports do not need FontLab:
 
 ```python
-from fontlab_plugmix import Mark, Reporter
+from fly.ap.plugins import Mark, Reporter
 
 
 class Origin(Reporter):
@@ -136,9 +142,12 @@ class Origin(Reporter):
         return [Mark("ring", ((0, 0),), diameter_px=12)]
 ```
 
-Publish compatibility classes through `fontlab_plugmix.plugins` entry points.
-App retains the separate `fontlabapp.plugmix` entry-point group for compatibility
-and also discovers Extensions bundles. Names must be unique and titles
+Publish these App classes through the `fontlabapp.plugmix` entry-point group,
+or place them in Extensions bundles. Fly returns App's exact `Mark` and
+`Reporter` classes. The retained compatibility runtime has a distinct
+`fontlab_plugmix.Reporter` base and discovers its classes only through
+`fontlab_plugmix.plugins`; the two bases and entry-point groups are not
+interchangeable. Names must be unique and titles
 human-readable. Marks support ring, line, polyline, polygon and text; polygon
 fill is RGBA, coordinates are font units, and stroke/text/diameter values are
 view pixels. `layer = "background"` requests painting beneath native glyphs on
@@ -147,16 +156,19 @@ write font data.
 
 ## Development checks
 
-Use arm64 Python 3.11 and an owned App source. The exact full recipe is:
+Use arm64 Python 3.11 and owned sibling App, Pens and Fly (>=1.3.0) sources. The exact full recipe is:
 
 ```sh
 UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
 ```
 
-The runner-layout test requires the sibling App source. The no-selector run
+The runner-layout test requires the sibling App source. The runner explicitly
+installs the selected Pens checkout and selects Fly's `src` on `PYTHONPATH`,
+without installing Fly's full provider cohort. Set `PLUGMIX_PENS_SOURCE` or
+`PLUGMIX_FLY_SOURCE` to select different owned checkouts. The no-selector run
 executes the complete suite, retaining the compatibility package coverage gate
 and requiring at least 80% line coverage and 80% branch coverage separately for
-every Extensions and Scripts module. Arguments skip the checker; after a selected
+every Extensions and Scripts module and the startup snippet. Arguments skip the checker; after a selected
 run, use the full suite before invoking `python3 tests/check_coverage.py coverage.json`.
 
 Tests use real App bundle discovery, boot, registry and menus with fake host owners

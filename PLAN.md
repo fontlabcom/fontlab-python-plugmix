@@ -77,3 +77,17 @@ Assign the four filter manifests the actual first compatible App release before
 distribution. Their current 1.0.0 minimum follows the pack convention but cannot
 distinguish the older deletion-only writer. Installation, release and native
 acceptance remain orchestrator work; this lane must not commit or publish.
+
+
+## Issue 255 remaining qualification
+
+Complete ordinary main integration through the retained pre-push gates, verify the
+actual remote SHA and configured CI after delivery, and reconcile any new upstream
+changes before pushing. Independent specification/quality review, full source and
+coverage gates, scoped graph analysis and locked docs build/tests are complete for
+the reviewed candidate; they do not establish remote delivery.
+
+Qualify genuine pack/wheel/sdist artifacts with Fly >=1.3.0 and the reviewed
+provider tuple while retaining the separate legacy compatibility contract. Native
+startup, palette and plugin behavior remain separate acceptance on the released,
+installed tuple. Private Pages remains held.

@@ -7,8 +7,8 @@ from dataclasses import replace
 from math import isfinite
 from typing import Any
 
-from fontlabapp.plugins.filter import Filter, LayerEdit, Param
-from fontlabapp.plugins.snapshot import GlyphSnapshot, Node
+from fly.ap.plugins.filter import Filter, LayerEdit, Param
+from fly.ap.plugins.snapshot import GlyphSnapshot, Node
 
 
 class MoveOutlines(Filter):

@@ -23,7 +23,7 @@ packages = ["src/fontlab_plugmix"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=fontlab_plugmix --cov=Extensions --cov=Scripts --cov=tools --cov-branch --cov-report=term-missing --cov-report=json:coverage.json"
+addopts = "--cov=. --cov-branch --cov-report=term-missing --cov-report=json:coverage.json"
 
 
 [tool.fontlab-install]
@@ -31,4 +31,4 @@ id = "com.fontlab.python-plugmix"
 name = "fontlab-python-plugmix"
 packages = []  # Extensions bundles and Scripts only; the fontlab_plugmix package is a separate runtime
 extensions = "Extensions"
-dependencies = ["fontlab-fontlabapp"]
+dependencies = ["fontlab-fontlabapp", "fontlab-fly>=1.3.0"]

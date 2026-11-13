@@ -6,7 +6,8 @@ this_file: src_docs/md/app-menu-scripts.md
 
 All 39 reporter bundles below live in `Extensions/reporters/`. Each has its own
 `plugin.json` and Python source; no package install or individual launcher is
-needed for a bundle. App's `fontlabapp.plugins` core owns discovery, painter
+needed for a bundle. Bundles and the action require `fontlab-fly>=1.3.0`
+and its providers; their API imports use `fly.ap`, preserving canonical App identity. App's `fontlabapp.plugins` core owns discovery, painter
 registration, preferences, rollback and teardown. `fontlabapp.plugmix` remains
 a deprecated import shim, separate from the retained `fontlab_plugmix` runtime.
 
@@ -104,7 +105,7 @@ only.
 
 ## App reporter contract
 
-Write a reporter by subclassing `fontlabapp.plugins.Reporter` with a unique
+Write a reporter by subclassing `fly.ap.plugins.Reporter` with a unique
 `name`, a `title` and a pure `compute(snapshot)` that returns `Mark` objects
 (`ring`, `line`, `polyline`, `polygon`, `text`) in glyph units; pixel sizes are
 view pixels. Set `layer = "background"` to paint under the glyph layer.

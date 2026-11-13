@@ -4,9 +4,9 @@
 
 from math import radians, tan
 
-from fontlabapp.plugins.geometry import point_at, segments
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.geometry import point_at, segments
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 LINE_COLOR = (170, 175, 200)
 CROSSING_COLOR = (60, 60, 110)

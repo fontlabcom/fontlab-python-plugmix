@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Outline the glyph rotated 180 degrees about its bounds centre."""
 
-from fontlabapp.plugins.geometry import point_at, segments
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot
+from fly.ap.plugins.geometry import point_at, segments
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot
 
 COLOR: tuple[int, int, int] = (0, 128, 77)
 CURVE_STEPS = 16

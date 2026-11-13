@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 """Emphasise handles of the selection over FontLab's native handle drawing."""
 
-from fontlabapp.plugins.geometry import neighbours
-from fontlabapp.plugins.reporter import Mark, Reporter
-from fontlabapp.plugins.snapshot import GlyphSnapshot, Node
+from fly.ap.plugins.geometry import neighbours
+from fly.ap.plugins.reporter import Mark, Reporter
+from fly.ap.plugins.snapshot import GlyphSnapshot, Node
 
 
 def _marks(near: Node, handle: Node) -> list[Mark]:

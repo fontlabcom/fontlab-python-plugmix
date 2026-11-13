@@ -5,7 +5,11 @@ this_file: src_docs/md/development-and-limits.md
 # Development and limits
 
 
-Use arm64 Python 3.11 and an owned App source. The exact full recipe is:
+Use arm64 Python 3.11 and owned sibling App, Pens and Fly (>=1.3.0) sources.
+The runner explicitly prepares Pens and selects Fly's `src` on `PYTHONPATH`.
+Set `PLUGMIX_PENS_SOURCE` or `PLUGMIX_FLY_SOURCE` to select other owned
+checkouts; the isolated-child regression selects that exact source and verifies
+its origin without assuming Fly is installed. The exact full recipe is:
 
 ```sh
 UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
@@ -14,7 +18,7 @@ UV_PYTHON_PREFERENCE=only-system PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-font
 The runner-layout test requires the sibling App source directory. The
 no-selector run executes the complete suite and the compatibility package's
 coverage gate, plus at least 80% line coverage and 80% branch coverage separately
-for every Extensions and Scripts module. Arguments skip the checker; after a
+for every Extensions and Scripts module and the startup snippet. Arguments skip the checker; after a
 selected run, use the full suite before invoking
 `python3 tests/check_coverage.py coverage.json`.
 

@@ -6,7 +6,7 @@ This keeps the menu action from TzuYuan Yin's Zoom to Selection behaviour;
 the source's delayed viewport adjustment and shortcut are omitted.
 """
 
-from fontlabapp.plugins.general import General, GeneralContext
+from fly.ap.plugins.general import General, GeneralContext
 
 
 class ZoomToSelection(General):
