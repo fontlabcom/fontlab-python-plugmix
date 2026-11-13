@@ -2,27 +2,16 @@
 this_file: WORK.md
 ---
 
-# Work
+# Current round — Issue 255 post-release reconciliation
 
-Issue 255 artifact selection repair (2026-11-13): the prior source milestone was
-delivered at 05176d30 with successful CI. Fresh source-distribution qualification
-then found operational session data and a compiled installer containing local
-paths in Hatch's default archive. The retained local v1.1.13 tag and existing
-artifacts are unchanged.
+[fontlab-python-plugmix v1.1.14](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.14) is qualified at `13e7d9182b39417378bfcd07e7e46e9707e64e39`.
 
-The sdist target now excludes only root `/.omc` and `/install.vfpyc` using Hatch's
-Git-style patterns. These files remain intact in the checkout. Library, userpack,
-legal, documentation and test source selection otherwise stays unchanged; wheel
-and pack configuration are unaffected. No shared installer code changed.
+All 51 authored consumers use Fly. The bounded sdist selection repair excludes operational session data and the compiled installer while preserving product and legal source.
 
-A genuine fresh uv sdist regression fails before the selection fix, then passes:
-it rejects operational/compiled members and verifies exact representative
-library, Extensions, Scripts, docs, tests, legal and source-installer bytes.
-Bounded packaging checks pass 7 tests; full arm64 Python 3.11 no-selector checks
-pass 438 tests and all existing coverage gates. Pinned Ruff 0.16.7 I001 passes
-only the changed packaging test file; previously disclosed baseline lint findings
-remain. Diff whitespace check passes.
+438 source tests, 53 complete changed-module gates and 37 documentation tests pass. Genuine wheel/sdist ordinary cohorts each pass 244 checks with one explicitly source-only routing deselection; source covers that case. The downloaded Extensions ZIP contains the exact 103 reviewed member names/bytes for 50 plugins. Normal main/tag hooks, CI and actual wheel/sdist/ZIP downloads are qualified.
 
-Independent review, ordinary delivery of this repair, new genuine release
-artifacts/installation and separate native acceptance remain open. No release,
-private Pages, tag mutation or host action is claimed.
+The source, artifact, ordinary external-install, release and download gates above are verified. This round reconciles their progress records after release; it changes no runtime source, installer, dependency declaration, generated documentation or immutable release asset.
+
+Remaining: After explicit D43 recovery and admission, qualify App startup, palette and all original plugin behaviors on the released installed Fly/provider tuple; keep legacy compatibility and native lifecycle/history acceptance separate.
+
+D43 native acceptance remains held and unproved. Issue 123 remains paused; existing private Pages holds and every unrelated acceptance task remain in PLAN/TODO. Prior WORK bytes are retained exactly in the private external delivery ledger, SHA256 `9ebaa7eb720b28d3ae79a1a664328c527066c0dee9c857b81046012b45023b10`.

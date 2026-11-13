@@ -79,16 +79,6 @@ distinguish the older deletion-only writer. Installation, release and native
 acceptance remain orchestrator work; this lane must not commit or publish.
 
 
-## Issue 255 remaining qualification
+## Issue 255 remaining native acceptance
 
-The Fly consumer source milestone is delivered at 05176d30 with successful CI.
-Independently review and deliver the bounded sdist selection repair through the
-retained main/pre-push/CI gates, preserving earlier local tags and artifacts; verify
-new remote delivery separately. Independent specification/quality review, full source and
-coverage gates, scoped graph analysis and locked docs build/tests are complete for
-the reviewed candidate; they do not establish remote delivery.
-
-Qualify genuine pack/wheel/sdist artifacts with Fly >=1.3.0 and the reviewed
-provider tuple while retaining the separate legacy compatibility contract. Native
-startup, palette and plugin behavior remain separate acceptance on the released,
-installed tuple. Private Pages remains held.
+After explicit D43 recovery and admission, qualify App startup, palette and all original plugin behaviors on the released installed Fly/provider tuple; keep legacy compatibility and native lifecycle/history acceptance separate. Source, genuine artifact, ordinary external-install and release/download qualification for v1.1.14 is recorded in CHANGELOG. Existing private Pages and Issue 123 holds remain.

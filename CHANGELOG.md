@@ -2,6 +2,13 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-13 — Issue 255 verified release qualification
+
+- [fontlab-python-plugmix v1.1.14](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.14) is released at `13e7d9182b39417378bfcd07e7e46e9707e64e39`. Reviewed main/tag delivery, applicable CI and actual downloads match the qualified artifacts.
+- All 51 authored consumers use Fly. The bounded sdist selection repair excludes operational session data and the compiled installer while preserving product and legal source.
+- 438 source tests, 53 complete changed-module gates and 37 documentation tests pass. Genuine wheel/sdist ordinary cohorts each pass 244 checks with one explicitly source-only routing deselection; source covers that case. The downloaded Extensions ZIP contains the exact 103 reviewed member names/bytes for 50 plugins. Normal main/tag hooks, CI and actual wheel/sdist/ZIP downloads are qualified.
+- Ordinary external installation is qualified; installed FontLab/native acceptance remains unproved under D43.
+
 ## 2026-11-12 — D46 documentation pass (Issue 250)
 
 - Landed this session, all on `main`: Apache-2.0 headers for the two reimplemented plugins (`874cce3`), `install.vfpy` linking the 50 Extensions bundles (`f3799c2`), App-first install order (`701b2cb`), the README note on App 1.2.10 filters (`78ea025`).
