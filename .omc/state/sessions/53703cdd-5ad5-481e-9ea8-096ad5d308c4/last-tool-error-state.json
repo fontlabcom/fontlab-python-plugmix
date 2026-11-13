@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd /Volumes/Falstaff4T/fontlab-scripting-data/issue250/review/cleanup-20261112; cut -f3,4 exec-log-triager-run2-20261112T1543Z.tsv | sort | uniq -c | sort -rn | head -12; grep -il \\\"45\\\" *...",
+  "error": "Exit code 1\n 227 dirty tree\t0\n  84 missing\t0\n  30 all checks pass\t4096\n  21 owner worktree (gitdir outside Falstaff)\t0\n   7 all checks pass\t38367232\n   6 modified <3h: /uv.lock\t0\n   6 modified <3h: /.DS_Store\t0\n   5 all checks pass\t3862528\n   5 all checks pass\t1953792\n   4 protected (wp03 / combo patches)\t0\n   4 modified <3h: /WORK.md\t0\n   3 modified <3h: /tests/test_stemsnap_history.py\t0\nexec-patch-v3-review.md\nowner-metadata-compare-exec2.md\nmanifest.md",
+  "timestamp": "2026-11-12T17:57:23.377Z",
+  "retry_count": 1
+}
