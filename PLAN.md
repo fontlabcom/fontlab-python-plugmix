@@ -92,11 +92,9 @@ modifiers, zoom hit testing, local/component scope, current-master safeguards,
 Undo/Redo and saved/reopened results. Preserve native curve kinds; no snapshot
 reconstruction or implicit component decomposition is part of this milestone.
 
-Qualify a new release carrying the corrected App requirements and bundle floors:
-the complete pack requires App >=1.2.10, with individual plugin-core bundles
-requiring 1.2.9 and four coordinate filters requiring 1.2.10. Source tests pass;
-independent review, ordinary delivery, released artifacts, installation and native
-acceptance remain separate.
+Next functional work is T28: repair shared App/Plugmix `install.vfpy` `install_siblings` constraint bypasses from fresh App reference source. Active/sibling routes drop declared constraints; the no-uv fallback checks presence only and can return normally with packages missing. Reuse the existing uv resolver, preserve constraints and report incomplete no-uv installation honestly. Add focused owned-fixture regressions before propagating the reviewed reference fix; do not add a custom PEP 440 parser. Actual installed-version qualification remains open. No implementation or gate is claimed here.
+
+Plugmix 1.1.16 release/download metadata qualification is recorded in CHANGELOG; do not repeat these completed gates. Complete provider closure and native acceptance remain open.
 
 
 ## Issue 255 remaining native acceptance

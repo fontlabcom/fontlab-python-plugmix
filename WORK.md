@@ -2,6 +2,16 @@
 this_file: WORK.md
 ---
 
+## 2026-11-14 — Plugmix 1.1.16 compatibility release qualified
+
+[Plugmix v1.1.16](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.16) binds actual main and peeled annotated tag to `9a41985f44e44d6a2db263e8d34983b803f5aea1`. Normal main/tag hooks passed 464 tests in 5.10/5.32 seconds. The complete source suite passed 464 tests with zero skips, all retained coverage gates and unchanged Ruff. Main Pack43647893594 and Docs43647893608 succeeded; both documentation jobs passed 38 cases with SOURCE==OUTPUT==the released source. Tag Pack43648527211 succeeded, including release attachment.
+
+All three actual downloads are qualified (`download-audit.json` in the task's Falstaff evidence folder). Wheel/sdist match the reviewed hashes; the CI ZIP has 105 source-exact files/modes and 50 manifests: 46 at App 1.2.9 and four at 1.2.10. Its different container hash is reviewed; member bytes/modes are exact. Wheel and installer require App >=1.2.10; the installer already declares Fly >=1.3.0. Exactly 45 manifest fields changed. Runtime Python, installer logic, legal bytes and older releases remain unchanged.
+
+Actual downloaded Plugmix with released App 1.2.18 and supplied Fly 1.3.1 passed a LIMITED provider cohort: 463 tests, one source-routing deselection, 6.08 seconds. All three origins are inside the owned prefix; no native provider loaded. Preserve failed attempts: missing Fly during collection (the compatibility wheel does not bundle the 50 Extensions), normal Fly resolution because Echopy is absent from the registry, and two test-helper import errors. Supplying Fly with --no-deps only in this prefix and correcting the existing test/tool helper paths established the bounded result; no source correction or complete provider closure follows. The installer already declared Fly, so this is not a missing-dependency defect.
+
+Workspace PLUGMIX-COMPAT-RELEASE-REVIEW.md explicitly APPROVEs published assets and LIMITED prefix runtime evidence. T16 alone is complete; all 52 IDs, 51 unfinished families and 17 JSON rows remain unchanged. T18/T28/global T29 and native acceptance remain open. Root install.sh and FontLab installation/native checks remain held; cleanup STOP and all existing exclusions, pauses and publication holds persist.
+
 # Current round — verified source, main and CI delivery (2026-11-14)
 
 ## 2026-11-14 — App minimum-version correction ready for review

@@ -4,7 +4,7 @@ this_file: TODO.md
 
 # Open tasks
 
-- [ ] Independently review and deliver the App minimum-version correction; qualify the new released requirements and all 50 manifest floors before installed/native acceptance.
+- [ ] T28: Repair App/Plugmix installer constraint bypasses from the reviewed fresh App reference using the existing uv resolver; preserve active/sibling constraints, report incomplete no-uv installation honestly and add focused owned-fixture regressions before propagation. Qualify actual installed App/Fly versions separately.
 
 - [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
 
