@@ -4,6 +4,8 @@ this_file: TODO.md
 
 # Open tasks
 
+- [ ] Independently review and deliver the App minimum-version correction; qualify the new released requirements and all 50 manifest floors before installed/native acceptance.
+
 - [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
 
 

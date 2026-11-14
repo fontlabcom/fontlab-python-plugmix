@@ -4,6 +4,32 @@ this_file: WORK.md
 
 # Current round — verified source, main and CI delivery (2026-11-14)
 
+## 2026-11-14 — App minimum-version correction ready for review
+
+The v1.1.15 requirements accepted App 1.2.8, which lacks `fontlabapp.plugins`.
+Direct App tag objects show the package first in 1.2.9; existing first-tag tests
+retain the coordinate-writer floor at 1.2.10. Triage also reproduced the Reporter
+import failure in 1.2.8 and success in 1.2.9/1.2.10; that import probe is a session
+observation, separate from retained direct-source proof.
+
+Set both App requirements to >=1.2.10 for the complete pack and exactly 45
+non-filter manifest floors to 1.2.9. Keep the other five manifests unchanged.
+Update installer test expectations and document the distinct core/writer floors.
+The original three manifest tests pass. New regressions fail twice before the
+metadata fix; all five focused cases then pass. The first full run found two
+stale installer expectations (462 passed, two failed); after updating only their
+expected strings, the complete `sh test.sh` passes 464 tests, zero skips in
+6.51 seconds with all original coverage gates. Ruff 0.16.7 passes the full tree.
+The local pack builder/checker and audit pass: 105 members, 50 manifests/classes,
+exact source/legal bytes and unchanged runtime Python and shared installer.
+
+Graph file and installer-test impacts report UNKNOWN/no resolved callers, not
+closure. Literal/source checks and real pytest/installer cases corroborate the
+metadata consumers. Independent review and controller graph analysis, ordinary
+main/release gates and downloaded-artifact checks are next. No commit, push,
+tag, user-folder installation or native operation ran in this implementation
+lane. Global T18/T29, all native checks and existing holds remain open.
+
 ## 2026-11-14 — v1.1.15 released and downloaded artifacts qualified
 
 [Release v1.1.15](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.15)

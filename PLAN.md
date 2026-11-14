@@ -92,10 +92,11 @@ modifiers, zoom hit testing, local/component scope, current-master safeguards,
 Undo/Redo and saved/reopened results. Preserve native curve kinds; no snapshot
 reconstruction or implicit component decomposition is part of this milestone.
 
-Assign the four filter manifests the actual first compatible App release before
-distribution. Their current 1.0.0 minimum follows the pack convention but cannot
-distinguish the older deletion-only writer. Installation, release and native
-acceptance remain orchestrator work; this lane must not commit or publish.
+Qualify a new release carrying the corrected App requirements and bundle floors:
+the complete pack requires App >=1.2.10, with individual plugin-core bundles
+requiring 1.2.9 and four coordinate filters requiring 1.2.10. Source tests pass;
+independent review, ordinary delivery, released artifacts, installation and native
+acceptance remain separate.
 
 
 ## Issue 255 remaining native acceptance

@@ -80,7 +80,7 @@ def test_install_when_run_then_links_point_at_this_checkout_and_scripts_are_copi
 def test_install_when_app_checkout_is_not_beside_then_output_says_so_plainly(installed, capsys):
     installed.mod.main()
     out = capsys.readouterr().out
-    assert "Dependency fontlab-fontlabapp is not installed and no checkout of it sits beside" in out
+    assert "Dependency fontlab-fontlabapp>=1.2.10 is not installed and no checkout of it sits beside" in out
     assert "Missing dependencies" in out
 
 
@@ -125,9 +125,9 @@ def test_pack_installer_when_dependencies_missing_then_requests_fly_without_libr
     installed, monkeypatch
 ):
     project = tomllib.loads((installed.project / "pyproject.toml").read_text())
-    assert project["project"]["dependencies"] == ["fontlab-fontlabapp"]
+    assert project["project"]["dependencies"] == ["fontlab-fontlabapp>=1.2.10"]
     assert project["tool"]["fontlab-install"]["dependencies"] == [
-        "fontlab-fontlabapp", "fontlab-fly>=1.3.0"
+        "fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"
     ]
     monkeypatch.delenv("PYTHONPATH", raising=False)
     monkeypatch.setattr(installed.mod, "find_uv", lambda: "uv-fixture")
@@ -143,4 +143,4 @@ def test_pack_installer_when_dependencies_missing_then_requests_fly_without_libr
     installed.mod.main()
     assert len(commands) == 1
     assert commands[0][:3] == ["uv-fixture", "pip", "install"]
-    assert commands[0][-2:] == ["fontlab-fontlabapp", "fontlab-fly>=1.3.0"]
+    assert commands[0][-2:] == ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]

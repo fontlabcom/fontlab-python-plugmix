@@ -31,7 +31,7 @@ Extensions/reporters/NodeIndexes.fontlabReporter/
   "kind": "reporter",
   "version": "1.0.0",
   "entry": "node_indexes:NodeIndexes",
-  "min_app_version": "1.0.0"
+  "min_app_version": "1.2.9"
 }
 ```
 

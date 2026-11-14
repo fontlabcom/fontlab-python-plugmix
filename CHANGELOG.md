@@ -1,6 +1,23 @@
 ---
 this_file: CHANGELOG.md
 ---
+## 2026-11-14 — App minimum-version source correction
+
+Both package and pack-installer requirements now declare App >=1.2.10, the first
+release with the coordinate writer needed by all four coordinate filters.
+Forty-five non-filter manifests now require App 1.2.9, the first release with
+`fontlabapp.plugins`; Delete Small Paths already requires 1.2.9 and the four
+coordinate filters retain 1.2.10. The README and manifest example agree.
+No plugin Python, installer source, legal file or bundle identity changes.
+
+Two new regressions first failed against the unbounded requirements and old
+manifest floors, then passed. Existing installer expectations now include the
+version requirement. The full host-free source recipe passes 464 tests with
+zero skips and all retained coverage gates; Ruff 0.16.7 passes. A local pack
+build/check retains 105 exact-source members, 50 manifests/classes and legal
+bytes. Independent review, main/release delivery, downloaded artifacts and
+native acceptance remain pending. Global T18/T29 and native tasks stay open.
+
 ## 2026-11-14 — v1.1.15 released and downloaded artifacts qualified
 
 [Release v1.1.15](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.15)

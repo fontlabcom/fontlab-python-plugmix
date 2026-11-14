@@ -3,6 +3,7 @@
 
 import json
 import subprocess
+import tomllib
 from collections import Counter
 from pathlib import Path
 
@@ -10,6 +11,25 @@ import pytest
 from fontlabapp.plugins import bundles, registry
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_app_requirements_when_installed_then_support_the_complete_pack():
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text())
+    for dependencies in (
+        project["project"]["dependencies"],
+        project["tool"]["fontlab-install"]["dependencies"],
+    ):
+        assert [item for item in dependencies if item.startswith("fontlab-fontlabapp")] == [
+            "fontlab-fontlabapp>=1.2.10"
+        ]
+
+
+def test_bundle_floors_when_discovered_then_require_the_released_plugin_core():
+    paths = sorted((ROOT / "Extensions").rglob("plugin.json"))
+    assert len(paths) == 50
+    for path in paths:
+        expected = "1.2.10" if path.parent.stem in COORDINATE_FILTERS else "1.2.9"
+        assert json.loads(path.read_text())["min_app_version"] == expected, str(path)
 
 
 def test_reference_pack_when_discovered_twice_then_all_five_kinds_keep_identity():
