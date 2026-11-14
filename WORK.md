@@ -4,6 +4,43 @@ this_file: WORK.md
 
 # Current round — verified source, main and CI delivery (2026-11-14)
 
+## 2026-11-14 — v1.1.15 released and downloaded artifacts qualified
+
+[Release v1.1.15](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.15)
+binds [35a6c3fa](https://github.com/fontlabcom/fontlab-python-plugmix/commit/35a6c3fa09cc8504f13d9fb0d88b4a5c366eb57a).
+The ordinary main and tag hooks each passed 462 tests. The maintained source
+suite passed 462 tests with zero skips and every retained coverage floor.
+[Main Pack](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43641875122)
+and [documentation CI](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43641875198)
+passed; both 38-case documentation checks bind source and output to that commit.
+[Tag Pack](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43643679727)
+passed both pack and release jobs and published all three assets.
+
+The downloaded Extensions ZIP has 105 unique safe-path members, exact released
+source bytes and Unix modes, passing CRC, all 50 manifests/classes, exact
+LICENSE/NOTICE and current StepAndRepeat, ShowStems and SpeedPunk modules.
+Downloaded wheel and sdist match the qualified local artifacts. Their ordinary
+artifact cohorts each pass 461 tests with one explicitly source-routing-only
+deselection; the source suite covers that route. A separate downloaded-wheel
+runtime cohort passes 461 tests in 4.04 seconds. These are external host-free
+artifact checks, not FontLab user-folder installation or native execution.
+
+Downloaded asset SHA-256 values:
+
+- Extensions ZIP: `70d40cf0e39ec082b67221d3c064c52177a98d61acd7e92988f3db28b94c1342`.
+- Wheel: `768af8b575c835227387b5ac920b520d9f03de701a928182f926e58cd424f6eb`.
+- Sdist: `dee659a770d0de497f4c9867fa71925005f5f2ca3ce1df167aafabd363ae3f88`.
+
+The historical v1.1.14 ZIP remains byte-identical at
+`ecfaf2d63cab3d52657f823164c413a91fa840f116d916ff681e006b3e395cc7`;
+the captured owner index also remains unchanged. This closes the current-source/P01 release rows and the first-tag release-job
+verification row. Independent final artifact review qualifies T16; global T29
+and native acceptance remain open. P04/P05, Issue 255, every native/install/GUI/history/reopen requirement,
+Issue 123's pause and private Pages holds remain. Earlier preparation and
+pending-release wording below is historical; this entry supersedes only its
+bounded release/download status. This ledger successor changes no product code
+or frozen v1.1.15 artifact and requests no new product release.
+
 ## 2026-11-14 — Functional work order documented
 
 Updated AGENTS, PLAN and TODO to prioritize useful functional changes and compatible package boundaries, with detailed testing deferred. Existing backlog and prior records are retained. Documentation preservation and policy consistency were checked; no runtime, installed or native checks ran in this documentation-only pass.

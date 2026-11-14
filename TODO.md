@@ -6,9 +6,7 @@ this_file: TODO.md
 
 - [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
 
-- [ ] Current-source release: run normal gates with accepted App 1.2.18 source peer, qualify exact tag Pack CI and new release downloads, verify 105 curated files/50 manifests and exact legal bytes/modes, then separately check wheel/sdist and startup/helper contracts; retain T16/T29 and native holds until proved.
 
-- [ ] P01 release: verify a new released/downloaded ZIP has all 105 reviewed members, 50 manifests and exact LICENSE/NOTICE bytes; preserve old published assets.
 - [ ] P04: qualify the permitted provider cohort separately, retaining excluded-repository restrictions and incomplete dependency closure.
 - [ ] P05: qualify unresolved graph paths, overflow, budget cuts and untraced entries; zero mapped processes does not prove absent callers.
 
@@ -34,5 +32,4 @@ this_file: TODO.md
 - [ ] native: verify Measurement Ruler left drag, Shift constraint, Escape, secondary-button release, glyph switching and teardown in FontLab 9.
 - [ ] native: verify Node Probe local/component labels and 12-pixel hit radius at multiple zoom levels in FontLab 9.
 - [ ] native: verify Contour Picker whole-contour selection and Shift toggle on open/cubic/quadratic outlines, with components unchanged, in FontLab 9.
-- [ ] Confirm the first `v*` tag push runs the `release` job in `.github/workflows/pack.yml` and attaches `fontlab-python-plugmix-extensions.zip` to that release (the job exists and its workflow shape is tested, but no tag has been pushed since it was added; actionlint-clean only).
 - [ ] CI test suite: the full suite needs a read-only App/Pens checkout in CI (tag-floor and bundle tests), owner-gated (credential: deploy key, PAT or App visibility). `tests/conftest.py:42` (`pytest_configure` imports `fontlabapp.plugins.bundles`) and `tests/extensions/conftest.py` block every module under it; `pack.yml` runs only the App-free subset with `--noconftest` (`tests/test_pack_workflow.py`, `tests/test_extension_coverage_gate.py`).

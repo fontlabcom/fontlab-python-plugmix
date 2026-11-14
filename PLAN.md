@@ -10,26 +10,7 @@ Prioritize usable reporters, filters, tools and palettes through the shared App 
 
 Use small smoke checks and focused regressions for changed behavior and package boundaries. Keep the existing detailed acceptance tasks for a later testing pass; mandatory delivery hooks and current holds remain in force.
 
-## Current-source release qualification — 2026-11-14
-
-Release the already repaired builder from current source; no further builder fix
-is needed. Main has 105 curated files and 50 manifests. Historical v1.1.14 has
-103 members, lacks LICENSE/NOTICE and carries older StepAndRepeat, ShowStems and
-SpeedPunk modules. Preserve that historical asset. Use accepted App 1.2.18 as
-the source peer, then run normal gates, qualify exact tag Pack CI and download
-the new release. Check all curated bytes/modes, legal files, manifests/classes,
-wheel/sdist and startup/helper contracts separately. These checks remain pending;
-T16/T29 and native acceptance remain open.
-
 ## Released artifact, provider and native qualification
-
-Qualify a new released/downloaded Extensions ZIP against the reviewed
-105-member, 50-manifest contract, including exact LICENSE/NOTICE bytes and
-member modes. Preserve existing published assets. Downloaded CI output is not
-a released asset; qualify genuine final-version wheel/sdist metadata and the
-permitted ordinary artifact cohort separately from precommit source artifacts.
-Coordinate release work with the controller and the established release lane;
-this ledger update authorizes no tag, publication or installation.
 
 Qualify the permitted provider cohort (P04) without entering excluded
 repositories or claiming complete dependency closure. Retain unresolved graph
