@@ -4,6 +4,31 @@ this_file: WORK.md
 
 # Current round — verified source, main and CI delivery (2026-11-14)
 
+## 2026-11-14 — Functional work order documented
+
+Updated AGENTS, PLAN and TODO to prioritize useful functional changes and compatible package boundaries, with detailed testing deferred. Existing backlog and prior records are retained. Documentation preservation and policy consistency were checked; no runtime, installed or native checks ran in this documentation-only pass.
+
+Next: advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
+
+## 2026-11-14 — Current-source release preparation
+
+Transferred only the reviewed functional-priority insertions into the fresh
+current-main successor, preserving every previous target byte. The distribution
+triage records 105 current curated files/50 manifests versus historical v1.1.14's
+103 members, missing LICENSE/NOTICE and older StepAndRepeat, ShowStems and
+SpeedPunk modules. The builder repair is already reviewed and on main; this round
+adds no source fix. App 1.2.18 is the accepted source peer. Controller source qualification passed the full maintained `sh test.sh`: 462
+tests, zero skips, 8.03 seconds and all per-module 80% floors, including all 50
+Extensions, the helper and startup snippet; overall coverage is 98%. Full-tree
+Ruff 0.16.7 passes. The clean owned test environment verifies arm64 Python 3.11
+and Qt 6.12.0 through its selected VIRTUAL_ENV; this is host-free evidence, not
+another binding loaded into FontLab. The builder/checker and independent local
+pack audit pass: 105 unique members with exact source bytes/modes, CRC and safe
+paths, all 50 manifests/classes and exact legal bytes. Accepted App source peer
+is 1.2.18. Normal main/tag gates, full CI and the published/downloaded ZIP,
+wheel and sdist remain pending. Startup/helper source checks do not qualify
+released artifacts or native execution. T16/T29, installation, native fences and the full backlog remain open.
+
 The combined ZIP legal-file/preflight, documentation content-oracle and lint
 repairs passed independent specification and quality review and reached
 [main at 40cac692](https://github.com/fontlabcom/fontlab-python-plugmix/commit/40cac69290a5027f205ca2a0bee24239e04fc37b).

@@ -2,6 +2,24 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-14 — Functional work order documented
+
+- Added the owner's functional-progress-first guidance and repository-specific priorities, including cross-package compatibility and a later detailed testing pass. Existing mandatory hooks, holds and unfinished work remain in force.
+- This change updates guidance and planning only; it establishes no new runtime, installed, native or release result.
+
+## 2026-11-14 — Current-source release preparation documented
+
+- Preserved the reviewed functional-priority guidance and existing backlog in
+  the current-main successor; documented the already identified historical ZIP
+  difference and the separate pending release qualification surfaces.
+- Controller source qualification passes 462 tests with zero skips (8.03
+  seconds), all per-module 80% floors including 50 Extensions/helper/startup,
+  98% overall coverage and full-tree Ruff 0.16.7. The host-free builder/checker
+  and independent local pack audit pass 105 exact source/mode/CRC/path members,
+  50 manifests/classes and exact legal bytes against accepted App 1.2.18 source.
+- Normal main/tag gates, full CI and published/downloaded ZIP, wheel and sdist
+  remain pending. No new installed or native result is claimed.
+
 ## 2026-11-14 — Reviewed combined source delivered to main and exact-commit CI
 
 - Independent specification and quality review accepted the combined P01/R01
