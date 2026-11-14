@@ -2,6 +2,74 @@
 this_file: WORK.md
 ---
 
+# Current round — verified source, main and CI delivery (2026-11-14)
+
+The combined ZIP legal-file/preflight, documentation content-oracle and lint
+repairs passed independent specification and quality review and reached
+[main at 40cac692](https://github.com/fontlabcom/fontlab-python-plugmix/commit/40cac69290a5027f205ca2a0bee24239e04fc37b).
+The delivered tree is `4315dc6ef4eac462be8a32892fd70e9afb408f60`, parent
+`b874cf606a30ba3e99d0905522c5c8db6829c15c`. The exact 33-path reviewed delta
+was pushed through the ordinary installed 310-byte pre-push hook. Actual
+post-push and post-CI remote reads matched that commit.
+
+Controller gates passed 462 source cases with unchanged coverage checkers,
+38 complete locked docs cases, strict build, full-tree Ruff 0.16.7 with zero
+diagnostics, 21 App-free workflow cases and genuine source-artifact checks.
+Seven complete changed production modules meet the unchanged 80% combined
+coverage requirement without exclusions. Their statement and branch results
+are recorded separately; all seven meet 80% in each component. The bundle
+checker retains its existing 80% line and branch rules. These results introduce
+no new universal per-component threshold for the tools. The installed hook
+reported `PASS (tests only)`: its compatibility-src selector found zero changed
+production modules. Seven-module coverage comes from the separate full gates.
+
+Exact-commit [Pack CI](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43527359696)
+passed `pack`; [Documentation CI](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43527359690)
+passed `build` and `qualify-generated-output`. The tag-only `release` job was
+expected to skip on main. The downloaded CI ZIP has 105 unique members and
+50 manifests, with every payload byte and Unix mode matching committed source,
+including LICENSE/NOTICE. Its SHA-256 is
+`40e0d9d73e0345a66893d6f064741bca0ad9b1795fd0202147011971b7b34066`.
+This is CI-artifact qualification. The old v1.1.14 published asset is unchanged;
+a new release/download, final-version artifacts and their cohort remain open.
+Precommit source-artifact metadata does not qualify a postcommit release wheel.
+
+Preservation is bounded. The four controller gate indexes matched exactly.
+The canonical owner index, named administration, all 330 tracked-file identities,
+refs and worktree attachments matched the retained baseline at precommit,
+prestage, postpush and post-CI endpoints. These checks do not prove unrecorded
+transient, global, untracked or ignored state. The earlier combined and docs
+candidate index intervals remain FAILED, writer UNKNOWN. The controller setup
+interval also remains FAILED/UNKNOWN: its index grew from 33,984 to 34,252 bytes
+with an UNTR extension before the passing gates. No earlier index was restored.
+Successful delivery does not relabel any failed preservation interval.
+
+The four-document follow-up also passed 462 source cases, 38 locked docs cases,
+strict build, zero Ruff diagnostics and the artifact checks. Its owned graph
+result is LOW for four documentation files, with zero mapped affected processes;
+this does not resolve prior dynamic UNKNOWN callers or graph limits. In that
+follow-up's first full-gate interval, the owned App and Pens peer indexes gained
+UNTR extensions (164,985 to 165,255 bytes and 5,678 to 5,949 bytes). Both raw
+intervals are FAILED, writers UNKNOWN; both endpoints are retained and neither
+index was restored. The source and Fly indexes stayed exact. These new failures
+are separate from the earlier controller gate's four exact indexes and from
+the unchanged canonical-owner endpoint.
+
+This follow-up removes only the two solved combined-review and controller
+main/hook/remote-CI TODO rows. Independent review of this four-document residual
+and controller delivery remain separate. P01 new-release/download, P04 provider
+admission, P05 graph gaps, root install.sh, installed origins/RECORD, all 17
+native rows, GUI controls/both themes, fonts/history/reopen and typing latency
+remain open. No root installer, user-folder installation or native operation
+was run for this source delivery. Issue 123 remains paused, private Pages held,
+excluded repositories untouched and the separate release lane unchanged.
+
+The dated candidate and release records below retain their exact prior bytes.
+Their pending-review/delivery wording describes those earlier checkpoints;
+the verified source/main/CI closure above supersedes only that bounded status.
+
+## Prior candidate record — 2026-11-13 (retained verbatim)
+
 # Current candidate — combined ZIP, documentation and lint fixes
 
 The independently reviewed ZIP legal-file and required-input preflight repairs

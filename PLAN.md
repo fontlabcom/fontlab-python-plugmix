@@ -4,22 +4,26 @@ this_file: PLAN.md
 
 # Forward plan
 
-## Combined ZIP, documentation and lint fixes: remaining qualification
+## Released artifact, provider and native qualification
 
-Obtain independent whole-change specification and quality review of the combined
-ZIP legal-file/preflight, documentation content oracle and 45 lint repairs.
-Controller qualification must retain all original cases/assertions, complete
-seven-module coverage and the 105-member/50-manifest artifact contract. Retain
-both older approved inputs, original failure receipts and the failed owned-index
-interval; do not restore earlier raw bytes or infer a writer.
+Qualify a new released/downloaded Extensions ZIP against the reviewed
+105-member, 50-manifest contract, including exact LICENSE/NOTICE bytes and
+member modes. Preserve existing published assets. Downloaded CI output is not
+a released asset; qualify genuine final-version wheel/sdist metadata and the
+permitted ordinary artifact cohort separately from precommit source artifacts.
+Coordinate release work with the controller and the established release lane;
+this ledger update authorizes no tag, publication or installation.
 
-Refresh actual upstream main, reconcile concurrent changes through ordinary
-hooks and verify remote SHA and exact-source CI. Then qualify a new release and
-download containing exact legal files; the old published ZIP remains unchanged.
-Keep provider-cohort admission (P04), unresolved graph/dynamic/budget coverage
-(P05), root installation and native acceptance separate. Source lint and docs
-checks now pass locally; independent combined review and delivery remain open.
-Issue 123 remains paused and private Pages remains held.
+Qualify the permitted provider cohort (P04) without entering excluded
+repositories or claiming complete dependency closure. Retain unresolved graph
+paths, dynamic UNKNOWN callers, overflow, untraced entries and budget cuts (P05).
+Before permitted installation, qualify the released provider tuple, installed
+origins/RECORD and each installer completion. Then qualify all 17 native rows,
+every GUI entry and its controls in both themes, whole-font history, saved
+reopen and typing latency through the serialized native lane. Source/main/CI
+acceptance closes none of these checks. Keep the original Issue 210/211,
+additive-recovery and documentation-trigger tasks below open at their stated
+scope. Issue 123 remains paused and private Pages remains held.
 
 Issue 123 remains paused. The additive recovery retains App-based scripts and
 the remote compatibility package together. Further consolidation remains a

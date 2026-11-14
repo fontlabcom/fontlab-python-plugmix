@@ -2,6 +2,42 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-14 — Reviewed combined source delivered to main and exact-commit CI
+
+- Independent specification and quality review accepted the combined P01/R01
+  ZIP legal/preflight, P03 documentation oracle and P02 lint repairs.
+  [Main 40cac692](https://github.com/fontlabcom/fontlab-python-plugmix/commit/40cac69290a5027f205ca2a0bee24239e04fc37b)
+  contains the exact reviewed 33-path delta, tree
+  `4315dc6ef4eac462be8a32892fd70e9afb408f60`, parent
+  `b874cf606a30ba3e99d0905522c5c8db6829c15c`. Normal installed-hook push and
+  post-push/post-CI remote SHA verification passed.
+- Controller qualification passed 462 source cases, unchanged complete
+  coverage checkers, all 38 locked docs cases, strict build, zero full-tree
+  Ruff 0.16.7 diagnostics, 21 App-free cases and genuine source-artifact gates.
+  All seven complete changed production modules meet the unchanged 80%
+  combined policy without exclusions; each separately meets 80% statements
+  and branches. Bundle-specific line/branch rules remain unchanged. The normal
+  hook passed tests only with zero changed compatibility-src modules; the
+  separate full gates supply seven-module coverage.
+- [Pack 43527359696](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43527359696)
+  passed `pack`; [Documentation 43527359690](https://github.com/fontlabcom/fontlab-python-plugmix/actions/runs/43527359690)
+  passed `build` and `qualify-generated-output` at that exact commit. The
+  tag-only release job correctly skipped on main. The downloaded CI pack has
+  105 members and 50 manifests; all payload bytes and Unix modes, including
+  exact LICENSE/NOTICE, match committed source. Inner-ZIP SHA-256:
+  `40e0d9d73e0345a66893d6f064741bca0ad9b1795fd0202147011971b7b34066`.
+- The four controller gate indexes and named canonical-owner endpoints match
+  their retained baselines, including all 330 tracked files, administration,
+  refs and worktree attachments. Earlier owned-index intervals and the
+  controller setup UNTR interval remain FAILED, writer UNKNOWN; no earlier
+  raw index was restored. This is endpoint evidence, not global preservation.
+- Closed only combined whole-change review and controller main/hook/remote-CI
+  delivery. New release/download, final-version artifact/provider admission,
+  graph gaps, installation and native acceptance remain open. Precommit
+  source artifacts are not release wheels; the old v1.1.14 asset is unchanged.
+  Historical candidate-pending wording below describes its dated checkpoint
+  and does not reopen this verified source/main/CI milestone or erase failures.
+
 ## 2026-11-13 — Combined local ZIP, documentation and Ruff qualification
 
 Compose the independently reviewed ZIP legal/preflight and documentation oracle

@@ -4,8 +4,6 @@ this_file: TODO.md
 
 # Open tasks
 
-- [ ] Independently review the combined P01/R01 ZIP legal-file/preflight, P03 docs content-oracle and P02 lint repairs; retain the failed owned-index interval and original regression evidence.
-- [ ] Controller: reconcile the reviewed combined candidate with fresh actual main, run ordinary required hooks, and verify remote SHA and exact-source CI.
 - [ ] P01 release: verify a new released/downloaded ZIP has all 105 reviewed members, 50 manifests and exact LICENSE/NOTICE bytes; preserve old published assets.
 - [ ] P04: qualify the permitted provider cohort separately, retaining excluded-repository restrictions and incomplete dependency closure.
 - [ ] P05: qualify unresolved graph paths, overflow, budget cuts and untraced entries; zero mapped processes does not prove absent callers.
