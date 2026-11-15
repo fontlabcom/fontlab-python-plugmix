@@ -2,6 +2,16 @@
 this_file: WORK.md
 ---
 
+## 2026-11-15 — Shared installer propagation ready for review
+
+Copied the exact reviewed App 1.2.20 installer (`ec862276632cbf5b8b3f680ebd101ee17f8eecfbb77b383b2210931164c053c4`). It retains constraints and managed origins, refuses unverifiable no-uv requirements before sibling mutation, and evaluates conditional requirements externally with uv/packaging. Permanent package dependencies, installer-specific metadata, all 50 bundles, App floors, runtime source and legal inputs are unchanged.
+
+The existing 30 installer/archive/pack checks passed before the copy (1.79s). Seven lifecycle cases then exposed their obsolete missing-provider setup: they expected installation despite declaring dependencies missing without uv. Owned lifecycle TOML now explicitly declares no external installer dependencies; the real missing() remains unmocked. The dedicated case restores the real App/Fly declarations and proves no-uv App-floor refusal before any scripts/bundles appear, with no false Installed success. The UV-request test restores and checks both original floors. All 30 focused cases pass (1.88s); existing actual source-archive coverage already checks exact install.vfpy bytes, so no new test or build configuration was added.
+
+This is a local source candidate. Independent review, full hooked combined checks, main/CI, actual release/downloads and the installed provider cohort remain pending. Native/root installation stays held. Detailed cold-cache, full-cohort and native acceptance follows separately; no original open requirement is closed here.
+
+
+
 ## 2026-11-14 — Plugmix 1.1.16 compatibility release qualified
 
 [Plugmix v1.1.16](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.16) binds actual main and peeled annotated tag to `9a41985f44e44d6a2db263e8d34983b803f5aea1`. Normal main/tag hooks passed 464 tests in 5.10/5.32 seconds. The complete source suite passed 464 tests with zero skips, all retained coverage gates and unchanged Ruff. Main Pack43647893594 and Docs43647893608 succeeded; both documentation jobs passed 38 cases with SOURCE==OUTPUT==the released source. Tag Pack43648527211 succeeded, including release attachment.

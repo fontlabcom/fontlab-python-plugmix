@@ -2,6 +2,14 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-15 — Shared installer source propagation
+
+- Copy the exact reviewed App 1.2.20 installer, preserving declared constraints and managed origins, refusing unverifiable no-uv conditions, and skipping inactive conditional siblings before execution.
+- Align owned bundle-lifecycle fixtures with prepared, dependency-free installer inputs; retain the real requirement guard and assert no-uv App-floor refusal before script/bundle mutation. Preserve both declared App/Fly floor checks.
+- All 30 focused installer/archive/pack checks pass. The genuine source-archive regression already retains exact installer bytes. Bundle/runtime/legal bytes, manifests, project metadata and dependencies remain unchanged. Delivery, the complete installed cohort and native acceptance remain unqualified.
+
+
+
 ## 2026-11-14 — Plugmix 1.1.16 compatibility release qualified
 
 [Plugmix v1.1.16](https://github.com/fontlabcom/fontlab-python-plugmix/releases/tag/v1.1.16) binds actual main and peeled annotated tag to `9a41985f44e44d6a2db263e8d34983b803f5aea1`. Normal main/tag hooks passed 464 tests in 5.10/5.32 seconds. The complete source suite passed 464 tests with zero skips, all retained coverage gates and unchanged Ruff. Main Pack43647893594 and Docs43647893608 succeeded; both documentation jobs passed 38 cases with SOURCE==OUTPUT==the released source. Tag Pack43648527211 succeeded, including release attachment.

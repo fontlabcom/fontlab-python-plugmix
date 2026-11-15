@@ -4,7 +4,7 @@ this_file: TODO.md
 
 # Open tasks
 
-- [ ] T28: Repair App/Plugmix installer constraint bypasses from the reviewed fresh App reference using the existing uv resolver; preserve active/sibling constraints, report incomplete no-uv installation honestly and add focused owned-fixture regressions before propagation. Qualify actual installed App/Fly versions separately.
+- [ ] T28: Independently review and deliver the exact App 1.2.20 installer propagation through combined gates, fresh main/CI and genuine release/download checks; then qualify actual installed App/Fly versions, all installer copies and the complete provider cohort separately. Keep native/root-install admission and cold-cache checks open.
 
 - [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
 

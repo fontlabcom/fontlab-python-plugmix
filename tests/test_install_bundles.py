@@ -33,6 +33,12 @@ class Installed:
         self.project.mkdir()
         for name in ("install.vfpy", "pyproject.toml"):
             shutil.copy2(str(ROOT / name), str(self.project / name))
+        # Lifecycle cases install owned bundles without external providers.
+        project = self.project / "pyproject.toml"
+        source = project.read_text()
+        declared = 'dependencies = ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]'
+        assert declared in source
+        project.write_text(source.replace(declared, "dependencies = []"))
         for name in ("Extensions", "Scripts"):
             shutil.copytree(str(ROOT / name), str(self.project / name), ignore=shutil.ignore_patterns("__pycache__"))
         if git:
@@ -42,7 +48,6 @@ class Installed:
         self.mod = load(self.project / "install.vfpy")
         monkeypatch.setattr(self.mod, "data_dir", lambda: self.data)
         monkeypatch.setattr(self.mod, "find_uv", lambda: None)
-        monkeypatch.setattr(self.mod, "missing", lambda requires: list(requires))
 
     def uninstall(self):
         self.mod.uninstall("com.fontlab.python-plugmix", self.data)
@@ -78,10 +83,15 @@ def test_install_when_run_then_links_point_at_this_checkout_and_scripts_are_copi
 
 
 def test_install_when_app_checkout_is_not_beside_then_output_says_so_plainly(installed, capsys):
-    installed.mod.main()
+    shutil.copy2(ROOT / "pyproject.toml", installed.project / "pyproject.toml")
+    with pytest.raises(RuntimeError, match="Install uv to verify") as error:
+        installed.mod.main()
     out = capsys.readouterr().out
-    assert "Dependency fontlab-fontlabapp>=1.2.10 is not installed and no checkout of it sits beside" in out
-    assert "Missing dependencies" in out
+    assert "fontlab-fontlabapp>=1.2.10" in str(error.value)
+    assert "Install FAILED" in out
+    assert "Installed " not in out
+    assert not (installed.data / "Scripts").exists()
+    assert all(not (installed.data / "Extensions" / kind).exists() for kind in KINDS)
 
 
 def test_install_when_run_twice_then_same_links(installed):
@@ -124,6 +134,7 @@ def test_install_when_copied_from_a_non_git_folder_then_bundles_still_load(tmp_p
 def test_pack_installer_when_dependencies_missing_then_requests_fly_without_library_cycle(
     installed, monkeypatch
 ):
+    shutil.copy2(ROOT / "pyproject.toml", installed.project / "pyproject.toml")
     project = tomllib.loads((installed.project / "pyproject.toml").read_text())
     assert project["project"]["dependencies"] == ["fontlab-fontlabapp>=1.2.10"]
     assert project["tool"]["fontlab-install"]["dependencies"] == [

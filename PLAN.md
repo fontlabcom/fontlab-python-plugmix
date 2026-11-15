@@ -2,6 +2,14 @@
 this_file: PLAN.md
 ---
 
+## Shared installer: remaining qualification — 2026-11-15
+
+Independently review the exact App 1.2.20 installer propagation and the owned bundle-fixture alignment, then run the normal combined gates and reconcile fresh main. Qualify the genuine wheel/source archive and unchanged curated Extensions ZIP before release. Keep installed App/Fly/provider versions, all installer copies, startup, root installation and native qualification separate and open.
+
+The source copy preserves original dependency constraints and managed origins, refuses unverifiable no-uv conditions before sibling execution, and skips inactive conditional siblings using canonical packaging in uv's target Python. It changes no bundle, manifest, API, dependency declaration or legal input. Cold-cache and the complete installed/native cohort remain unqualified.
+
+
+
 # Forward plan
 
 ## Functional work order — 2026-11-14
