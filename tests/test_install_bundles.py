@@ -1,157 +1,67 @@
 # this_file: tests/test_install_bundles.py
-"""The real install.vfpy puts all 50 reference bundles where FontLab's plugin core finds them (Issue 254)."""
+"""install.vfpy hands the 50 reference bundles to fontlab-instamix (Issue 254).
 
-import importlib.machinery
-import importlib.util
-import os
-import shutil
+fontlab-instamix links every bundle under the declared ``extensions`` folder into
+FontLab's ``Extensions/<kind>/`` folders. These tests pin what it reads: the stub,
+the install table and a bundle tree that FontLab's plugin core accepts.
+"""
+
+import re
 import tomllib
 from collections import Counter
 from pathlib import Path
-from types import SimpleNamespace
 
-import pytest
 from fontlabapp.plugins import registry
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def canonical_stub() -> bytes | None:
+    """instamix's own stub bytes, from the package or a sibling checkout."""
+    try:
+        from fontlab_instamix import stub
+    except ImportError:
+        sibling = ROOT.parent / "fontlab-python-instamix" / "stub" / "install.vfpy"
+        return sibling.read_bytes() if sibling.is_file() else None
+    return stub.text().encode("utf-8")
+
+
 KINDS = {"reporters": 39, "filters": 5, "tools": 4, "palettes": 1, "general": 1}
+STUB_HEADER = b"#FLM: Install this package into FontLab (fontlab-instamix)\n"
+REVERSE_DNS = re.compile(r"^[a-z][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+$")  # instamix manifest.ID_PATTERN
 
 
-def load(path):
-    """Import install.vfpy under the name it expects when imported (its suffix has no default loader)."""
-    loader = importlib.machinery.SourceFileLoader("fontlab_install", str(path))
-    module = importlib.util.module_from_spec(importlib.util.spec_from_file_location("fontlab_install", str(path), loader=loader))
-    loader.exec_module(module)
-    return module
+def table():
+    return tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
 
 
-class Installed:
-    """A copy of this repository's installable files, a temporary FontLab data folder and the real installer."""
-
-    def __init__(self, base, monkeypatch, git=True):
-        self.project = base / "plugmix"
-        self.project.mkdir()
-        for name in ("install.vfpy", "pyproject.toml"):
-            shutil.copy2(str(ROOT / name), str(self.project / name))
-        # Lifecycle cases install owned bundles without external providers.
-        project = self.project / "pyproject.toml"
-        source = project.read_text()
-        declared = 'dependencies = ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]'
-        assert declared in source
-        project.write_text(source.replace(declared, "dependencies = []"))
-        for name in ("Extensions", "Scripts"):
-            shutil.copytree(str(ROOT / name), str(self.project / name), ignore=shutil.ignore_patterns("__pycache__"))
-        if git:
-            (self.project / ".git").mkdir()
-        self.data = (base / "data").resolve()
-        self.data.mkdir()
-        self.mod = load(self.project / "install.vfpy")
-        monkeypatch.setattr(self.mod, "data_dir", lambda: self.data)
-        monkeypatch.setattr(self.mod, "find_uv", lambda: None)
-
-    def uninstall(self):
-        self.mod.uninstall("com.fontlab.python-plugmix", self.data)
+def test_installer_when_read_then_is_instamix_stub():
+    source = (ROOT / "install.vfpy").read_bytes()
+    assert source.startswith(STUB_HEADER), "install.vfpy must be the instamix stub"
+    assert b"bootstrap.install_project(__file__)" in source, "stub must hand off to instamix"
+    assert len(source.splitlines()) < 80, "stub must stay short; legacy installer is gone"
+    canonical = canonical_stub()
+    if canonical is not None:
+        assert source == canonical, "install.vfpy must match instamix's canonical stub"
+    assert not (ROOT / "install.vfpyc").exists(), "compiled legacy installer must stay deleted"
 
 
-@pytest.fixture
-def installed(tmp_path, monkeypatch):
-    return Installed(tmp_path, monkeypatch)
+def test_install_table_when_parsed_then_declares_bundles_and_dependencies_without_cycle():
+    project = table()
+    install = project["tool"]["fontlab-install"]
+    assert REVERSE_DNS.match(install["id"]) and install["id"] == "com.fontlab.python-plugmix"
+    assert install["extensions"] == "Extensions" and install["packages"] == []
+    assert project["project"]["dependencies"] == ["fontlab-fontlabapp>=1.2.10"]
+    assert install["dependencies"] == ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]
 
 
-def found(data):
+def test_extensions_when_discovered_in_place_then_plugin_core_finds_all_fifty():
+    folder = ROOT / table()["tool"]["fontlab-install"]["extensions"]
+    for kind, count in KINDS.items():
+        bundles = [p for p in (folder / kind).iterdir() if p.is_dir() and not p.name.startswith(("_", "."))]
+        assert len(bundles) == count, f"{kind}: {sorted(p.name for p in bundles)}"
     errors = []
-    plugins = registry.discover(lambda *args: errors.append(args), data / "Extensions")
-    return plugins, errors
-
-
-def test_install_when_run_then_plugin_core_discovers_all_fifty_plugins(installed):
-    installed.mod.main()
-    plugins, errors = found(installed.data)
+    plugins = registry.discover(lambda *args: errors.append(args), folder)
     assert errors == [] and len(plugins) == 50
     assert Counter(cls.kind for cls in plugins.values()) == {
         "reporter": 39, "filter": 5, "palette": 1, "tool": 4, "general": 1}
-    for kind, count in KINDS.items():
-        links = [p for p in (installed.data / "Extensions" / kind).iterdir()]
-        assert len(links) == count and all(p.is_symlink() and os.path.isabs(os.readlink(str(p))) for p in links)
-
-
-def test_install_when_run_then_links_point_at_this_checkout_and_scripts_are_copied(installed):
-    installed.mod.main()
-    link = installed.data / "Extensions" / "reporters" / "NodeCount.fontlabReporter"
-    assert os.readlink(str(link)) == os.path.abspath(str(installed.project / "Extensions/reporters/NodeCount.fontlabReporter"))
-    assert (installed.data / "Scripts" / "Plugmix" / "Show Reporters.py").is_file()
-
-
-def test_install_when_app_checkout_is_not_beside_then_output_says_so_plainly(installed, capsys):
-    shutil.copy2(ROOT / "pyproject.toml", installed.project / "pyproject.toml")
-    with pytest.raises(RuntimeError, match="Install uv to verify") as error:
-        installed.mod.main()
-    out = capsys.readouterr().out
-    assert "fontlab-fontlabapp>=1.2.10" in str(error.value)
-    assert "Install FAILED" in out
-    assert "Installed " not in out
-    assert not (installed.data / "Scripts").exists()
-    assert all(not (installed.data / "Extensions" / kind).exists() for kind in KINDS)
-
-
-def test_install_when_run_twice_then_same_links(installed):
-    installed.mod.main()
-    first = sorted(p.name for p in (installed.data / "Extensions" / "reporters").iterdir())
-    installed.mod.main()
-    assert first == sorted(p.name for p in (installed.data / "Extensions" / "reporters").iterdir())
-    assert len(found(installed.data)[0]) == 50
-
-
-def test_uninstall_when_run_then_all_fifty_links_go_and_sources_stay(installed):
-    installed.mod.main()
-    installed.uninstall()
-    for kind in KINDS:
-        folder = installed.data / "Extensions" / kind
-        assert not folder.exists() or list(folder.iterdir()) == []
-    assert found(installed.data)[0] == {}
-    assert len(list((installed.project / "Extensions").rglob("plugin.json"))) == 50
-
-
-def test_uninstall_when_user_replaced_a_link_then_their_folder_stays(installed):
-    installed.mod.main()
-    link = installed.data / "Extensions" / "filters" / "MoveOutlines.fontlabFilter"
-    link.unlink()
-    link.mkdir()
-    (link / "mine.txt").write_text("keep", encoding="utf-8")
-    installed.uninstall()
-    assert (link / "mine.txt").read_text() == "keep"
-
-
-def test_install_when_copied_from_a_non_git_folder_then_bundles_still_load(tmp_path, monkeypatch):
-    plain = Installed(tmp_path, monkeypatch, git=False)
-    plain.mod.main()
-    plugins, errors = found(plain.data)
-    assert errors == [] and len(plugins) == 50
-    assert os.readlink(str(plain.data / "Extensions/tools" / min(os.listdir(str(plain.data / "Extensions/tools"))))).startswith(
-        str(plain.data / "Extensions" / "com.fontlab.python-plugmix" / "bundles"))
-
-
-def test_pack_installer_when_dependencies_missing_then_requests_fly_without_library_cycle(
-    installed, monkeypatch
-):
-    shutil.copy2(ROOT / "pyproject.toml", installed.project / "pyproject.toml")
-    project = tomllib.loads((installed.project / "pyproject.toml").read_text())
-    assert project["project"]["dependencies"] == ["fontlab-fontlabapp>=1.2.10"]
-    assert project["tool"]["fontlab-install"]["dependencies"] == [
-        "fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"
-    ]
-    monkeypatch.delenv("PYTHONPATH", raising=False)
-    monkeypatch.setattr(installed.mod, "find_uv", lambda: "uv-fixture")
-    monkeypatch.setattr(installed.mod, "ensure_venv", lambda *args: None)
-    monkeypatch.setattr(installed.mod, "install_siblings", lambda requires: list(requires))
-    commands = []
-
-    def run(command):
-        commands.append(command)
-        return SimpleNamespace(returncode=0, stdout="installed fixture dependencies")
-
-    monkeypatch.setattr(installed.mod, "run", run)
-    installed.mod.main()
-    assert len(commands) == 1
-    assert commands[0][:3] == ["uv-fixture", "pip", "install"]
-    assert commands[0][-2:] == ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]

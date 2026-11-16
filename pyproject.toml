@@ -22,7 +22,7 @@ fallback-version = "0.1.0"
 packages = ["src/fontlab_plugmix"]
 
 [tool.hatch.build.targets.sdist]
-exclude = ["/.omc", "/install.vfpyc"]
+exclude = ["/.omc"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -23,11 +23,13 @@ installation must prepare those packages first. The legacy compatibility library
 keeps its App-only dependency.
 
 See [Extensions/README.md](Extensions/README.md) for the bundle layout and manifest.
-Run `install.vfpy` from FontLab's Scripts panel (or copy the Extensions contents
-into the FontLab user-data `Extensions/` folder by hand): it links the 50 bundles
-into `Extensions/<kind>/` and installs `Scripts/Plugmix`. It needs the
-`fontlab-fontlabapp` checkout beside this one (the Output says so if it is missing)
-and never replaces a bundle you placed yourself.
+Open `install.vfpy` in FontLab (or copy the Extensions contents into the FontLab
+user-data `Extensions/` folder by hand). The file is a short stub that hands the
+work to
+[fontlab-instamix](https://github.com/fontlabcom/fontlab-python-instamix); if
+instamix is not installed yet, the stub installs it from PyPI first. Instamix
+links the 50 bundles into `Extensions/<kind>/`, installs `Scripts/Plugmix` and
+records the install under the extension id `com.fontlab.python-plugmix`.
 Run App's `install.vfpy` first, and run it again after updating App: it records
 the App version FontLab reports, all bundles need the plugin core first released in 1.2.9. Four of the five filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need the coordinate writer first released in 1.2.10; the complete pack therefore requires 1.2.10 or newer. An older recorded version rejects bundles above its declared minimum. App's startup hook discovers the bundles. Each bundle is self-contained Python source
 with a `plugin.json`; it needs no package install or reporter launcher.
