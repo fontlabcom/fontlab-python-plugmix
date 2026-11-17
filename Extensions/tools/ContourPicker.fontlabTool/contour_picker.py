@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# this_file: Extensions/tools/ContourPicker.fontlabTool/contour_picker.py
+# this_file: Extensions/tools/ContourPicker.fontlabtool/contour_picker.py
 """Click within 12 pixels of a local node to select its contour; Shift toggles.
 
 Component nodes are excluded: their decomposed indices cannot address local

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/GlyphsInLabelColor.fontlabReporter/glyphs_in_label_color.py
+# this_file: Extensions/reporters/GlyphsInLabelColor.fontlabreporter/glyphs_in_label_color.py
 # SPDX-License-Identifier: Apache-2.0
 """Fill the glyph, components included, in its label colour."""
 

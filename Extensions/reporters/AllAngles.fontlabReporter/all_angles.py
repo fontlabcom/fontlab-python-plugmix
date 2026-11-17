@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/AllAngles.fontlabReporter/all_angles.py
+# this_file: Extensions/reporters/AllAngles.fontlabreporter/all_angles.py
 # SPDX-License-Identifier: Apache-2.0
 """Label the angle of every straight segment, optionally every handle."""
 

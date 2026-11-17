@@ -15,7 +15,7 @@ The wheel is the compatibility package only and contains no Extensions.
 
 ## Extensions and action scripts
 
-Install `fontlab-fontlabapp>=1.2.10` and `fontlab-fly>=1.3.0` with its canonical providers in FontLab's Python
+Install `fontlab-fontlabapp>=1.2.31` and `fontlab-fly>=1.3.0` with its canonical providers in FontLab's Python
 3.11 arm64 environment before using the bundles, action or startup snippet.
 Their API imports use `fly.ap`; Fly preserves App module and class identity.
 The pack installer declares and requests Fly >=1.3.0 alongside App; hand-copy
@@ -31,7 +31,7 @@ instamix is not installed yet, the stub installs it from PyPI first. Instamix
 links the 50 bundles into `Extensions/<kind>/`, installs `Scripts/Plugmix` and
 records the install under the extension id `com.fontlab.python-plugmix`.
 Run App's `install.vfpy` first, and run it again after updating App: it records
-the App version FontLab reports, all bundles need the plugin core first released in 1.2.9. Four of the five filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need the coordinate writer first released in 1.2.10; the complete pack therefore requires 1.2.10 or newer. An older recorded version rejects bundles above its declared minimum. App's startup hook discovers the bundles. Each bundle is self-contained Python source
+the App version FontLab reports, all bundles need the plugin core first released in 1.2.9. Four of the five filters (Scale Outlines, Move Outlines, Round Outline To Grid, Slant Outlines) need the coordinate writer first released in 1.2.10; the canonical lowercase pack requires App 1.2.31 or newer. An older recorded version rejects bundles above its declared minimum. App's startup hook discovers the bundles. Each bundle is self-contained Python source
 with a `plugin.json`; it needs no package install or reporter launcher.
 
 Use the Reporters palette or View > Reporters to enable reporters. The only
@@ -50,7 +50,7 @@ packages and does not edit FontLab's startup file.
 an undoable Filter, a dockable Palette, a native Tool and a General menu command.
 Its code, tests, dependencies and legal attribution are retained.
 
-For this runtime, install the package and `fontlab-fontlabapp>=1.2.10` in FontLab's
+For this runtime, install the package and `fontlab-fontlabapp>=1.2.31` in FontLab's
 Python 3.11 environment and explicitly call `fontlab_plugmix.install()` once per
 session. The optional `initScript-snippet.py` now starts App through
 `fly.ap.plugins.install()`; use it only with the App runtime. Use native MeVisLab

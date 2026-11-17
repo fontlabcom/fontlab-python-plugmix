@@ -1,6 +1,8 @@
 ---
 this_file: TODO.md
 ---
+- [ ] Issue 256: reconcile and deliver the reviewed lowercase Plugmix pack through normal hooks and release/artifact checks; resolve App 1.2.31 PyPI publisher administration, then qualify the installed provider cohort and native/Windows migration separately.
+
 
 # Open tasks
 

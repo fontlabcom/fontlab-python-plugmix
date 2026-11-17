@@ -2,6 +2,18 @@
 this_file: CHANGELOG.md
 ---
 
+## Issue 256 canonical bundle names — 2026-11-17
+
+Renamed all 50 bundle suffixes through intermediate paths; preserved stems, IDs, classes, plugin behavior and exact LICENSE/NOTICE bytes. Updated maps, tests and source/generated docs. App requirements and bundle minimum versions now require 1.2.31 for lowercase support. Before that floor update the exact no-selector runner passed 459 tests and every coverage checker; final source checks in the prepared genuine App development environment pass 459 and the unchanged checker. Strict docs rebuild and 38 docs tests pass. Earlier on 2026-11-17, the exact runner refused the then-unreleased App 1.2.31 floor. Case-sensitive scratch tests also exposed an earlier Instamix defect: modified/unowned legacy bundles remained beside new bundles and lost their old receipt entries. The later qualification below supersedes these blockers while preserving their failure history.
+
+### Later qualification — 2026-11-17
+
+Instamix 1.0.8 is published from main `9391218`, with managed legacy-conflict refusal and bootstrap readiness checks. App 1.2.31 wheel/sdist are published on GitHub at `624a07f`; downloaded and installed artifact hashes are verified. App PyPI publication remains open: release workflow `44012812669` failed with `invalid-publisher` and requires an administrative fix. Do not infer App 1.2.31 availability from PyPI.
+
+The exact no-selector Plugmix runner against genuine tagged App 1.2.31 now passes 459 tests and the unchanged coverage checks in 5.69 seconds (`exact-final-released-app.log`). This qualifies source compatibility; Plugmix fresh-main integration, normal hooks, release/artifact delivery, installation and native/Windows migration remain open.
+
+
+
 ## Unreleased
 
 - `install.vfpy` is now the short fontlab-instamix stub. It installs

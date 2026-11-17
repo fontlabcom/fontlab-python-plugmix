@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/Blindfold.fontlabReporter/blindfold.py
+# this_file: Extensions/reporters/Blindfold.fontlabreporter/blindfold.py
 # SPDX-License-Identifier: Apache-2.0
 """Hide everything outside the reading band between the metrics."""
 

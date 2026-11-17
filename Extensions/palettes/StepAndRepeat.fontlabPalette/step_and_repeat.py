@@ -1,4 +1,4 @@
-# this_file: Extensions/palettes/StepAndRepeat.fontlabPalette/step_and_repeat.py
+# this_file: Extensions/palettes/StepAndRepeat.fontlabpalette/step_and_repeat.py
 # SPDX-License-Identifier: Apache-2.0
 """Repeat selected contours at cumulative x/y offsets in the current glyph."""
 

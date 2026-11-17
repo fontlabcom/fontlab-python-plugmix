@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/GlyphFocus.fontlabReporter/glyph_focus.py
+# this_file: Extensions/reporters/GlyphFocus.fontlabreporter/glyph_focus.py
 # SPDX-License-Identifier: Apache-2.0
 """Dim the viewport outside the glyph advance and vertical metrics box."""
 

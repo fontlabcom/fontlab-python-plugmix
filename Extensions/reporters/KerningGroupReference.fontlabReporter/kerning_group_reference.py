@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/KerningGroupReference.fontlabReporter/kerning_group_reference.py
+# this_file: Extensions/reporters/KerningGroupReference.fontlabreporter/kerning_group_reference.py
 # SPDX-License-Identifier: Apache-2.0
 """Show small silhouettes of the glyph's kerning-group members beside it."""
 

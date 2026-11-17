@@ -27,7 +27,7 @@ def canonical_stub() -> bytes | None:
 
 
 KINDS = {"reporters": 39, "filters": 5, "tools": 4, "palettes": 1, "general": 1}
-STUB_HEADER = b"#FLM: Install this package into FontLab (fontlab-instamix)\n"
+STUB_HEADER = b"#FLM: Install into FontLab with fontlab-instamix\n"
 REVERSE_DNS = re.compile(r"^[a-z][a-z0-9-]*(\.[a-z0-9][a-z0-9-]*)+$")  # instamix manifest.ID_PATTERN
 
 
@@ -39,10 +39,11 @@ def test_installer_when_read_then_is_instamix_stub():
     source = (ROOT / "install.vfpy").read_bytes()
     assert source.startswith(STUB_HEADER), "install.vfpy must be the instamix stub"
     assert b"bootstrap.install_project(__file__)" in source, "stub must hand off to instamix"
-    assert len(source.splitlines()) < 80, "stub must stay short; legacy installer is gone"
+    assert b'getattr(extension, "preflight_plugin_migration", None)' in source, "stub must require safe managed bundle migration"
+    assert b"def required_api():" in source and b"return required_api()" in source, "both reused and replaced providers must be ready"
     canonical = canonical_stub()
     if canonical is not None:
-        assert source == canonical, "install.vfpy must match instamix's canonical stub"
+        assert source.replace(b"this_file: install.vfpy", b"this_file: stub/install.vfpy") == canonical, "install.vfpy must match instamix's canonical stub"
     assert not (ROOT / "install.vfpyc").exists(), "compiled legacy installer must stay deleted"
 
 
@@ -51,8 +52,8 @@ def test_install_table_when_parsed_then_declares_bundles_and_dependencies_withou
     install = project["tool"]["fontlab-install"]
     assert REVERSE_DNS.match(install["id"]) and install["id"] == "com.fontlab.python-plugmix"
     assert install["extensions"] == "Extensions" and install["packages"] == []
-    assert project["project"]["dependencies"] == ["fontlab-fontlabapp>=1.2.10"]
-    assert install["dependencies"] == ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]
+    assert project["project"]["dependencies"] == ["fontlab-fontlabapp>=1.2.31"]
+    assert install["dependencies"] == ["fontlab-fontlabapp>=1.2.31", "fontlab-fly>=1.3.0"]
 
 
 def test_extensions_when_discovered_in_place_then_plugin_core_finds_all_fifty():

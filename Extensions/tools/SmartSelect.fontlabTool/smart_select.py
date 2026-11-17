@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# this_file: Extensions/tools/SmartSelect.fontlabTool/smart_select.py
+# this_file: Extensions/tools/SmartSelect.fontlabtool/smart_select.py
 """Drag a rectangle to select whole contours touched by their nodes.
 
 Selection-only cut from But Ko's Smart Select Tool: no double-click contour

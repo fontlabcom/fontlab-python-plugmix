@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/NodesCloseToZones.fontlabReporter/nodes_close_to_zones.py
+# this_file: Extensions/reporters/NodesCloseToZones.fontlabreporter/nodes_close_to_zones.py
 # SPDX-License-Identifier: Apache-2.0
 """Mark on-curves near, but not exactly on, master zones or metric levels."""
 

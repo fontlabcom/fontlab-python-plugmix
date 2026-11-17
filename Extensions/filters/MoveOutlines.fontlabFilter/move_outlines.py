@@ -1,4 +1,4 @@
-# this_file: Extensions/filters/MoveOutlines.fontlabFilter/move_outlines.py
+# this_file: Extensions/filters/MoveOutlines.fontlabfilter/move_outlines.py
 # SPDX-License-Identifier: Apache-2.0
 """Translate own outlines; anchors, components and advance stay fixed."""
 

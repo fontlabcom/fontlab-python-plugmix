@@ -189,8 +189,8 @@ def test_sdist_when_built_then_omits_operational_and_compiled_payload_but_keeps_
         for path in (
             "src/fontlab_plugmix/__init__.py", "README.md", "LICENSE", "NOTICE",
             "install.vfpy", "initScript-snippet.py", "pyproject.toml", "test.sh",
-            "Extensions/reporters/NodeCount.fontlabReporter/plugin.json",
-            "Extensions/reporters/NodeCount.fontlabReporter/node_count.py",
+            "Extensions/reporters/NodeCount.fontlabreporter/plugin.json",
+            "Extensions/reporters/NodeCount.fontlabreporter/node_count.py",
             "Scripts/Plugmix/Show Reporters.py", "tests/test_pack_artifacts.py",
             "src_docs/md/installation.md", "docs/installation/index.html",
             "tests_docs/test_site.py",

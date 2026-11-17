@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/SelectedCoordinates.fontlabReporter/selected_coordinates.py
+# this_file: Extensions/reporters/SelectedCoordinates.fontlabreporter/selected_coordinates.py
 # SPDX-License-Identifier: Apache-2.0
 """Show x and y beside selected native nodes."""
 

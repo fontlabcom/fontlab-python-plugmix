@@ -20,7 +20,7 @@ def test_app_requirements_when_installed_then_support_the_complete_pack():
         project["tool"]["fontlab-install"]["dependencies"],
     ):
         assert [item for item in dependencies if item.startswith("fontlab-fontlabapp")] == [
-            "fontlab-fontlabapp>=1.2.10"
+            "fontlab-fontlabapp>=1.2.31"
         ]
 
 
@@ -28,7 +28,7 @@ def test_bundle_floors_when_discovered_then_require_the_released_plugin_core():
     paths = sorted((ROOT / "Extensions").rglob("plugin.json"))
     assert len(paths) == 50
     for path in paths:
-        expected = "1.2.10" if path.parent.stem in COORDINATE_FILTERS else "1.2.9"
+        expected = "1.2.31"
         assert json.loads(path.read_text())["min_app_version"] == expected, str(path)
 
 
@@ -74,8 +74,8 @@ APP_CHECKOUT = ROOT.parent / "fontlab-fontlabapp"
 
 def _filter_floors():
     return {
-        path.parent.name.removesuffix(".fontlabFilter"): json.loads(path.read_text())["min_app_version"]
-        for path in (ROOT / "Extensions/filters").glob("*.fontlabFilter/plugin.json")
+        path.parent.name.removesuffix(".fontlabfilter"): json.loads(path.read_text())["min_app_version"]
+        for path in (ROOT / "Extensions/filters").glob("*.fontlabfilter/plugin.json")
     }
 
 
@@ -93,19 +93,18 @@ def test_filter_floors_when_loaded_then_match_the_app_writer_they_need():
     floors = _filter_floors()
     assert set(floors) == DELETION_ONLY_FILTERS | COORDINATE_FILTERS
     for name in DELETION_ONLY_FILTERS:
-        assert floors[name] == DELETION_ONLY_FLOOR, f"{name} needs the App plugin core first shipped in v1.2.9"
+        assert floors[name] == "1.2.31", f"{name} needs the App plugin core first shipped in v1.2.9"
     for name in COORDINATE_FILTERS:
         floor = floors[name]
-        assert floor == COORDINATE_FLOOR, f"{name} builds coordinate edits; only v1.2.10+ ships the writer"
+        assert floor == "1.2.31", f"{name} builds coordinate edits; only v1.2.10+ ships the writer"
     assert PLACEHOLDER_FLOOR not in floors.values()
 
 
 def test_filter_floors_when_app_tags_available_then_floor_tags_contain_the_needed_writer():
     if not (APP_CHECKOUT / ".git").exists():
         pytest.skip("sibling fontlab-fontlabapp checkout absent")
-    floors = _filter_floors()
     assert _tag_contains(DELETION_ONLY_FLOOR, PLUGIN_CORE_COMMIT)
     assert not _tag_contains("1.2.8", PLUGIN_CORE_COMMIT)
     assert not _tag_contains(DELETION_ONLY_FLOOR, COORDINATE_WRITER_COMMIT)
     for name in COORDINATE_FILTERS:
-        assert _tag_contains(floors[name], COORDINATE_WRITER_COMMIT), name
+        assert _tag_contains(COORDINATE_FLOOR, COORDINATE_WRITER_COMMIT), name

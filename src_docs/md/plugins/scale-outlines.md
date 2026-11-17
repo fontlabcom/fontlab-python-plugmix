@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/scale-outlines.md
 
 # Scale Outlines
 
-Bundle: `Extensions/filters/ScaleOutlines.fontlabFilter`  
+Bundle: `Extensions/filters/ScaleOutlines.fontlabfilter`  
 Stable ID: `scale_outlines`
 
 Resize drawn outlines about a fixed pivot. Open this filter from the Glyph

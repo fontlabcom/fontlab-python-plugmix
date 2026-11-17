@@ -1,0 +1,8 @@
+{
+  "id": "label_color",
+  "name": "Show Label Color",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "label_color:LabelColor",
+  "min_app_version": "1.2.31"
+}

@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/node-probe.md
 
 # Node Probe
 
-Bundle: `Extensions/tools/NodeProbe.fontlabTool`  
+Bundle: `Extensions/tools/NodeProbe.fontlabtool`  
 Stable ID: `node_probe`
 
 Inspect node placement without changing selection. Activate Node Probe from

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/SmoothNodeAngles.fontlabReporter/smooth_node_angles.py
+# this_file: Extensions/reporters/SmoothNodeAngles.fontlabreporter/smooth_node_angles.py
 # SPDX-License-Identifier: Apache-2.0
 """Label smooth-node handle kinks and incoming/outgoing length proportion."""
 

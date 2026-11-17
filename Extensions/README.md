@@ -19,7 +19,7 @@ the retained `fontlab_plugmix` compatibility installer in the same session.
 A bundle has a kind folder, a suffix matching its kind, a manifest and Python:
 
 ```text
-Extensions/reporters/NodeIndexes.fontlabReporter/
+Extensions/reporters/NodeIndexes.fontlabreporter/
     plugin.json
     node_indexes.py
 ```
@@ -44,11 +44,11 @@ as a FontLab script. Invalid manifests/imports are logged and skipped.
 
 | Kind | Folder | Suffix | Base class |
 | --- | --- | --- | --- |
-| reporter | reporters | .fontlabReporter | Reporter |
-| filter | filters | .fontlabFilter | Filter |
-| tool | tools | .fontlabTool | Tool |
-| palette | palettes | .fontlabPalette | Palette |
-| general | general | .fontlabGeneral | General |
+| reporter | reporters | .fontlabreporter | Reporter |
+| filter | filters | .fontlabfilter | Filter |
+| tool | tools | .fontlabtool | Tool |
+| palette | palettes | .fontlabpalette | Palette |
+| general | general | .fontlabgeneral | General |
 
 Discovery is sorted and repeated discovery retains class identity. Restart
 FontLab to load changed bundle source. `Reporter.compute()` takes immutable
@@ -73,3 +73,5 @@ checks remain in the repository TODO. Original notices are retained in NOTICE.
 The four coordinate filters preserve components, anchors, advance widths and
 native curve types. Tools do not change geometry. Their pages describe scope,
 parameters and interaction limits; native verification remains open.
+
+Canonical lowercase bundle suffixes require App 1.2.31 or newer. Legacy title-case suffixes remain accepted by App. Instamix 1.0.8 provides the qualified safeguard that refuses distinct modified or unowned legacy bundle conflicts. App 1.2.31 wheel/sdist are available from its GitHub release; PyPI publication remains pending an administrative trusted-publisher fix. Plugmix release/deployment and native/Windows migration remain separate qualification steps.

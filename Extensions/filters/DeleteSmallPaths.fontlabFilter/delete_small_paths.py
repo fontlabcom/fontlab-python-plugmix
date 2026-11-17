@@ -1,4 +1,4 @@
-# this_file: Extensions/filters/DeleteSmallPaths.fontlabFilter/delete_small_paths.py
+# this_file: Extensions/filters/DeleteSmallPaths.fontlabfilter/delete_small_paths.py
 # SPDX-License-Identifier: Apache-2.0
 """Remove closed contours whose flattened area or bounds are small."""
 

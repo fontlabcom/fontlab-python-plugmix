@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/move-outlines.md
 
 # Move Outlines
 
-Bundle: `Extensions/filters/MoveOutlines.fontlabFilter`  
+Bundle: `Extensions/filters/MoveOutlines.fontlabfilter`  
 Stable ID: `move_outlines`
 
 Translate drawn outlines while leaving spacing and attachment data in place.

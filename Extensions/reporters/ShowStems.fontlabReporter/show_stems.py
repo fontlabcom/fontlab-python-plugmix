@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ShowStems.fontlabReporter/show_stems.py
+# this_file: Extensions/reporters/ShowStems.fontlabreporter/show_stems.py
 # SPDX-License-Identifier: Apache-2.0
 """Measure horizontal stem and counter widths along a mid-height scan line."""
 

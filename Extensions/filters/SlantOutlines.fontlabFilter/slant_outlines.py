@@ -1,4 +1,4 @@
-# this_file: Extensions/filters/SlantOutlines.fontlabFilter/slant_outlines.py
+# this_file: Extensions/filters/SlantOutlines.fontlabfilter/slant_outlines.py
 # SPDX-License-Identifier: Apache-2.0
 """Apply geometric rightward slant above a Y pivot, without optical correction."""
 

@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2] / "Extensions/tools"
 
 
 def bundle(name):
-    cls = load_bundle(ROOT / f"{name}.fontlabTool")
+    cls = load_bundle(ROOT / f"{name}.fontlabtool")
     return cls(), sys.modules[cls.__module__]
 
 

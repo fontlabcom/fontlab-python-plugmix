@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/SegmentLength.fontlabReporter/segment_length.py
+# this_file: Extensions/reporters/SegmentLength.fontlabreporter/segment_length.py
 # SPDX-License-Identifier: Apache-2.0
 """Label straight and flattened Bézier lengths for selected or all segments."""
 

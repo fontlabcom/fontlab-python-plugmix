@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/NodeIndexes.fontlabReporter/node_indexes.py
+# this_file: Extensions/reporters/NodeIndexes.fontlabreporter/node_indexes.py
 # SPDX-License-Identifier: Apache-2.0
 """Label every node with its full contour index, including off-curves.
 

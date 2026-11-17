@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/KernIndicator.fontlabReporter/kern_indicator.py
+# this_file: Extensions/reporters/KernIndicator.fontlabreporter/kern_indicator.py
 # SPDX-License-Identifier: Apache-2.0
 """Print the kerning values of the pairs touching the glyph, above the junctions."""
 

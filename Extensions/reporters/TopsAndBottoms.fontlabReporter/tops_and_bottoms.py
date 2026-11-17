@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/TopsAndBottoms.fontlabReporter/tops_and_bottoms.py
+# this_file: Extensions/reporters/TopsAndBottoms.fontlabreporter/tops_and_bottoms.py
 # SPDX-License-Identifier: Apache-2.0
 """Label the highest and lowest on-curve positions in the active glyph."""
 

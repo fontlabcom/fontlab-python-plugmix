@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/Rekha.fontlabReporter/rekha.py
+# this_file: Extensions/reporters/Rekha.fontlabreporter/rekha.py
 # SPDX-License-Identifier: Apache-2.0
 """Draw the head-line bar of Devanagari, Bengali and Gurmukhi letters."""
 

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ShowCharacter.fontlabReporter/show_character.py
+# this_file: Extensions/reporters/ShowCharacter.fontlabreporter/show_character.py
 # SPDX-License-Identifier: Apache-2.0
 """Print the glyph's character above it at a fixed pixel size."""
 

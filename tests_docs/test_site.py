@@ -15,13 +15,13 @@ PAGES = ['index.html', 'installation/index.html', 'app-menu-scripts/index.html',
 
 
 NEW_PLUGINS = {
-    'round-outline-to-grid': ('filters/RoundOutlineToGrid.fontlabFilter', 'Round Outline to Grid'),
-    'move-outlines': ('filters/MoveOutlines.fontlabFilter', 'Move Outlines'),
-    'scale-outlines': ('filters/ScaleOutlines.fontlabFilter', 'Scale Outlines'),
-    'slant-outlines': ('filters/SlantOutlines.fontlabFilter', 'Slant Outlines'),
-    'measurement-ruler': ('tools/MeasurementRuler.fontlabTool', 'Measurement Ruler'),
-    'node-probe': ('tools/NodeProbe.fontlabTool', 'Node Probe'),
-    'contour-picker': ('tools/ContourPicker.fontlabTool', 'Contour Picker'),
+    'round-outline-to-grid': ('filters/RoundOutlineToGrid.fontlabfilter', 'Round Outline to Grid'),
+    'move-outlines': ('filters/MoveOutlines.fontlabfilter', 'Move Outlines'),
+    'scale-outlines': ('filters/ScaleOutlines.fontlabfilter', 'Scale Outlines'),
+    'slant-outlines': ('filters/SlantOutlines.fontlabfilter', 'Slant Outlines'),
+    'measurement-ruler': ('tools/MeasurementRuler.fontlabtool', 'Measurement Ruler'),
+    'node-probe': ('tools/NodeProbe.fontlabtool', 'Node Probe'),
+    'contour-picker': ('tools/ContourPicker.fontlabtool', 'Contour Picker'),
 }
 PAGES += [f'plugins/{slug}/index.html' for slug in NEW_PLUGINS]
 
@@ -142,7 +142,7 @@ class SiteTests(unittest.TestCase):
 
     def test_both_complete_reporter_catalogues_and_show_reporters_action_are_present(self):
         app = ' '.join(Page((SITE / 'app-menu-scripts/index.html').read_text()).text)
-        bundles = sorted((ROOT / 'Extensions/reporters').glob('*.fontlabReporter'))
+        bundles = sorted((ROOT / 'Extensions/reporters').glob('*.fontlabreporter'))
         self.assertEqual(len(bundles), 39)
         for bundle in bundles:
             with self.subTest(bundle=bundle.name):

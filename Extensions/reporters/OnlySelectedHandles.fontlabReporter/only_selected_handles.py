@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/OnlySelectedHandles.fontlabReporter/only_selected_handles.py
+# this_file: Extensions/reporters/OnlySelectedHandles.fontlabreporter/only_selected_handles.py
 # SPDX-License-Identifier: Apache-2.0
 """Emphasise handles of the selection over FontLab's native handle drawing."""
 

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/VerticalMetrics.fontlabReporter/vertical_metrics.py
+# this_file: Extensions/reporters/VerticalMetrics.fontlabreporter/vertical_metrics.py
 # SPDX-License-Identifier: Apache-2.0
 """Show the five principal horizontal metric lines with labels."""
 

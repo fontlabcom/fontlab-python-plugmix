@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ShowRotated.fontlabReporter/show_rotated.py
+# this_file: Extensions/reporters/ShowRotated.fontlabreporter/show_rotated.py
 # SPDX-License-Identifier: Apache-2.0
 """Outline the glyph rotated 180 degrees about its bounds centre."""
 

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/TwoPointDistance.fontlabReporter/two_point_distance.py
+# this_file: Extensions/reporters/TwoPointDistance.fontlabreporter/two_point_distance.py
 # SPDX-License-Identifier: Apache-2.0
 """Show a segment, distance and angle when exactly two nodes are selected."""
 

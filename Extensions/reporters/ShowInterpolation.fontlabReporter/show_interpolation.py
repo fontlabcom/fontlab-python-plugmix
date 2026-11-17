@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ShowInterpolation.fontlabReporter/show_interpolation.py
+# this_file: Extensions/reporters/ShowInterpolation.fontlabreporter/show_interpolation.py
 # SPDX-License-Identifier: Apache-2.0
 """Fill the halfway blend between the shown layer and each other master behind it."""
 

@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/slant-outlines.md
 
 # Slant Outlines
 
-Bundle: `Extensions/filters/SlantOutlines.fontlabFilter`  
+Bundle: `Extensions/filters/SlantOutlines.fontlabfilter`  
 Stable ID: `slant_outlines`
 
 Apply a geometric shear to drawn outlines. Open this filter from the Glyph

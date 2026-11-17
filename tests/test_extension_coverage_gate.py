@@ -18,7 +18,7 @@ def test_bundle_gate_when_evidence_changes_then_enforces_both_rates(
     tmp_path, monkeypatch, lines, branches, present, result
 ):
     monkeypatch.chdir(tmp_path)
-    source = tmp_path / "Extensions/reporters/Example.fontlabReporter/plugin.py"
+    source = tmp_path / "Extensions/reporters/Example.fontlabreporter/plugin.py"
     source.parent.mkdir(parents=True)
     source.write_text("pass\n")
     (tmp_path / "initScript-snippet.py").write_text("pass\n")

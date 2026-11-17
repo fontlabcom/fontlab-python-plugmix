@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ColorToner.fontlabReporter/color_toner.py
+# this_file: Extensions/reporters/ColorToner.fontlabreporter/color_toner.py
 # SPDX-License-Identifier: Apache-2.0
 """Shade every component in translucent black so composed parts stand out."""
 

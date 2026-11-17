@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/AngledHandles.fontlabReporter/angled_handles.py
+# this_file: Extensions/reporters/AngledHandles.fontlabreporter/angled_handles.py
 # SPDX-License-Identifier: Apache-2.0
 """Mark off-curve handles departing from horizontal, vertical or italic axes."""
 

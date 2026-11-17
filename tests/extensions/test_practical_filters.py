@@ -13,7 +13,7 @@ BUNDLES = ("RoundOutlineToGrid", "MoveOutlines", "ScaleOutlines", "SlantOutlines
 
 
 def plugin(name):
-    return load_bundle(ROOT / f"{name}.fontlabFilter")()
+    return load_bundle(ROOT / f"{name}.fontlabfilter")()
 
 
 @pytest.mark.parametrize("name", BUNDLES)

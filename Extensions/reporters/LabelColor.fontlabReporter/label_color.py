@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/LabelColor.fontlabReporter/label_color.py
+# this_file: Extensions/reporters/LabelColor.fontlabreporter/label_color.py
 # SPDX-License-Identifier: Apache-2.0
 """Draw a bar in the glyph's label colour under the glyph."""
 

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/StemThickness.fontlabReporter/stem_thickness.py
+# this_file: Extensions/reporters/StemThickness.fontlabreporter/stem_thickness.py
 # SPDX-License-Identifier: Apache-2.0
 """Measure the stem under the mouse across the outline, perpendicular to it."""
 

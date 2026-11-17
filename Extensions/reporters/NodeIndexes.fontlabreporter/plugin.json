@@ -1,0 +1,8 @@
+{
+  "id": "node_indexes",
+  "name": "Node Indexes",
+  "kind": "reporter",
+  "version": "1.0.0",
+  "entry": "node_indexes:NodeIndexes",
+  "min_app_version": "1.2.31"
+}

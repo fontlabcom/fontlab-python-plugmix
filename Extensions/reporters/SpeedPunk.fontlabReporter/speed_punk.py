@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/SpeedPunk.fontlabReporter/speed_punk.py
+# this_file: Extensions/reporters/SpeedPunk.fontlabreporter/speed_punk.py
 # SPDX-License-Identifier: Apache-2.0
 """Draw a colour-ramped curvature comb along every curve segment."""
 

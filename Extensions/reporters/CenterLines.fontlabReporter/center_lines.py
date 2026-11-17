@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/CenterLines.fontlabReporter/center_lines.py
+# this_file: Extensions/reporters/CenterLines.fontlabreporter/center_lines.py
 # SPDX-License-Identifier: Apache-2.0
 """Show advance and vertical-metric center guides."""
 

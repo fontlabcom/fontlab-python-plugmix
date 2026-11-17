@@ -1,7 +1,7 @@
 [
   {
     "original": "plugins/all_angles.py",
-    "bundle": "Extensions/reporters/AllAngles.fontlabReporter",
+    "bundle": "Extensions/reporters/AllAngles.fontlabreporter",
     "module": "all_angles",
     "class": "AllAngles",
     "id": "all_angles",
@@ -9,7 +9,7 @@
   },
   {
     "original": "plugins/anchor_cloud.py",
-    "bundle": "Extensions/reporters/AnchorCloud.fontlabReporter",
+    "bundle": "Extensions/reporters/AnchorCloud.fontlabreporter",
     "module": "anchor_cloud",
     "class": "AnchorCloud",
     "id": "anchor_cloud",
@@ -17,7 +17,7 @@
   },
   {
     "original": "plugins/angled_handles.py",
-    "bundle": "Extensions/reporters/AngledHandles.fontlabReporter",
+    "bundle": "Extensions/reporters/AngledHandles.fontlabreporter",
     "module": "angled_handles",
     "class": "AngledHandles",
     "id": "angled_handles",
@@ -25,7 +25,7 @@
   },
   {
     "original": "plugins/blindfold.py",
-    "bundle": "Extensions/reporters/Blindfold.fontlabReporter",
+    "bundle": "Extensions/reporters/Blindfold.fontlabreporter",
     "module": "blindfold",
     "class": "Blindfold",
     "id": "blindfold",
@@ -33,7 +33,7 @@
   },
   {
     "original": "plugins/center_lines.py",
-    "bundle": "Extensions/reporters/CenterLines.fontlabReporter",
+    "bundle": "Extensions/reporters/CenterLines.fontlabreporter",
     "module": "center_lines",
     "class": "CenterLines",
     "id": "center_lines",
@@ -41,7 +41,7 @@
   },
   {
     "original": "plugins/color_toner.py",
-    "bundle": "Extensions/reporters/ColorToner.fontlabReporter",
+    "bundle": "Extensions/reporters/ColorToner.fontlabreporter",
     "module": "color_toner",
     "class": "ColorToner",
     "id": "color_toner",
@@ -49,7 +49,7 @@
   },
   {
     "original": "plugins/crosshair.py",
-    "bundle": "Extensions/reporters/Crosshair.fontlabReporter",
+    "bundle": "Extensions/reporters/Crosshair.fontlabreporter",
     "module": "crosshair",
     "class": "Crosshair",
     "id": "crosshair",
@@ -57,7 +57,7 @@
   },
   {
     "original": "plugins/duplicate_anchors.py",
-    "bundle": "Extensions/reporters/DuplicateAnchors.fontlabReporter",
+    "bundle": "Extensions/reporters/DuplicateAnchors.fontlabreporter",
     "module": "duplicate_anchors",
     "class": "DuplicateAnchors",
     "id": "duplicate_anchors",
@@ -65,7 +65,7 @@
   },
   {
     "original": "plugins/export_status.py",
-    "bundle": "Extensions/reporters/ExportStatus.fontlabReporter",
+    "bundle": "Extensions/reporters/ExportStatus.fontlabreporter",
     "module": "export_status",
     "class": "ExportStatus",
     "id": "export_status",
@@ -73,7 +73,7 @@
   },
   {
     "original": "plugins/global_glyph.py",
-    "bundle": "Extensions/reporters/GlobalGlyph.fontlabReporter",
+    "bundle": "Extensions/reporters/GlobalGlyph.fontlabreporter",
     "module": "global_glyph",
     "class": "GlobalGlyph",
     "id": "global_glyph",
@@ -81,7 +81,7 @@
   },
   {
     "original": "plugins/glyph_focus.py",
-    "bundle": "Extensions/reporters/GlyphFocus.fontlabReporter",
+    "bundle": "Extensions/reporters/GlyphFocus.fontlabreporter",
     "module": "glyph_focus",
     "class": "GlyphFocus",
     "id": "glyph_focus",
@@ -89,7 +89,7 @@
   },
   {
     "original": "plugins/glyphs_in_label_color.py",
-    "bundle": "Extensions/reporters/GlyphsInLabelColor.fontlabReporter",
+    "bundle": "Extensions/reporters/GlyphsInLabelColor.fontlabreporter",
     "module": "glyphs_in_label_color",
     "class": "GlyphsInLabelColor",
     "id": "glyphs_in_label_color",
@@ -97,7 +97,7 @@
   },
   {
     "original": "plugins/imprecise_italic_angle.py",
-    "bundle": "Extensions/reporters/ImpreciseItalicAngle.fontlabReporter",
+    "bundle": "Extensions/reporters/ImpreciseItalicAngle.fontlabreporter",
     "module": "imprecise_italic_angle",
     "class": "ImpreciseItalicAngle",
     "id": "imprecise_italic_angle",
@@ -105,7 +105,7 @@
   },
   {
     "original": "plugins/kern_indicator.py",
-    "bundle": "Extensions/reporters/KernIndicator.fontlabReporter",
+    "bundle": "Extensions/reporters/KernIndicator.fontlabreporter",
     "module": "kern_indicator",
     "class": "KernIndicator",
     "id": "kern_indicator",
@@ -113,7 +113,7 @@
   },
   {
     "original": "plugins/kerning_group_reference.py",
-    "bundle": "Extensions/reporters/KerningGroupReference.fontlabReporter",
+    "bundle": "Extensions/reporters/KerningGroupReference.fontlabreporter",
     "module": "kerning_group_reference",
     "class": "KerningGroupReference",
     "id": "kerning_group_reference",
@@ -121,7 +121,7 @@
   },
   {
     "original": "plugins/label_color.py",
-    "bundle": "Extensions/reporters/LabelColor.fontlabReporter",
+    "bundle": "Extensions/reporters/LabelColor.fontlabreporter",
     "module": "label_color",
     "class": "LabelColor",
     "id": "label_color",
@@ -129,7 +129,7 @@
   },
   {
     "original": "plugins/node_count.py",
-    "bundle": "Extensions/reporters/NodeCount.fontlabReporter",
+    "bundle": "Extensions/reporters/NodeCount.fontlabreporter",
     "module": "node_count",
     "class": "NodeCount",
     "id": "node_count",
@@ -137,7 +137,7 @@
   },
   {
     "original": "plugins/node_indexes.py",
-    "bundle": "Extensions/reporters/NodeIndexes.fontlabReporter",
+    "bundle": "Extensions/reporters/NodeIndexes.fontlabreporter",
     "module": "node_indexes",
     "class": "NodeIndexes",
     "id": "node_indexes",
@@ -145,7 +145,7 @@
   },
   {
     "original": "plugins/nodes_close_to_zones.py",
-    "bundle": "Extensions/reporters/NodesCloseToZones.fontlabReporter",
+    "bundle": "Extensions/reporters/NodesCloseToZones.fontlabreporter",
     "module": "nodes_close_to_zones",
     "class": "NodesCloseToZones",
     "id": "nodes_close_to_zones",
@@ -153,7 +153,7 @@
   },
   {
     "original": "plugins/offcurve_outside_bounds.py",
-    "bundle": "Extensions/reporters/OffcurveOutsideBounds.fontlabReporter",
+    "bundle": "Extensions/reporters/OffcurveOutsideBounds.fontlabreporter",
     "module": "offcurve_outside_bounds",
     "class": "OffcurveOutsideBounds",
     "id": "offcurve_outside_bounds",
@@ -161,7 +161,7 @@
   },
   {
     "original": "plugins/only_selected_handles.py",
-    "bundle": "Extensions/reporters/OnlySelectedHandles.fontlabReporter",
+    "bundle": "Extensions/reporters/OnlySelectedHandles.fontlabreporter",
     "module": "only_selected_handles",
     "class": "OnlySelectedHandles",
     "id": "only_selected_handles",
@@ -169,7 +169,7 @@
   },
   {
     "original": "plugins/rekha.py",
-    "bundle": "Extensions/reporters/Rekha.fontlabReporter",
+    "bundle": "Extensions/reporters/Rekha.fontlabreporter",
     "module": "rekha",
     "class": "Rekha",
     "id": "rekha",
@@ -177,7 +177,7 @@
   },
   {
     "original": "plugins/rsb_line.py",
-    "bundle": "Extensions/reporters/RSBLine.fontlabReporter",
+    "bundle": "Extensions/reporters/RSBLine.fontlabreporter",
     "module": "rsb_line",
     "class": "RSBLine",
     "id": "rsb_line",
@@ -185,7 +185,7 @@
   },
   {
     "original": "plugins/segment_length.py",
-    "bundle": "Extensions/reporters/SegmentLength.fontlabReporter",
+    "bundle": "Extensions/reporters/SegmentLength.fontlabreporter",
     "module": "segment_length",
     "class": "SegmentLength",
     "id": "segment_length",
@@ -193,7 +193,7 @@
   },
   {
     "original": "plugins/selected_coordinates.py",
-    "bundle": "Extensions/reporters/SelectedCoordinates.fontlabReporter",
+    "bundle": "Extensions/reporters/SelectedCoordinates.fontlabreporter",
     "module": "selected_coordinates",
     "class": "SelectedCoordinates",
     "id": "selected_coordinates",
@@ -201,7 +201,7 @@
   },
   {
     "original": "plugins/show_background.py",
-    "bundle": "Extensions/reporters/ShowBackground.fontlabReporter",
+    "bundle": "Extensions/reporters/ShowBackground.fontlabreporter",
     "module": "show_background",
     "class": "ShowBackground",
     "id": "show_background",
@@ -209,7 +209,7 @@
   },
   {
     "original": "plugins/show_character.py",
-    "bundle": "Extensions/reporters/ShowCharacter.fontlabReporter",
+    "bundle": "Extensions/reporters/ShowCharacter.fontlabreporter",
     "module": "show_character",
     "class": "ShowCharacter",
     "id": "show_character",
@@ -217,7 +217,7 @@
   },
   {
     "original": "plugins/show_interpolation.py",
-    "bundle": "Extensions/reporters/ShowInterpolation.fontlabReporter",
+    "bundle": "Extensions/reporters/ShowInterpolation.fontlabreporter",
     "module": "show_interpolation",
     "class": "ShowInterpolation",
     "id": "show_interpolation",
@@ -225,7 +225,7 @@
   },
   {
     "original": "plugins/show_rotated.py",
-    "bundle": "Extensions/reporters/ShowRotated.fontlabReporter",
+    "bundle": "Extensions/reporters/ShowRotated.fontlabreporter",
     "module": "show_rotated",
     "class": "ShowRotated",
     "id": "show_rotated",
@@ -233,7 +233,7 @@
   },
   {
     "original": "plugins/show_stems.py",
-    "bundle": "Extensions/reporters/ShowStems.fontlabReporter",
+    "bundle": "Extensions/reporters/ShowStems.fontlabreporter",
     "module": "show_stems",
     "class": "ShowStems",
     "id": "show_stems",
@@ -241,7 +241,7 @@
   },
   {
     "original": "plugins/siblings.py",
-    "bundle": "Extensions/reporters/Siblings.fontlabReporter",
+    "bundle": "Extensions/reporters/Siblings.fontlabreporter",
     "module": "siblings",
     "class": "Siblings",
     "id": "siblings",
@@ -249,7 +249,7 @@
   },
   {
     "original": "plugins/smart_plumblines.py",
-    "bundle": "Extensions/reporters/SmartPlumblines.fontlabReporter",
+    "bundle": "Extensions/reporters/SmartPlumblines.fontlabreporter",
     "module": "smart_plumblines",
     "class": "SmartPlumblines",
     "id": "smart_plumblines",
@@ -257,7 +257,7 @@
   },
   {
     "original": "plugins/smooth_node_angles.py",
-    "bundle": "Extensions/reporters/SmoothNodeAngles.fontlabReporter",
+    "bundle": "Extensions/reporters/SmoothNodeAngles.fontlabreporter",
     "module": "smooth_node_angles",
     "class": "SmoothNodeAngles",
     "id": "smooth_node_angles",
@@ -265,7 +265,7 @@
   },
   {
     "original": "plugins/speed_punk.py",
-    "bundle": "Extensions/reporters/SpeedPunk.fontlabReporter",
+    "bundle": "Extensions/reporters/SpeedPunk.fontlabreporter",
     "module": "speed_punk",
     "class": "SpeedPunk",
     "id": "speed_punk",
@@ -273,7 +273,7 @@
   },
   {
     "original": "plugins/stem_thickness.py",
-    "bundle": "Extensions/reporters/StemThickness.fontlabReporter",
+    "bundle": "Extensions/reporters/StemThickness.fontlabreporter",
     "module": "stem_thickness",
     "class": "StemThickness",
     "id": "stem_thickness",
@@ -281,7 +281,7 @@
   },
   {
     "original": "plugins/tops_and_bottoms.py",
-    "bundle": "Extensions/reporters/TopsAndBottoms.fontlabReporter",
+    "bundle": "Extensions/reporters/TopsAndBottoms.fontlabreporter",
     "module": "tops_and_bottoms",
     "class": "TopsAndBottoms",
     "id": "tops_and_bottoms",
@@ -289,7 +289,7 @@
   },
   {
     "original": "plugins/two_point_distance.py",
-    "bundle": "Extensions/reporters/TwoPointDistance.fontlabReporter",
+    "bundle": "Extensions/reporters/TwoPointDistance.fontlabreporter",
     "module": "two_point_distance",
     "class": "TwoPointDistance",
     "id": "two_point_distance",
@@ -297,7 +297,7 @@
   },
   {
     "original": "plugins/unitizer.py",
-    "bundle": "Extensions/reporters/Unitizer.fontlabReporter",
+    "bundle": "Extensions/reporters/Unitizer.fontlabreporter",
     "module": "unitizer",
     "class": "Unitizer",
     "id": "unitizer",
@@ -305,7 +305,7 @@
   },
   {
     "original": "plugins/vertical_metrics.py",
-    "bundle": "Extensions/reporters/VerticalMetrics.fontlabReporter",
+    "bundle": "Extensions/reporters/VerticalMetrics.fontlabreporter",
     "module": "vertical_metrics",
     "class": "VerticalMetrics",
     "id": "vertical_metrics",
@@ -313,7 +313,7 @@
   },
   {
     "original": "filters/delete_small_paths.py",
-    "bundle": "Extensions/filters/DeleteSmallPaths.fontlabFilter",
+    "bundle": "Extensions/filters/DeleteSmallPaths.fontlabfilter",
     "module": "delete_small_paths",
     "class": "DeleteSmallPaths",
     "id": "delete_small_paths",
@@ -321,7 +321,7 @@
   },
   {
     "original": "palettes/step_and_repeat.py",
-    "bundle": "Extensions/palettes/StepAndRepeat.fontlabPalette",
+    "bundle": "Extensions/palettes/StepAndRepeat.fontlabpalette",
     "module": "step_and_repeat",
     "class": "StepAndRepeat",
     "id": "step_and_repeat",
@@ -329,7 +329,7 @@
   },
   {
     "original": "tools/smart_select.py",
-    "bundle": "Extensions/tools/SmartSelect.fontlabTool",
+    "bundle": "Extensions/tools/SmartSelect.fontlabtool",
     "module": "smart_select",
     "class": "SmartSelect",
     "id": "smart_select",
@@ -337,56 +337,56 @@
   },
   {
     "original": "general_plugins/zoom_to_selection.py",
-    "bundle": "Extensions/general/ZoomToSelection.fontlabGeneral",
+    "bundle": "Extensions/general/ZoomToSelection.fontlabgeneral",
     "module": "zoom_to_selection",
     "class": "ZoomToSelection",
     "id": "zoom_to_selection",
     "kind": "general"
   },
   {
-    "bundle": "Extensions/filters/MoveOutlines.fontlabFilter",
+    "bundle": "Extensions/filters/MoveOutlines.fontlabfilter",
     "module": "move_outlines",
     "class": "MoveOutlines",
     "id": "move_outlines",
     "kind": "filter"
   },
   {
-    "bundle": "Extensions/filters/RoundOutlineToGrid.fontlabFilter",
+    "bundle": "Extensions/filters/RoundOutlineToGrid.fontlabfilter",
     "module": "round_outline_to_grid",
     "class": "RoundOutlineToGrid",
     "id": "round_outline_to_grid",
     "kind": "filter"
   },
   {
-    "bundle": "Extensions/filters/ScaleOutlines.fontlabFilter",
+    "bundle": "Extensions/filters/ScaleOutlines.fontlabfilter",
     "module": "scale_outlines",
     "class": "ScaleOutlines",
     "id": "scale_outlines",
     "kind": "filter"
   },
   {
-    "bundle": "Extensions/filters/SlantOutlines.fontlabFilter",
+    "bundle": "Extensions/filters/SlantOutlines.fontlabfilter",
     "module": "slant_outlines",
     "class": "SlantOutlines",
     "id": "slant_outlines",
     "kind": "filter"
   },
   {
-    "bundle": "Extensions/tools/ContourPicker.fontlabTool",
+    "bundle": "Extensions/tools/ContourPicker.fontlabtool",
     "module": "contour_picker",
     "class": "ContourPicker",
     "id": "contour_picker",
     "kind": "tool"
   },
   {
-    "bundle": "Extensions/tools/MeasurementRuler.fontlabTool",
+    "bundle": "Extensions/tools/MeasurementRuler.fontlabtool",
     "module": "measurement_ruler",
     "class": "MeasurementRuler",
     "id": "measurement_ruler",
     "kind": "tool"
   },
   {
-    "bundle": "Extensions/tools/NodeProbe.fontlabTool",
+    "bundle": "Extensions/tools/NodeProbe.fontlabtool",
     "module": "node_probe",
     "class": "NodeProbe",
     "id": "node_probe",

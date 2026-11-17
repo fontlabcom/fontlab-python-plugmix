@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# this_file: Extensions/tools/MeasurementRuler.fontlabTool/measurement_ruler.py
+# this_file: Extensions/tools/MeasurementRuler.fontlabtool/measurement_ruler.py
 """Drag a point-to-point ruler; Shift constrains an axis, Escape clears it.
 
 Measures font units and counterclockwise angle from +x, not ink intersections.

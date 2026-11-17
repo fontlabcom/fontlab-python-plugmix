@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/measurement-ruler.md
 
 # Measurement Ruler
 
-Bundle: `Extensions/tools/MeasurementRuler.fontlabTool`  
+Bundle: `Extensions/tools/MeasurementRuler.fontlabtool`  
 Stable ID: `measurement_ruler`
 
 Measure an arbitrary span without selecting nodes. Activate Measurement Ruler

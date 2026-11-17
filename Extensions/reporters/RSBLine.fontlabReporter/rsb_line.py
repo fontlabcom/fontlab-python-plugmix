@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/RSBLine.fontlabReporter/rsb_line.py
+# this_file: Extensions/reporters/RSBLine.fontlabreporter/rsb_line.py
 # SPDX-License-Identifier: Apache-2.0
 """Show advance boundary and the on-curve left and right sidebearings."""
 

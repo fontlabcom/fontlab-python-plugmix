@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/Crosshair.fontlabReporter/crosshair.py
+# this_file: Extensions/reporters/Crosshair.fontlabreporter/crosshair.py
 # SPDX-License-Identifier: Apache-2.0
 """Draw broad, thin crosshairs through selected nodes, without mouse tracking."""
 

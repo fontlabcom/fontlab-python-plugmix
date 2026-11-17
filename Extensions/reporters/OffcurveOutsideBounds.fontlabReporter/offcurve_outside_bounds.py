@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/OffcurveOutsideBounds.fontlabReporter/offcurve_outside_bounds.py
+# this_file: Extensions/reporters/OffcurveOutsideBounds.fontlabreporter/offcurve_outside_bounds.py
 # SPDX-License-Identifier: Apache-2.0
 """Highlight off-curve handles beyond the on-curve bounding rectangle.
 

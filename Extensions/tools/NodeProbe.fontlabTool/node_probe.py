@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# this_file: Extensions/tools/NodeProbe.fontlabTool/node_probe.py
+# this_file: Extensions/tools/NodeProbe.fontlabtool/node_probe.py
 """Hover within 12 pixels of a node to inspect coordinates and provenance."""
 
 from math import hypot, isfinite

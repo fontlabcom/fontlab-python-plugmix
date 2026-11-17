@@ -9,7 +9,7 @@ description = "Native FontLab 9 reporter and filter plugins"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}
-dependencies = ["fontlab-fontlabapp>=1.2.10"]
+dependencies = ["fontlab-fontlabapp>=1.2.31"]
 
 [project.optional-dependencies]
 test = ["pytest", "pytest-cov"]
@@ -34,4 +34,4 @@ id = "com.fontlab.python-plugmix"
 name = "fontlab-python-plugmix"
 packages = []  # Extensions bundles and Scripts only; the fontlab_plugmix package is a separate runtime
 extensions = "Extensions"
-dependencies = ["fontlab-fontlabapp>=1.2.10", "fontlab-fly>=1.3.0"]
+dependencies = ["fontlab-fontlabapp>=1.2.31", "fontlab-fly>=1.3.0"]

@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/contour-picker.md
 
 # Contour Picker
 
-Bundle: `Extensions/tools/ContourPicker.fontlabTool`  
+Bundle: `Extensions/tools/ContourPicker.fontlabtool`  
 Stable ID: `contour_picker`
 
 Select an entire local contour with one click. Activate Contour Picker from

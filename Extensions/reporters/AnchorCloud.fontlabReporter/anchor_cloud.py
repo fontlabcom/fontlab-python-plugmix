@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/AnchorCloud.fontlabReporter/anchor_cloud.py
+# this_file: Extensions/reporters/AnchorCloud.fontlabreporter/anchor_cloud.py
 # SPDX-License-Identifier: Apache-2.0
 """Show the current glyph's named anchors as a small local cloud."""
 

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ExportStatus.fontlabReporter/export_status.py
+# this_file: Extensions/reporters/ExportStatus.fontlabreporter/export_status.py
 # SPDX-License-Identifier: Apache-2.0
 """Cross out glyphs that are set not to export."""
 

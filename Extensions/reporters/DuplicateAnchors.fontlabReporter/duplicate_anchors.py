@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/DuplicateAnchors.fontlabReporter/duplicate_anchors.py
+# this_file: Extensions/reporters/DuplicateAnchors.fontlabreporter/duplicate_anchors.py
 # SPDX-License-Identifier: Apache-2.0
 """Show one red and yellow ring pair for every anchor pair under one unit."""
 

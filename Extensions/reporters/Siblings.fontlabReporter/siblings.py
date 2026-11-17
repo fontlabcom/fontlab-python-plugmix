@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/Siblings.fontlabReporter/siblings.py
+# this_file: Extensions/reporters/Siblings.fontlabreporter/siblings.py
 # SPDX-License-Identifier: Apache-2.0
 """Superimpose look-alike Latin letters behind the glyph to compare construction."""
 

@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/NodeCount.fontlabReporter/node_count.py
+# this_file: Extensions/reporters/NodeCount.fontlabreporter/node_count.py
 # SPDX-License-Identifier: Apache-2.0
 """Show the total number of nodes in the glyph beside its advance."""
 

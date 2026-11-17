@@ -1,4 +1,4 @@
-# this_file: Extensions/filters/ScaleOutlines.fontlabFilter/scale_outlines.py
+# this_file: Extensions/filters/ScaleOutlines.fontlabfilter/scale_outlines.py
 # SPDX-License-Identifier: Apache-2.0
 """Scale own outlines about a chosen pivot; metrics and components stay fixed."""
 

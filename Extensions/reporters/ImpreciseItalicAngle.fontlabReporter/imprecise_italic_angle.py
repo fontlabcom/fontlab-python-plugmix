@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ImpreciseItalicAngle.fontlabReporter/imprecise_italic_angle.py
+# this_file: Extensions/reporters/ImpreciseItalicAngle.fontlabreporter/imprecise_italic_angle.py
 # SPDX-License-Identifier: Apache-2.0
 """Mark straight segments almost, but not exactly, at the master slant."""
 

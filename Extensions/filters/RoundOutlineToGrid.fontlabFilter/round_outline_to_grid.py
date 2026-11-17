@@ -1,4 +1,4 @@
-# this_file: Extensions/filters/RoundOutlineToGrid.fontlabFilter/round_outline_to_grid.py
+# this_file: Extensions/filters/RoundOutlineToGrid.fontlabfilter/round_outline_to_grid.py
 # SPDX-License-Identifier: Apache-2.0
 """Round own outline nodes to a grid; half steps go toward positive infinity."""
 

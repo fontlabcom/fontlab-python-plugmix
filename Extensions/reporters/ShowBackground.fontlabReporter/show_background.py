@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/ShowBackground.fontlabReporter/show_background.py
+# this_file: Extensions/reporters/ShowBackground.fontlabreporter/show_background.py
 # SPDX-License-Identifier: Apache-2.0
 """Fill the glyph's background layer outlines in a pale blue."""
 

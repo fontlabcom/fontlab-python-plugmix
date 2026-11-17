@@ -4,7 +4,7 @@ this_file: src_docs/md/plugins/round-outline-to-grid.md
 
 # Round Outline to Grid
 
-Bundle: `Extensions/filters/RoundOutlineToGrid.fontlabFilter`  
+Bundle: `Extensions/filters/RoundOutlineToGrid.fontlabfilter`  
 Stable ID: `round_outline_to_grid`
 
 Round fractional outline coordinates to a regular grid before checking point

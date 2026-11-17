@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/Unitizer.fontlabReporter/unitizer.py
+# this_file: Extensions/reporters/Unitizer.fontlabreporter/unitizer.py
 # SPDX-License-Identifier: Apache-2.0
 """Draw a configurable vertical unit grid across the glyph advance."""
 

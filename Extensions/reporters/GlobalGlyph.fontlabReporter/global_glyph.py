@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/GlobalGlyph.fontlabReporter/global_glyph.py
+# this_file: Extensions/reporters/GlobalGlyph.fontlabreporter/global_glyph.py
 # SPDX-License-Identifier: Apache-2.0
 """Show the outlines of a helper glyph named ``_global`` behind every other glyph."""
 

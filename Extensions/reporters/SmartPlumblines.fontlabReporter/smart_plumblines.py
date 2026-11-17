@@ -1,4 +1,4 @@
-# this_file: Extensions/reporters/SmartPlumblines.fontlabReporter/smart_plumblines.py
+# this_file: Extensions/reporters/SmartPlumblines.fontlabreporter/smart_plumblines.py
 # SPDX-License-Identifier: Apache-2.0
 """Draw a horizontal and italic-aware vertical centre line per contour."""
 
