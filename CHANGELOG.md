@@ -21,6 +21,10 @@ The exact no-selector Plugmix runner against genuine tagged App 1.2.31 now passe
 
 ## Unreleased
 
+- `install.vfpy` is now the stub from fontlab-python-instamix 1.0.15. It replaces an
+  installed instamix older than 1.0.13 and puts the old copy back if the upgrade
+  fails; linked checkouts and local builds are kept. A download that fails for
+  lack of root certificates (FontLab 9 for macOS) is retried with the system curl.
 - `install.vfpy` is now the short fontlab-instamix stub. It installs
   fontlab-instamix from PyPI when it is missing, then installs this checkout from
   its `[tool.fontlab-install]` table. The large legacy installer is gone.
