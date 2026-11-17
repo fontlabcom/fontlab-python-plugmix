@@ -1,8 +1,0 @@
-{
-  "id": "anchor_cloud",
-  "name": "Anchor Cloud",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "anchor_cloud:AnchorCloud",
-  "min_app_version": "1.2.31"
-}

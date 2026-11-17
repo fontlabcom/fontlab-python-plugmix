@@ -1,8 +1,0 @@
-{
-  "id": "siblings",
-  "name": "Show Siblings",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "siblings:Siblings",
-  "min_app_version": "1.2.31"
-}

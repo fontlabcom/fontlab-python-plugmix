@@ -1,8 +1,0 @@
-{
-  "id": "only_selected_handles",
-  "name": "Emphasise Selected Handles",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "only_selected_handles:OnlySelectedHandles",
-  "min_app_version": "1.2.31"
-}

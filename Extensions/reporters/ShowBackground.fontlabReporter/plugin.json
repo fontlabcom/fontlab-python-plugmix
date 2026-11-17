@@ -1,8 +1,0 @@
-{
-  "id": "show_background",
-  "name": "Show Background",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "show_background:ShowBackground",
-  "min_app_version": "1.2.31"
-}

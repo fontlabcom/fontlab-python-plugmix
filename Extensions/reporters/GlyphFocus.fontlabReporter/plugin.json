@@ -1,8 +1,0 @@
-{
-  "id": "glyph_focus",
-  "name": "Glyph Focus",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "glyph_focus:GlyphFocus",
-  "min_app_version": "1.2.31"
-}

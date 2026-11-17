@@ -1,8 +1,0 @@
-{
-  "id": "imprecise_italic_angle",
-  "name": "Imprecise Italic Angle",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "imprecise_italic_angle:ImpreciseItalicAngle",
-  "min_app_version": "1.2.31"
-}

@@ -1,8 +1,0 @@
-{
-  "id": "zoom_to_selection",
-  "name": "Plugmix: Zoom to Selection",
-  "kind": "general",
-  "version": "1.0.0",
-  "entry": "zoom_to_selection:ZoomToSelection",
-  "min_app_version": "1.2.31"
-}

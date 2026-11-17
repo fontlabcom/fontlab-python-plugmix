@@ -1,8 +1,0 @@
-{
-  "id": "smart_plumblines",
-  "name": "Smart Plumblines",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "smart_plumblines:SmartPlumblines",
-  "min_app_version": "1.2.31"
-}

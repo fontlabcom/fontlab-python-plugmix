@@ -1,8 +1,0 @@
-{
-  "id": "selected_coordinates",
-  "name": "Selected Node Coordinates",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "selected_coordinates:SelectedCoordinates",
-  "min_app_version": "1.2.31"
-}

@@ -1,8 +1,0 @@
-{
-  "id": "node_probe",
-  "name": "Node Probe",
-  "kind": "tool",
-  "version": "1.0.0",
-  "entry": "node_probe:NodeProbe",
-  "min_app_version": "1.2.31"
-}

@@ -1,8 +1,0 @@
-{
-  "id": "stem_thickness",
-  "name": "Stem Thickness",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "stem_thickness:StemThickness",
-  "min_app_version": "1.2.31"
-}

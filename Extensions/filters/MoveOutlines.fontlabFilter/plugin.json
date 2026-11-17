@@ -1,8 +1,0 @@
-{
-  "id": "move_outlines",
-  "name": "Move Outlines",
-  "kind": "filter",
-  "version": "1.0.0",
-  "entry": "move_outlines:MoveOutlines",
-  "min_app_version": "1.2.31"
-}

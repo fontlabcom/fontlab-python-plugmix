@@ -1,8 +1,0 @@
-{
-  "id": "scale_outlines",
-  "name": "Scale Outlines",
-  "kind": "filter",
-  "version": "1.0.0",
-  "entry": "scale_outlines:ScaleOutlines",
-  "min_app_version": "1.2.31"
-}

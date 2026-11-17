@@ -1,8 +1,0 @@
-{
-  "id": "smooth_node_angles",
-  "name": "Smooth Node Angles",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "smooth_node_angles:SmoothNodeAngles",
-  "min_app_version": "1.2.31"
-}

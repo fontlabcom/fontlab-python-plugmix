@@ -1,8 +1,0 @@
-{
-  "id": "kern_indicator",
-  "name": "Kern Indicator",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "kern_indicator:KernIndicator",
-  "min_app_version": "1.2.31"
-}

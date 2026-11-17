@@ -1,8 +1,0 @@
-{
-  "id": "smart_select",
-  "name": "Smart Select",
-  "kind": "tool",
-  "version": "1.0.0",
-  "entry": "smart_select:SmartSelect",
-  "min_app_version": "1.2.31"
-}

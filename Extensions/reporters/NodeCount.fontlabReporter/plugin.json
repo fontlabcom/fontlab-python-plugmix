@@ -1,8 +1,0 @@
-{
-  "id": "node_count",
-  "name": "Node Count",
-  "kind": "reporter",
-  "version": "1.0.0",
-  "entry": "node_count:NodeCount",
-  "min_app_version": "1.2.31"
-}
