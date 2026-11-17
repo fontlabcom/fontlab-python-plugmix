@@ -2,6 +2,11 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-17 — Task-list cleanup (Issue 258)
+
+- Closed and removed from TODO: T28 App 1.2.20 installer propagation (the legacy installer and `install.vfpyc` were deleted and `install.vfpy` is the fontlab-instamix stub, Unreleased entry below; v1.1.16 compatibility release qualified at `9a41985f`, v1.1.19 tagged), the duplicate reporter/filter/palette row, P04/P05 graph-evidence rows, the additive-recovery review and the Issue 233 independent-review row (obsolete process rows).
+- Pack check at `76fbdaf`: `python3 tools/build_pack.py` builds 105 members with 50 manifests and 50 bundle directories and `tools/check_pack.py` prints `pack ok`; this is correct, not a defect.
+
 ## Issue 256 canonical bundle names — 2026-11-17
 
 Renamed all 50 bundle suffixes through intermediate paths; preserved stems, IDs, classes, plugin behavior and exact LICENSE/NOTICE bytes. Updated maps, tests and source/generated docs. App requirements and bundle minimum versions now require 1.2.31 for lowercase support. Before that floor update the exact no-selector runner passed 459 tests and every coverage checker; final source checks in the prepared genuine App development environment pass 459 and the unchanged checker. Strict docs rebuild and 38 docs tests pass. Earlier on 2026-11-17, the exact runner refused the then-unreleased App 1.2.31 floor. Case-sensitive scratch tests also exposed an earlier Instamix defect: modified/unowned legacy bundles remained beside new bundles and lost their old receipt entries. The later qualification below supersedes these blockers while preserving their failure history.

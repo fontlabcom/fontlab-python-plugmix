@@ -1,18 +1,17 @@
 ---
 this_file: TODO.md
 ---
+
+## Next steps (prioritised, 2026-11-17)
+
+1. P0 advance reporter/filter/palette fixes through shared App code and Fly/Extensions consumers.
+2. P1 Issue 256: joint App+Plugmix deploy of the lowercase 50-bundle pack; native checks in FontLab 9, in order: install App then Plugmix and confirm 50 bundles; Reporters palette/View sync; toolbar and Tools registration; Window > Panels lifetime; Extensions discovery; reporter drawing modes; outline dialogs; Measurement Ruler; Node Probe; Contour Picker; Step and Repeat (owner-run).
+3. P2 Issue 211 nine native probes and four minor fixes; shim removal gate (outside-consumer search or deprecation).
+4. P2 CI full-suite read-only App/Pens checkout (owner-gated; end of file).
+
 - [ ] Issue 256: reconcile and deliver the reviewed lowercase Plugmix pack through normal hooks and release/artifact checks; resolve App 1.2.31 PyPI publisher administration, then qualify the installed provider cohort and native/Windows migration separately.
 
-
 # Open tasks
-
-- [ ] T28: Independently review and deliver the exact App 1.2.20 installer propagation through combined gates, fresh main/CI and genuine release/download checks; then qualify actual installed App/Fly versions, all installer copies and the complete provider cohort separately. Keep native/root-install admission and cold-cache checks open.
-
-- [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
-
-
-- [ ] P04: qualify the permitted provider cohort separately, retaining excluded-repository restrictions and incomplete dependency closure.
-- [ ] P05: qualify unresolved graph paths, overflow, budget cuts and untraced entries; zero mapped processes does not prove absent callers.
 
 - [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
 
@@ -29,13 +28,13 @@ this_file: TODO.md
 - [ ] Complete Issue 211 nine native probes and four minor fixes on the exact integrated tuple under the separate native gates.
 - [ ] Compatibility-package and `fontlabapp.plugmix` shim removal gate: the workspace audit is done (see the Consumer audit page); next check is an outside-consumer search or a deprecation period, because third-party entry-point publishers and owner-installed copies cannot be known from the workspace.
 - [ ] Qualify native App-based script activation/rendering on the exact recovered tuple under the separate native gates.
-- [ ] Obtain independent review of the additive recovery, qualify its ordinary gates, verify the remote SHA and integrate into `main`.
 - [ ] After qualified integration and recovery, remove only proven obsolete items without unique or attached owner work. Compatibility-package removal also needs the outside-consumer search or deprecation period above.
-
-- [ ] Independently review the complete Issue 233 site and qualify exact-SHA main Actions, changed-output bot-child and code-only triggers; private Pages stays owner-held.
 
 - [ ] native: verify Round Outline to Grid, Move Outlines, Scale Outlines and Slant Outlines dialogs, current-master scope, refusal of unsafe shapes, one Undo/Redo step and saved/reopened outlines in FontLab 9 with the coordinated App writer.
 - [ ] native: verify Measurement Ruler left drag, Shift constraint, Escape, secondary-button release, glyph switching and teardown in FontLab 9.
 - [ ] native: verify Node Probe local/component labels and 12-pixel hit radius at multiple zoom levels in FontLab 9.
 - [ ] native: verify Contour Picker whole-contour selection and Shift toggle on open/cubic/quadratic outlines, with components unchanged, in FontLab 9.
+
+## Deprioritised test-infrastructure rows
+
 - [ ] CI test suite: the full suite needs a read-only App/Pens checkout in CI (tag-floor and bundle tests), owner-gated (credential: deploy key, PAT or App visibility). `tests/conftest.py:42` (`pytest_configure` imports `fontlabapp.plugins.bundles`) and `tests/extensions/conftest.py` block every module under it; `pack.yml` runs only the App-free subset with `--noconftest` (`tests/test_pack_workflow.py`, `tests/test_extension_coverage_gate.py`).
