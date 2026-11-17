@@ -103,6 +103,9 @@ def test_filter_floors_when_loaded_then_match_the_app_writer_they_need():
 def test_filter_floors_when_app_tags_available_then_floor_tags_contain_the_needed_writer():
     if not (APP_CHECKOUT / ".git").exists():
         pytest.skip("sibling fontlab-fontlabapp checkout absent")
+    tags = subprocess.run(["git", "-C", str(APP_CHECKOUT), "tag"], capture_output=True, text=True, check=False).stdout.split()
+    if "v" + DELETION_ONLY_FLOOR not in tags:
+        pytest.skip("App release history before v1.2.28 was squashed; v1.2.9/v1.2.10 tags are gone")
     assert _tag_contains(DELETION_ONLY_FLOOR, PLUGIN_CORE_COMMIT)
     assert not _tag_contains("1.2.8", PLUGIN_CORE_COMMIT)
     assert not _tag_contains(DELETION_ONLY_FLOOR, COORDINATE_WRITER_COMMIT)
