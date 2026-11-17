@@ -12,6 +12,8 @@ this_file: TODO.md
 - [ ] P04: qualify the permitted provider cohort separately, retaining excluded-repository restrictions and incomplete dependency closure.
 - [ ] P05: qualify unresolved graph paths, overflow, budget cuts and untraced entries; zero mapped processes does not prove absent callers.
 
+- [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
+
 - [ ] Issue 255: After explicit D43 recovery and admission, qualify App startup, palette and all original plugin behaviors on the released installed Fly/provider tuple; keep legacy compatibility and native lifecycle/history acceptance separate.
 
 - [ ] native (owner, Issue 254): install the App `install.vfpy` (main at or after 5cac0d6), then this repository's `install.vfpy`, restart FontLab 9 and confirm Plugmix Demo lists 50 bundles (39 reporters, 5 filters, 4 tools, 1 palette, 1 general). Run one filter on an owned copy, check one history row, Undo/Redo, and that the install persists across a restart. Then uninstall and confirm the links go.

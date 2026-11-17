@@ -222,3 +222,4 @@ __marimo__/
 
 # macOS Finder metadata
 .DS_Store
+*.vfpyc
