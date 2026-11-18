@@ -223,3 +223,11 @@ __marimo__/
 # macOS Finder metadata
 .DS_Store
 *.vfpyc
+
+# Python and macOS (pypitrust)
+*.py[cod]
+.venv/
+
+# Python and macOS (pypitrust)
+__version__.py
+_version.py
