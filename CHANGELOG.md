@@ -2,6 +2,14 @@
 this_file: CHANGELOG.md
 ---
 
+## 2026-11-18 — Issue 271 installer source alignment
+
+The generated installer matches the reviewed Instamix 1.0.18 template: it requires
+conflict preflight support, selects compatible local wheels and reports completed
+work before an installation failure. Exact reviewed-template byte parity and import-sentinel/wheel-order smoke checks pass. Existing focused installer tests pass (exit 0, 0.67 seconds).
+Consumer integration, released archives and native execution remain separate checks.
+
+
 ## 2026-11-17 — Task-list cleanup (Issue 258)
 
 - Closed and removed from TODO: T28 App 1.2.20 installer propagation (the legacy installer and `install.vfpyc` were deleted and `install.vfpy` is the fontlab-instamix stub, Unreleased entry below; v1.1.16 compatibility release qualified at `9a41985f`, v1.1.19 tagged), the duplicate reporter/filter/palette row, P04/P05 graph-evidence rows, the additive-recovery review and the Issue 233 independent-review row (obsolete process rows).

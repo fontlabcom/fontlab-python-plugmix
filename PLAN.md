@@ -1,6 +1,13 @@
 ---
 this_file: PLAN.md
 ---
+
+## Issue 271 installer qualification
+
+Integrate the independently reviewed generated installer through existing full
+repository/hook gates; verify exact-SHA CI and archives, then qualify native
+macOS/Windows use when the serialized guard is available. Preserve owner files.
+
 ## Issue 256 remaining qualification — 2026-11-17
 
 Integrate and deliver the reviewed lowercase Plugmix pack through fresh-main reconciliation and normal hooks, then verify its released artifacts. Instamix 1.0.8 supplies the qualified migration safeguard; App 1.2.31 GitHub artifacts and the exact Plugmix source runner are qualified. Resolve App PyPI trusted-publisher administration separately; its failed publication does not establish PyPI availability. Qualify the installed provider cohort and native/Windows migration before claiming deployment acceptance.

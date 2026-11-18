@@ -2,6 +2,9 @@
 this_file: TODO.md
 ---
 
+- [ ] Issue 271: independently review and integrate the generated installer through repository gates, verify exact-SHA CI/archives, and qualify macOS/Windows native execution after serialized admission.
+
+
 ## Next steps (prioritised, 2026-11-17)
 
 1. P0 advance reporter/filter/palette fixes through shared App code and Fly/Extensions consumers.

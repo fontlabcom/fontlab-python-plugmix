@@ -2,6 +2,15 @@
 this_file: WORK.md
 ---
 
+## 2026-11-18 — Issue 271 generated installer candidate
+
+Regenerated `install.vfpy` with Instamix 1.0.18, preserving project declarations and
+runtime source. Exact reviewed-template byte parity and import-sentinel/wheel-order smoke checks pass. Existing focused installer tests pass (exit 0, 0.67 seconds).
+Task-owned graph impact/change analysis cannot resolve an index; structural caller
+checks supplement this unavailable evidence. Full repository delivery gates,
+independent cohort review and native qualification remain pending. No owner install ran.
+
+
 ## Issue 256 canonical bundle names — 2026-11-17
 
 Renamed all 50 bundle suffixes through intermediate paths; preserved stems, IDs, classes, plugin behavior and exact LICENSE/NOTICE bytes. Updated maps, tests and source/generated docs. App requirements and bundle minimum versions now require 1.2.31 for lowercase support. Before that floor update the exact no-selector runner passed 459 tests and every coverage checker; final source checks in the prepared genuine App development environment pass 459 and the unchanged checker. Strict docs rebuild and 38 docs tests pass. Earlier on 2026-11-17, the exact runner refused the then-unreleased App 1.2.31 floor. Case-sensitive scratch tests also exposed an earlier Instamix defect: modified/unowned legacy bundles remained beside new bundles and lost their old receipt entries. The later qualification below supersedes these blockers while preserving their failure history.
