@@ -68,12 +68,18 @@ class SiteTests(unittest.TestCase):
                 if url.fragment and dest.suffix == '.html':
                     self.assertIn(unquote(url.fragment), Page(dest.read_text()).ids, (path, link))
 
-    def test_pages_have_light_menu_footer_local_search_and_correct_canonical(self):
+    def test_pages_have_fly_assets_fontlab_chrome_local_search_and_correct_canonical(self):
         for route in PAGES:
             page = Page((SITE / route).read_text())
             with self.subTest(route=route):
-                self.assertEqual([attrs.get('mode') for tag, attrs in page.tags if tag == 'fontlab-menu'], ['light'])
-                self.assertEqual([attrs.get('mode') for tag, attrs in page.tags if tag == 'fontlab-footer'], ['light'])
+                menus = [attrs for tag, attrs in page.tags if tag == 'fontlab-menu']
+                self.assertEqual([(m.get('site-label'), m.get('mode'), m.get('mobile-menu'), m.get('mobile-search')) for m in menus],
+                                 [('Plugmix', 'dark', 'materialx', 'materialx')])
+                self.assertEqual([attrs.get('mode') for tag, attrs in page.tags if tag == 'fontlab-footer'], ['dark'])
+                self.assertEqual(page.links.count('https://i.fontlab.com/menu/fontlab.js'), 1)
+                fly_assets = [Path(urlsplit(url).path).name for url in page.links if 'assets/fly/' in url]
+                self.assertCountEqual(fly_assets, ['fly.css', 'fly-bridge.js', 'fly.js'])
+                self.assertFalse(any('fltheme26' in url for url in page.links))
                 self.assertEqual([attrs.get('data-md-color-scheme') for tag, attrs in page.tags if tag == 'body'], ['default'])
                 search = [attrs for tag, attrs in page.tags if attrs.get('data-md-component') == 'search-query']
                 self.assertEqual(len(search), 1)

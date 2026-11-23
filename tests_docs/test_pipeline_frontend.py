@@ -1,6 +1,7 @@
 # this_file: tests_docs/test_pipeline_frontend.py
 """Verify the actual English browser notices, source maps and output boundary."""
 import hashlib
+import importlib.metadata
 import json
 import re
 import unittest
@@ -65,7 +66,18 @@ class FrontendPayloadTests(unittest.TestCase):
                 self.assertIn(notice['path'], page)
                 if row['name'] in ('select', 'good-listener', 'delegate'):
                     self.assertEqual(data.decode().strip(), '## License\n\n[MIT License](http://zenorocha.mit-license.org/) © Zeno Rocha')
-        self.assertEqual(count, 25)
+        self.assertEqual(count, 26)
+
+    def test_fly_assets_and_licence_match_the_installed_theme(self):
+        wheel = importlib.metadata.distribution('fly-january')
+        self.assertEqual(wheel.version, '0.1.1')
+        assets = ROOT / 'docs/assets/fly'
+        names = {'fly.css', 'fly-tokens.css', 'fly-bridge.js', 'fly.js', 'fly-debug.js'}
+        self.assertEqual({p.name for p in assets.iterdir()}, names)
+        for name in names:
+            self.assertEqual((assets / name).read_bytes(), wheel.locate_file('fly_january/assets/fly/' + name).read_bytes())
+        licence = wheel.locate_file('fly_january-0.1.1.dist-info/licenses/LICENSE')
+        self.assertEqual((ROOT / 'docs/assets/LICENSE').read_bytes(), licence.read_bytes())
 
     def test_current_source_map_identities_and_exact_embedded_sources_are_retained(self):
         record = json.loads((ROOT / 'src_docs/md/assets/current-frontend-notices.json').read_text())
@@ -117,6 +129,7 @@ class FrontendPayloadTests(unittest.TestCase):
             optimized.update(icon_paths(unquote(values[0])))
         self.assertEqual(observed - installed, optimized)
         caret = scope['css_header_attributions']['--md-version-icon']
+        self.assertEqual(hashlib.sha256((ROOT / 'docs' / caret['asset']).read_bytes()).hexdigest(), caret['asset_sha256'])
         values = re.findall(r"--md-version-icon:url\('data:image/svg\+xml;charset=utf-8,(.*?)'\)", css)
         self.assertEqual(len(values), 1)
         svg = unquote(values[0])

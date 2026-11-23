@@ -2,6 +2,10 @@
 this_file: WORK.md
 ---
 
+## Documentation theme — 2026-11-23
+
+The strict fly-january 0.1.1 build produced 63 files. Two clean builds matched byte for byte. All 15 HTML pages contain one FontLab menu and footer, the Plugmix label and local search. All 24 site, frontend and English-search tests passed. The 15 disposable Git fixture tests remain unrun under the no-add/commit/push instruction. Both package runs passed all 459 tests with the Instamix 1.0.15 stub used by this checkout. The current sibling 1.0.19 stub differs.
+
 ## Issue 256 canonical bundle names — 2026-11-17
 
 Renamed all 50 bundle suffixes through intermediate paths; preserved stems, IDs, classes, plugin behavior and exact LICENSE/NOTICE bytes. Updated maps, tests and source/generated docs. App requirements and bundle minimum versions now require 1.2.31 for lowercase support. Before that floor update the exact no-selector runner passed 459 tests and every coverage checker; final source checks in the prepared genuine App development environment pass 459 and the unchanged checker. Strict docs rebuild and 38 docs tests pass. Earlier on 2026-11-17, the exact runner refused the then-unreleased App 1.2.31 floor. Case-sensitive scratch tests also exposed an earlier Instamix defect: modified/unowned legacy bundles remained beside new bundles and lost their old receipt entries. The later qualification below supersedes these blockers while preserving their failure history.

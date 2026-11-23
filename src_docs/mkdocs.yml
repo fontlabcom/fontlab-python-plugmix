@@ -8,9 +8,8 @@ docs_dir: md
 site_dir: ../docs
 use_directory_urls: true
 theme:
-  name: materialx
+  name: fly-january
   language: en
-  custom_dir: overrides
   palette:
     scheme: default
   features:
@@ -19,6 +18,7 @@ theme:
 plugins:
   - search:
       lang: [en]
+  - fly
 markdown_extensions:
   - admonition
   - tables
@@ -40,12 +40,12 @@ nav:
   - Consumer audit: consumer-audit.md
   - Development and limits: development-and-limits.md
   - Licence: licence.md
+extra:
+  fly:
+    chrome: fontlab
+    chrome_options:
+      site-label: Plugmix
 extra_css:
   - stylesheets/local.css
-  - https://i.fontlab.com/fltheme26/1.0.0/components.css
-  - https://i.fontlab.com/fltheme26/1.0.0/theme.css
-extra_javascript:
-  - https://i.fontlab.com/fltheme26/1.0.0/basecoat.js
-  - https://i.fontlab.com/fltheme26/1.0.0/theme.js
 hooks:
   - english_search.py
