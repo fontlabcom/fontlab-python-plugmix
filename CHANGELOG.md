@@ -29,6 +29,10 @@ The exact no-selector Plugmix runner against genuine tagged App 1.2.31 now passe
 
 ## Unreleased
 
+- PyPI owner setup: configure or confirm the trusted publisher for project `fontlab-python-plugmix`, repository `fontlabcom/fontlab-python-plugmix`, workflow `release.yml`, environment `pypi`. The v1.1.23 PyPI job succeeded in run `44411612444`.
+- Issue 256: verified the v1.1.19 (`76fbdaf`) and v1.1.23 (`331d142`) GitHub release ZIPs against their tags. Each contains 105 source-identical files, including all 50 manifests under bundle directories with lowercase suffixes.
+- Issue 271: the installer landed on main at `9840616`. Pack `44411155561` and Documentation `44411155586` passed. The v1.1.23 source archive carries the tagged installer, and the wheel’s 51 Python modules match the tag.
+- Issue 233: verified both documentation triggers on main. The test-only change `cb6240a` passed run `44080767097`. Run `44411155586` qualified the generated docs-only child `331d142` of `9840616`.
 - Site now uses the fly-january 0.2.1 theme (chrome: fontlab).
 - `install.vfpy` is now the stub from fontlab-python-instamix 1.0.15. It replaces an
   installed instamix older than 1.0.13 and puts the old copy back if the upgrade

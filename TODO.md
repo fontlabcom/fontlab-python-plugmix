@@ -2,42 +2,20 @@
 this_file: TODO.md
 ---
 
-- [ ] Issue 271: independently review and integrate the generated installer through repository gates, verify exact-SHA CI/archives, and qualify macOS/Windows native execution after serialized admission.
-
-
-## Next steps (prioritised, 2026-11-17)
-
-1. P0 advance reporter/filter/palette fixes through shared App code and Fly/Extensions consumers.
-2. P1 Issue 256: joint App+Plugmix deploy of the lowercase 50-bundle pack; native checks in FontLab 9, in order: install App then Plugmix and confirm 50 bundles; Reporters palette/View sync; toolbar and Tools registration; Window > Panels lifetime; Extensions discovery; reporter drawing modes; outline dialogs; Measurement Ruler; Node Probe; Contour Picker; Step and Repeat (owner-run).
-3. P2 Issue 211 nine native probes and four minor fixes; shim removal gate (outside-consumer search or deprecation).
-4. P2 CI full-suite read-only App/Pens checkout (owner-gated; end of file).
-
-- [ ] Issue 256: reconcile and deliver the reviewed lowercase Plugmix pack through normal hooks and release/artifact checks; resolve App 1.2.31 PyPI publisher administration, then qualify the installed provider cohort and native/Windows migration separately.
-
-# Open tasks
-
-- [ ] Advance reporter/filter/palette fixes through shared App code and matching Fly/Extensions consumers, using focused callback checks before the full installed/native plugin pass.
-
-- [ ] Issue 255: After explicit D43 recovery and admission, qualify App startup, palette and all original plugin behaviors on the released installed Fly/provider tuple; keep legacy compatibility and native lifecycle/history acceptance separate.
-
-- [ ] native (owner, Issue 254): install the App `install.vfpy` (main at or after 5cac0d6), then this repository's `install.vfpy`, restart FontLab 9 and confirm Plugmix Demo lists 50 bundles (39 reporters, 5 filters, 4 tools, 1 palette, 1 general). Run one filter on an owned copy, check one history row, Undo/Redo, and that the install persists across a restart. Then uninstall and confirm the links go.
-- [ ] native: verify Reporters palette toggles and View > Reporters synchronization in FontLab 9.
-- [ ] native: verify toolbar and Tools > Tool registration, selection and teardown in FontLab 9.
-- [ ] native: verify Window > Panels registration, show/close and PythonQt lifetime in FontLab 9.
-- [ ] native: verify Extensions startup discovery and marked-hook install/removal on the exact installed tuple in FontLab 9.
-- [ ] native: verify all reporter drawing modes, callback failure containment and teardown in FontLab 9.
-- [ ] native (owner-run): Step and Repeat from a real Glyph window. `snapshot.active_glyph` needs a Glyph-window canvas, so without a stub `repeat_selected` refuses "No active glyph." (nothing written); the rest was verified with the lookup stubbed (A2 report 21).
-
-- [ ] Complete Issue 211 nine native probes and four minor fixes on the exact integrated tuple under the separate native gates.
-- [ ] Compatibility-package and `fontlabapp.plugmix` shim removal gate: the workspace audit is done (see the Consumer audit page); next check is an outside-consumer search or a deprecation period, because third-party entry-point publishers and owner-installed copies cannot be known from the workspace.
-- [ ] Qualify native App-based script activation/rendering on the exact recovered tuple under the separate native gates.
-- [ ] After qualified integration and recovery, remove only proven obsolete items without unique or attached owner work. Compatibility-package removal also needs the outside-consumer search or deprecation period above.
-
-- [ ] native: verify Round Outline to Grid, Move Outlines, Scale Outlines and Slant Outlines dialogs, current-master scope, refusal of unsafe shapes, one Undo/Redo step and saved/reopened outlines in FontLab 9 with the coordinated App writer.
-- [ ] native: verify Measurement Ruler left drag, Shift constraint, Escape, secondary-button release, glyph switching and teardown in FontLab 9.
-- [ ] native: verify Node Probe local/component labels and 12-pixel hit radius at multiple zoom levels in FontLab 9.
-- [ ] native: verify Contour Picker whole-contour selection and Shift toggle on open/cubic/quadratic outlines, with components unchanged, in FontLab 9.
-
-## Deprioritised test-infrastructure rows
-
-- [ ] CI test suite: the full suite needs a read-only App/Pens checkout in CI (tag-floor and bundle tests), owner-gated (credential: deploy key, PAT or App visibility). `tests/conftest.py:42` (`pytest_configure` imports `fontlabapp.plugins.bundles`) and `tests/extensions/conftest.py` block every module under it; `pack.yml` runs only the App-free subset with `--noconftest` (`tests/test_pack_workflow.py`, `tests/test_extension_coverage_gate.py`).
+- [ ] Fix reporter, filter and palette defects in the shared App core and affected Fly/Extensions consumers, with focused callback checks.
+- [ ] Confirm independent installer review and normal hook results for the shipped lowercase pack and generated installer revisions (Issues 256 and 271).
+- [ ] Verify the released App/Fly/provider versions, installed origins, RECORD files and each installer completion before native qualification.
+- [ ] Confirm with the App owner whether the exact 1.2.31 PyPI release is still required. If so, verify its publisher configuration and published files.
+- [ ] Verify App-first installation and lowercase migration on macOS and Windows, including all 50 bundles, protection of owner files, one filter history row, Undo/Redo, owner-checked restart persistence and uninstall.
+- [ ] Qualify all 17 native rows on the admitted installed tuple, including GUI controls in both themes, whole-font history, saved reopen and typing latency. Exercise the compatibility runtime separately.
+- [ ] Verify Extensions discovery and marked-hook install/removal, Reporters palette and View synchronization, toolbar and Tools registration, and Window > Panels show/close lifetime.
+- [ ] Verify all reporter drawing modes, callback failure containment and teardown. Check App-based script activation and rendering on the recovered tuple.
+- [ ] Run Step and Repeat from a real Glyph window with the actual active-glyph lookup (owner-run).
+- [ ] Verify Round Outline to Grid, Move Outlines, Scale Outlines and Slant Outlines dialogs, current-master scope, unsafe-shape refusal, one Undo/Redo step and saved/reopened outlines.
+- [ ] Verify Measurement Ruler drag, Shift constraint, Escape, secondary release, glyph switching and teardown.
+- [ ] Verify Node Probe local/component labels and its 12-pixel hit radius at multiple zoom levels.
+- [ ] Verify Contour Picker whole-contour selection and Shift toggling on open, cubic and quadratic outlines with components unchanged.
+- [ ] Complete Issue 211's nine native probes and verify the four minor fixes on the integrated tuple.
+- [ ] Search outside the workspace for compatibility package and shim consumers, or complete a deprecation period. Verify replacement coverage, recovery, attribution and owner attachments before any removal.
+- [ ] Run the complete package suite and coverage gates in CI once the owner supplies read-only access to the App and Pens sources.
+- [ ] Verify the full locked docs suite, the 0.2.1 wheel assertion and generated-output parity on the merged main SHA.

@@ -2,110 +2,72 @@
 this_file: PLAN.md
 ---
 
-## Issue 271 installer qualification
+## Functional work order
 
-Integrate the independently reviewed generated installer through existing full
-repository/hook gates; verify exact-SHA CI and archives, then qualify native
-macOS/Windows use when the serialized guard is available. Preserve owner files.
+Prioritize visible reporter, filter and palette defects. Keep fixes in the shared
+App core and carry them through the affected Fly and Extensions consumers.
+App owns discovery, registration, native callbacks and teardown. Plugmix owns
+the concrete bundles. Keep the compatibility package and its preferences usable.
+Check the affected callbacks and package boundaries before the full native pass.
 
-## Issue 256 remaining qualification — 2026-11-17
+## Installer and provider qualification
 
-Integrate and deliver the reviewed lowercase Plugmix pack through fresh-main reconciliation and normal hooks, then verify its released artifacts. Instamix 1.0.8 supplies the qualified migration safeguard; App 1.2.31 GitHub artifacts and the exact Plugmix source runner are qualified. Resolve App PyPI trusted-publisher administration separately; its failed publication does not establish PyPI availability. Qualify the installed provider cohort and native/Windows migration before claiming deployment acceptance.
+For Issues 254, 255, 256 and 271, confirm the independent installer review and
+normal hook results for the shipped revisions. Check the released App, Fly and
+provider versions, installed origins and RECORD files, and each installer result.
+App 1.2.31 is the minimum for lowercase bundles. Verify the selected release
+against that floor. For the separate App 1.2.31 publication item, confirm with
+the App owner whether that exact release still needs publishing. Its PyPI version
+endpoint returns 404. Preserve owner files during legacy-bundle migration,
+including modified or unowned bundles.
 
+With D43 admission, use the serialized native lane to exercise the generated
+installer on macOS and Windows. Run App's installer first, then Plugmix's.
+Confirm that Plugmix Demo lists 39 reporters, five filters, four tools, one
+palette and one General plugin. Exercise one filter, its history row and
+Undo/Redo. The owner checks persistence across a restart and link removal
+on uninstall. Keep native tests for the separate compatibility runtime on
+their own run.
 
-## Functional work order — 2026-11-14
+## Native plugin behavior
 
-Prioritize usable reporters, filters, tools and palettes through the shared App plugin core. Keep the Extensions pack, Fly startup routes and compatibility package coherent; preserve existing plugin contracts and callback/teardown ownership.
+Qualify the 17 native rows on the released, installed provider tuple. Exercise
+each GUI entry and its controls in both themes, whole-font history, saved
+reopen and typing latency. Include these outstanding checks:
 
-Use small smoke checks and focused regressions for changed behavior and package boundaries. Keep the existing detailed acceptance tasks for a later testing pass; mandatory delivery hooks and current holds remain in force.
+- **Startup and menus.** Verify Extensions discovery, marked hook installation
+  and removal, Reporters palette and View > Reporters synchronization, toolbar
+  and Tools > Tool registration, and Window > Panels show/close lifetime.
+  Verify native reporter drawing modes, callback failure containment and
+  teardown. Qualify App-based script activation and rendering separately on
+  the recovered tuple.
+- **Step and Repeat.** The owner runs it from a real Glyph window and checks
+  selection, repeat and undo history using the actual active-glyph lookup.
+- **Coordinate filters.** Exercise all four dialogs with the coordinated App
+  writer. Check current-master scope, unsafe-shape refusal, one Undo/Redo step
+  and saved/reopened outlines. Preserve native curve kinds and components.
+- **Interactive tools.** Check Measurement Ruler drag, Shift, Escape, secondary
+  release, glyph switching and teardown. Check Node Probe's local/component
+  labels and 12-pixel hit radius at several zooms. Check Contour Picker's Shift
+  toggle and whole-contour selection on open, cubic and quadratic contours.
+- **Issue 211.** Run the nine native probes and qualify the four minor fixes on
+  the integrated tuple. Issue 123 remains paused.
 
-## Released artifact, provider and native qualification
+## Compatibility and cleanup
 
-Qualify the permitted provider cohort (P04) without entering excluded
-repositories or claiming complete dependency closure. Retain unresolved graph
-paths, dynamic UNKNOWN callers, overflow, untraced entries and budget cuts (P05).
-Before permitted installation, qualify the released provider tuple, installed
-origins/RECORD and each installer completion. Then qualify all 17 native rows,
-every GUI entry and its controls in both themes, whole-font history, saved
-reopen and typing latency through the serialized native lane. Source/main/CI
-acceptance closes none of these checks. Keep the original Issue 210/211,
-additive-recovery and documentation-trigger tasks below open at their stated
-scope. Issue 123 remains paused and private Pages remains held.
+Before removing the compatibility package or the deprecated `fontlabapp.plugmix`
+shim, search for consumers outside the audited workspace or complete a deprecation
+period. Qualify the replacement, preserve recoverable source and attribution, and
+check for unique or attached owner work before removing obsolete items.
 
-Issue 123 remains paused. The additive recovery retains App-based scripts and
-the remote compatibility package together. Further consolidation remains a
-separate reviewed product milestone.
+## CI and documentation
 
-## Issue 210 remaining acceptance
+Full-suite CI needs owner-approved read access to its App and Pens sources.
+Run the repository recipe there with the required Fly source and verify the
+bundle, startup and compatibility coverage gates. Keep the installed pre-push
+hook and the existing per-module coverage floors.
 
-The reference pack now contains 50 manifest bundles under Extensions and a
-single action script that opens App's Reporters palette. The original plugin
-behavior is retained; framework and host operations remain in App. The bundle
-format is documented in Extensions/README.md. Qualify the exact paired artifacts
-and native UI, startup, drawing, callbacks, teardown and writer history after
-independent source review. The 50 bundles install through `install.vfpy` (Issue 254); native acceptance is still open and tracked in TODO.
-
-Issue 211's nine native probes and four minor fixes remain follow-up work.
-The README's dated native observations do not close those integrated checks.
-Before removing retained `fontlab_plugmix`, audit all consumers, entry-point
-groups, distributions, startup paths, preferences and attribution. Preserve
-complete recoverable source and qualify the actual replacement. The recovered
-App-based script entry points alone do not finish this consolidation.
-
-## Development checks
-
-The retained compatibility package descends from
-`dddadcd9bc8cee21d5f7b8fe60027495e13fd41a`; Extensions use App separately.
-`src/fontlab_plugmix/` contains the package. `tests/`, `test.sh` and
-`tests/check_coverage.py` provide its own offline suite and coverage check.
-Use an arm64 Python 3.11 process and the owned sibling App source:
-
-```sh
-PLUGMIX_FONTLABAPP_SOURCE="$PWD/../fontlab-fontlabapp" sh test.sh
-```
-
-Requalify all 50 bundle modules and the remaining action script against the actual
-App dependency with the full suite and its configured line/branch coverage.
-The pack gate requires at least 80% line and 80% branch coverage per module;
-the retained compatibility package gate also remains active. Keep the sibling App source needed
-by the runner-layout test; set `UV_PYTHON_PREFERENCE=only-system` and verify arm64.
-Run this command without selectors. The wrapper installs this local package and
-the selected App source in its uv test environment. With no arguments, it also
-runs `python3 tests/check_coverage.py coverage.json`. Selectors skip that checker.
-Keep the ordinary installed pre-push gate as a separate requirement.
-The recorded installed-hook baseline passed 125 tests with zero changed modules.
-That baseline does not prove the full repository checker passed.
-The later full no-selector `sh test.sh` run on 2026-11-05 at 21:46:13 UTC
-passed: exit 0, 125 tests and the full per-module checker. It used this
-source and owned App `fb6a93776772b996b25604f88711feb300b90109`.
-The observed 96% overall line coverage supplements the unchanged 80%
-combined-module policy. Requalify after a source or App tuple change.
-Offline fake-host tests do not establish native or installed-artifact acceptance.
-
-Follow [AGENTS.md](AGENTS.md) for reviewed milestone commits/pushes, `main`
-integration and recovery-first cleanup. Keep native, installation, generated
-reference and publication gates separate.
-
-## Documentation delivery gates
-
-Obtain independent review of the complete source and generated site, preserve
-current source bytes, then qualify exact-SHA main Actions through the ordinary
-reviewed delivery process. Exercise changed-output bot-child and code-only live
-triggers separately. Private Pages publication remains owner-held.
-
-## Issue 234 part 1 — C8 remaining acceptance
-
-Qualify the four coordinate-only outline filters and three interactive tools in
-FontLab 9 using the coordinated App writer. Verify dialogs, toolbar registration,
-modifiers, zoom hit testing, local/component scope, current-master safeguards,
-Undo/Redo and saved/reopened results. Preserve native curve kinds; no snapshot
-reconstruction or implicit component decomposition is part of this milestone.
-
-Next functional work is T28: repair shared App/Plugmix `install.vfpy` `install_siblings` constraint bypasses from fresh App reference source. Active/sibling routes drop declared constraints; the no-uv fallback checks presence only and can return normally with packages missing. Reuse the existing uv resolver, preserve constraints and report incomplete no-uv installation honestly. Add focused owned-fixture regressions before propagating the reviewed reference fix; do not add a custom PEP 440 parser. Actual installed-version qualification remains open. No implementation or gate is claimed here.
-
-Plugmix 1.1.16 release/download metadata qualification is recorded in CHANGELOG; do not repeat these completed gates. Complete provider closure and native acceptance remain open.
-
-
-## Issue 255 remaining native acceptance
-
-After explicit D43 recovery and admission, qualify App startup, palette and all original plugin behaviors on the released installed Fly/provider tuple; keep legacy compatibility and native lifecycle/history acceptance separate. Source, genuine artifact, ordinary external-install and release/download qualification for v1.1.14 is recorded in CHANGELOG. Existing private Pages and Issue 123 holds remain.
+Qualify the current fly-january site on its merged main SHA. Run the complete
+locked documentation suite, check the installed-theme version assertion against
+the 0.2.1 pin, and verify the generated output in the Documentation workflow.
+Private Pages publication stays owner-held.
