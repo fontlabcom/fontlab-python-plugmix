@@ -4,14 +4,14 @@
   "components": [
     {
       "name": "fly-january",
-      "version": "0.1.1",
-      "source_url": "https://pypi.org/project/fly-january/0.1.1/",
+      "version": "0.2.1",
+      "source_url": "https://pypi.org/project/fly-january/0.2.1/",
       "scope": "Theme CSS and JavaScript distributed under assets/fly",
       "notices": [
         {
           "path": "assets/LICENSE",
           "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
-          "archive_member": "fly_january-0.1.1.dist-info/licenses/LICENSE"
+          "archive_member": "fly_january-0.2.1.dist-info/licenses/LICENSE"
         }
       ]
     },

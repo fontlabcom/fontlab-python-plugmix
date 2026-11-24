@@ -2,6 +2,10 @@
 this_file: WORK.md
 ---
 
+## Documentation theme — 2026-11-24
+
+The site now uses fly-january 0.2.1.
+
 ## Documentation theme — 2026-11-23
 
 The strict fly-january 0.1.1 build produced 63 files. Two clean builds matched byte for byte. All 15 HTML pages contain one FontLab menu and footer, the Plugmix label and local search. All 24 site, frontend and English-search tests passed. The 15 disposable Git fixture tests remain unrun under the no-add/commit/push instruction. Both package runs passed all 459 tests with the Instamix 1.0.15 stub used by this checkout. The current sibling 1.0.19 stub differs.
