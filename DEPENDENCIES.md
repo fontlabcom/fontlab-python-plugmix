@@ -13,6 +13,6 @@ PyPI dependency.
 ## Independent documentation environment
 
 Python 3.13 and uv 0.13.7 build the site separately from the product runtime.
-The hash-locked `src_docs/requirements.txt` installs fly-january 0.2.1,
+The hash-locked `src_docs/requirements.txt` installs fly-january 0.3.0 or later,
 ProperDocs 1.6.7, MkDocs 1.6.1, MaterialX 10.1.8 and PyMdown Extensions
 11.0.1. The theme provides the FontLab menu and footer.

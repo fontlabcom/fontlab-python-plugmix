@@ -9,7 +9,7 @@ The repository retains Apache-2.0 terms and the Apache-2.0/MIT source-specific a
 - [Download the exact repository LICENSE](assets/LICENSE).
 - [Download the exact repository NOTICE](assets/NOTICE).
 
-The site distributes five CSS and JavaScript files from fly-january 0.2.1 under `assets/fly/`. The theme wheel includes the same [Apache 2.0 licence](assets/LICENSE) as Plugmix. The MaterialX frontend retains its bundled third-party licences and notices.
+The site distributes five CSS and JavaScript files from fly-january 0.3.0 or later under `assets/fly/`. The theme wheel includes the same [Apache 2.0 licence](assets/LICENSE) as Plugmix. The MaterialX frontend retains its bundled third-party licences and notices.
 
 
 ## Current English browser payload

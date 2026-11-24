@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "scope": "MaterialX assets in the English site output. The two retained stylesheets are rescaled by fly-january 0.2.1.",
+  "scope": "MaterialX assets in the English site output. The two retained stylesheets are rescaled by fly-january 0.3.0 or later.",
   "theme_language": "en",
   "search_languages": [
     "en"
