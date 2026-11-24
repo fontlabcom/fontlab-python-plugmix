@@ -29,6 +29,7 @@ The exact no-selector Plugmix runner against genuine tagged App 1.2.31 now passe
 
 ## Unreleased
 
+- Use fly-january 0.4.0 or later (remote theme assets) for the documentation site.
 - The documentation theme now requires fly-january 0.3.0 or later.
 - PyPI owner setup: configure or confirm the trusted publisher for project `fontlab-python-plugmix`, repository `fontlabcom/fontlab-python-plugmix`, workflow `release.yml`, environment `pypi`. The v1.1.23 PyPI job succeeded in run `44411612444`.
 - Issue 256: verified the v1.1.19 (`76fbdaf`) and v1.1.23 (`331d142`) GitHub release ZIPs against their tags. Each contains 105 source-identical files, including all 50 manifests under bundle directories with lowercase suffixes.

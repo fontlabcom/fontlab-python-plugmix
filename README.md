@@ -203,7 +203,7 @@ separate acceptance gates.
 
 ## Issue 233 source/build-only documentation
 
-The site uses fly-january 0.3.0 or later with the FontLab menu and footer.
+The site uses fly-january 0.4.0 or later (remote theme assets) with the FontLab menu and footer.
 Edit `src_docs/md` and `src_docs/mkdocs.yml`, then rebuild `docs/`.
 Use Python 3.13 and uv 0.13.7 in a separate environment. Install the packages
 in `src_docs/requirements.txt` with `--require-hashes`. Run `sh src_docs/build.sh` and

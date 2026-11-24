@@ -77,8 +77,10 @@ class SiteTests(unittest.TestCase):
                                  [('Plugmix', 'dark', 'materialx', 'materialx')])
                 self.assertEqual([attrs.get('mode') for tag, attrs in page.tags if tag == 'fontlab-footer'], ['dark'])
                 self.assertEqual(page.links.count('https://i.fontlab.com/menu/fontlab.js'), 1)
-                fly_assets = [Path(urlsplit(url).path).name for url in page.links if 'assets/fly/' in url]
-                self.assertCountEqual(fly_assets, ['fly.css', 'fly-bridge.js', 'fly.js'])
+                cdn = 'https://fontlab.dev/fontlab-www-docstheme/fly/latest/'
+                for name in ('fly.css', 'fly.js', 'fly-bridge.js'):
+                    self.assertEqual(page.links.count(cdn + name), 1)
+                self.assertFalse(any('assets/fly/' in url for url in page.links))
                 self.assertFalse(any('fltheme26' in url for url in page.links))
                 self.assertEqual([attrs.get('data-md-color-scheme') for tag, attrs in page.tags if tag == 'body'], ['default'])
                 search = [attrs for tag, attrs in page.tags if attrs.get('data-md-component') == 'search-query']

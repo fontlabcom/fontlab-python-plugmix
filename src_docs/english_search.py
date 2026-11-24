@@ -9,7 +9,7 @@ from urllib.parse import unquote, urlsplit
 
 def on_config(config):
     """Fail before building if either search or presentation stops being English."""
-    if config['theme']['language'] != 'en' or config['plugins']['fly-january/search'].config['lang'] != ['en']:
+    if config['theme']['language'] != 'en' or config['plugins']['fly-january-remote/search'].config['lang'] != ['en']:
         raise ValueError('English-only asset policy requires English theme and search')
     return config
 

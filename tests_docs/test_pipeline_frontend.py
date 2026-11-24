@@ -68,15 +68,11 @@ class FrontendPayloadTests(unittest.TestCase):
                     self.assertEqual(data.decode().strip(), '## License\n\n[MIT License](http://zenorocha.mit-license.org/) © Zeno Rocha')
         self.assertEqual(count, 26)
 
-    def test_fly_assets_and_licence_match_the_installed_theme(self):
+    def test_remote_fly_assets_are_absent_and_licence_matches_the_installed_theme(self):
         wheel = importlib.metadata.distribution('fly-january')
-        self.assertEqual(wheel.version, '0.3.0')
-        assets = ROOT / 'docs/assets/fly'
-        names = {'fly.css', 'fly-tokens.css', 'fly-bridge.js', 'fly.js', 'fly-debug.js'}
-        self.assertEqual({p.name for p in assets.iterdir()}, names)
-        for name in names:
-            self.assertEqual((assets / name).read_bytes(), wheel.locate_file('fly_january/assets/fly/' + name).read_bytes())
-        licence = wheel.locate_file('fly_january-0.3.0.dist-info/licenses/LICENSE')
+        self.assertEqual(wheel.version, '0.4.0')
+        self.assertFalse((ROOT / 'docs/assets/fly').exists())
+        licence = wheel.locate_file('fly_january-0.4.0.dist-info/licenses/LICENSE')
         self.assertEqual((ROOT / 'docs/assets/LICENSE').read_bytes(), licence.read_bytes())
 
     def test_current_source_map_identities_and_exact_embedded_sources_are_retained(self):
